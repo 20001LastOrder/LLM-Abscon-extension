@@ -1,10 +1,11 @@
 import re
+
 import networkx as nx
 
 
 class ClevrParser:
     relation_pattern = re.compile(r".+-->.+")
-    node_definition_pattern = re.compile('(\d+)\["(.+)"\]$')
+    node_definition_pattern = re.compile(r'(\d+)\["(.+)"\]$')
     node_pattern = re.compile(r"\d+$")
 
     def parse(self, mermaid_text: str) -> nx.DiGraph:

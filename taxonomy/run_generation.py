@@ -1,15 +1,17 @@
-from prompts import get_prompt, get_relation
-from abscon.llms import SelfHostedLLM
-import pandas as pd
-from output_parsers import TaxonomyOutputParser
-from utils import gather_concept_groups, construct_input
-from tqdm import tqdm
-from argparse import ArgumentParser
-from loguru import logger
-import sys
-from langchain_openai import ChatOpenAI
 import os
-from abscon.utils import serialize_output, construct_messages
+import sys
+from argparse import ArgumentParser
+
+import pandas as pd
+from langchain_openai import ChatOpenAI
+from loguru import logger
+from output_parsers import TaxonomyOutputParser
+from prompts import get_prompt, get_relation
+from tqdm import tqdm
+from utils import construct_input, gather_concept_groups
+
+from abscon.llms import SelfHostedLLM
+from abscon.utils import construct_messages, serialize_output
 
 logger.remove()
 logger.add(sys.stderr, level="INFO")
@@ -40,7 +42,7 @@ def run_llama(
             response = llm(prompt="", messages=messages)
             result = output_parser.parse(response, group)
             if result is None or len(result) == 0:
-                logger.info(f"Result is none or empty!")
+                logger.info("Result is none or empty!")
 
         results_raw.append(response)
         results.extend(result)

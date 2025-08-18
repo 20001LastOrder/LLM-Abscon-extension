@@ -1,6 +1,8 @@
 import re
+
 import networkx as nx
 from loguru import logger
+
 
 class ActivityParser:
     relation_pattern = re.compile(r".+-->.+")

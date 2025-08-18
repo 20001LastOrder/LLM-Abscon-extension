@@ -1,14 +1,18 @@
+import copy
+import time
+from collections import Counter
 from typing import Any
-from abscon.base import Abstractor
+
 import networkx as nx
-from thefuzz import process, fuzz
-from loguru import logger
 import numpy as np
+from loguru import logger
 from numpy import dot
 from numpy.linalg import norm
-from collections import Counter
-import copy
+from pydantic import Field
 from sentence_transformers import SentenceTransformer
+from thefuzz import fuzz, process
+
+from abscon.base import Abstractor
 
 
 def find_match(text, candidates):
@@ -40,15 +44,18 @@ class TaxonomyAbstractor(Abstractor):
         label_node_map = self.partial_model.graph["node_map"]
         node_node_map = {}
         # Map node first
+        start_time = time.time()
         for node, data in model.nodes(data=True):
             label = data["label"]
             matched_label = find_match(label, self.nodes)
 
             if matched_label is None:
                 continue
-
             node_node_map[node] = label_node_map[matched_label]
-        # Map relationstermination_weight
+        self.embedding_runtime.append(time.time() - start_time)
+
+        # Map relations termination_weight
+        start_time = time.time()
         for source, target, data in model.edges(data=True):
             if source not in node_node_map or target not in node_node_map:
                 continue
@@ -62,12 +69,13 @@ class TaxonomyAbstractor(Abstractor):
             edge_data = self.partial_model.edges[(source, target)]
 
             edge_data["weight"] = edge_data["weight"] + 1
+        self.graph_matching_runtime.append(time.time() - start_time)
 
 
 class ClevrAbstractor(Abstractor):
     encoder: Any
     edit_distance_timeout: int = 5
-    node_embeddings: list = []
+    node_embeddings: list = Field(default_factory=list)
     similarities: np.ndarray = None
 
     def set_seed_model(self, model: nx.DiGraph):
@@ -81,7 +89,10 @@ class ClevrAbstractor(Abstractor):
             data["label"].lower().strip()
             for _, data in self.partial_model.nodes(data=True)
         ]
+
+        start_time = time.time()
         self.node_embeddings = self.encoder.encode(source_nodes).tolist()
+        self.embedding_runtime.append(time.time() - start_time)
 
     def get_node_distance_matrix(
         self, source_embeddings: list[list[float]], target_embeddings: list[list[float]]
@@ -111,7 +122,11 @@ class ClevrAbstractor(Abstractor):
             data["label"].lower().strip() for _, data in model.nodes(data=True)
         ]
 
+        start_time = time.time()
         target_node_embeddings = self.encoder.encode(target_nodes).tolist()
+        self.embedding_runtime.append(time.time() - start_time)
+
+        start_time = time.time()
         self.similarities = self.get_node_distance_matrix(
             self.node_embeddings, target_node_embeddings
         )
@@ -133,6 +148,7 @@ class ClevrAbstractor(Abstractor):
 
         node_id_map = self.process_nodes(best_path[0], model, target_node_embeddings)
         self.process_edges(best_path[1], model, node_id_map)
+        self.graph_matching_runtime.append(time.time() - start_time)
 
     def process_nodes(self, node_match, target_model, target_node_embeddings):
         target_node_id_map = {node_id: node_id for node_id in target_model.nodes}
@@ -148,7 +164,7 @@ class ClevrAbstractor(Abstractor):
                 target_label = target_model.nodes[target_node]["label"].lower().strip()
                 if source_label != target_label:
                     logger.warning(
-                        f"Two node labels {source_label} and {target_label} is not exactly the same"
+                        f"Two node labels {source_label} and {target_label} is not exactly the same"  # noqa: E501
                     )
                 target_node_id_map[target_node] = source_node
             elif target_node is not None:
@@ -209,7 +225,7 @@ class ActivityDiagramAbstractor(Abstractor):
     encoder: SentenceTransformer
     edit_distance_timeout: int = 5
     similarities: np.ndarray = None
-    node_embeddings: list = []
+    node_embeddings: list = Field(default_factory=list)
 
     def get_partial_model(self) -> nx.DiGraph:
         graph = nx.DiGraph()
@@ -260,7 +276,9 @@ class ActivityDiagramAbstractor(Abstractor):
             else:
                 source_model.nodes[node]["termination_weight"] = 1
 
+        start_time = time.time()
         self.node_embeddings = self.encoder.encode(source_nodes).tolist()
+        self.embedding_runtime.append(time.time() - start_time)
 
     def get_node_distance_matrix(
         self, source_embeddings: list[list[float]], target_embeddings: list[list[float]]
@@ -288,10 +306,16 @@ class ActivityDiagramAbstractor(Abstractor):
             return
 
         target_nodes = [data["label"].strip() for _, data in model.nodes(data=True)]
+
+        start_time = time.time()
         target_node_embeddings = self.encoder.encode(target_nodes).tolist()
+        self.embedding_runtime.append(time.time() - start_time)
+
+        start_time = time.time()
         self.similarities = self.get_node_distance_matrix(
             self.node_embeddings, target_node_embeddings
         )
+
         paths = nx.optimize_edit_paths(
             self.partial_model,
             model,
@@ -316,6 +340,7 @@ class ActivityDiagramAbstractor(Abstractor):
                 continue
 
             self.partial_model.nodes[node_id_map[node]]["termination_weight"] += 1
+        self.graph_matching_runtime.append(time.time() - start_time)
 
     def process_nodes(self, node_match, target_model, target_node_embeddings):
         target_node_id_map = {node_id: node_id for node_id in target_model.nodes}

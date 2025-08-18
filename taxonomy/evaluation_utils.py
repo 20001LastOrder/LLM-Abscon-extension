@@ -1,16 +1,15 @@
-import pandas as pd
 import os
-from utils import (
-    dataframe_to_ancestor_graph,
-    evaluate_groups,
-    df_to_graph,
-    graph_to_df,
-    evaluate_group_consistency,
-)
+
 import numpy as np
+import pandas as pd
 from tqdm import tqdm
+from utils import (dataframe_to_ancestor_graph, df_to_graph,
+                   evaluate_group_consistency, evaluate_groups, graph_to_df)
+
 from abscon.abstraction import TaxonomyAbstractor
-from abscon.concretization import TaxonomyConcretizer, MajorityVotingConcretizer
+from abscon.concretization import (MajorityVotingConcretizer,
+                                   TaxonomyConcretizer)
+from abscon.statistics import RuntimeStatistics
 
 
 class TaxonomyEvaluator:
@@ -21,7 +20,7 @@ class TaxonomyEvaluator:
         ground_truth_path,
         num_generations=5,
         evaluate_greedy=False,
-        filenames = []
+        filenames=[],
     ):
         data_dir = os.path.join(folder_path, dataset_name)
 
@@ -34,7 +33,7 @@ class TaxonomyEvaluator:
                 filenames = [f"{data_dir}/results_greedy.csv"]
 
         dfs = []
-    
+
         for filename in filenames:
             df = pd.read_csv(filename)
             df["child"] = df["child"].apply(lambda x: str(x).replace(" ", "_"))
@@ -69,6 +68,10 @@ class TaxonomyEvaluator:
         self.df_actual = dataframe_to_ancestor_graph(df_actual)
         self.actual_graphs = actual_graphs
         self.group_to_graphs = group_to_graphs
+        self.runtime_statistics = RuntimeStatistics()
+
+    def reset_runtime_statistics(self):
+        self.runtime_statistics = RuntimeStatistics()
 
     def generate_merged_results(
         self,
@@ -77,9 +80,12 @@ class TaxonomyEvaluator:
         start_sample=0,
         dataset="wordnet",
         verbose=False,
+        return_abstractors=False,
     ):
+        # Abstraction stage
         one_parent_constraint = dataset == "wordnet"
         group_to_partial_graph = {}
+        abstractors = []
         for group, graphs in self.group_to_graphs.items():
             node_labels = sorted(
                 [
@@ -88,15 +94,26 @@ class TaxonomyEvaluator:
                 ]
             )
             abstractor = TaxonomyAbstractor(nodes=node_labels)
-            for graph in graphs[start_sample : start_sample + num_samples]:
+            for graph in graphs[
+                start_sample : start_sample + num_samples  # noqa: E203, E501
+            ]:
                 abstractor.add_concrete_model(graph)
+
             group_to_partial_graph[group] = abstractor.get_partial_model()
+            abstractors.append(abstractor)
+
+            self.runtime_statistics.embedding_runtime.append(
+                abstractor.embedding_runtime
+            )
+            self.runtime_statistics.graph_matching_runtime.append(
+                abstractor.graph_matching_runtime
+            )
 
         taxonomies = []
         if not verbose:
-            tqdm_func = lambda a: a
+            tqdm_func = lambda a: a  # noqa: E731
         else:
-            tqdm_func = lambda a: tqdm(a)
+            tqdm_func = lambda a: tqdm(a)  # noqa: E731
 
         for group in tqdm_func(list(group_to_partial_graph.keys())):
 
@@ -113,12 +130,20 @@ class TaxonomyEvaluator:
             taxonomy.graph["group"] = group
             taxonomies.append(taxonomy)
 
+            if concretization_method == "solver":
+                self.runtime_statistics.problem_build_runtimes.append(
+                    concretizer.problem_definition_runtime
+                )
+                self.runtime_statistics.problem_solve_runtimes.append(
+                    concretizer.problem_solve_runtime
+                )
+
         dfs = []
         for taxonomy in taxonomies:
             dfs.append(graph_to_df(taxonomy))
         final_df = pd.concat(dfs)
 
-        return final_df
+        return final_df if not return_abstractors else (final_df, abstractors)
 
     def evaluate_abstraction(
         self,
@@ -144,9 +169,9 @@ class TaxonomyEvaluator:
 
         taxonomies = []
         if not verbose:
-            tqdm_func = lambda a: a
+            tqdm_func = lambda a: a  # noqa: E731
         else:
-            tqdm_func = lambda a: tqdm(a)
+            tqdm_func = lambda a: tqdm(a)  # noqa: E731
 
         for group in tqdm_func(list(group_to_partial_graph.keys())):
 

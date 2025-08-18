@@ -1,15 +1,17 @@
+from abc import ABC, abstractmethod
+
 import networkx as nx
 from pydantic import BaseModel, Field
-from abc import ABC, abstractmethod
-from loguru import logger
 
 
 class Abstractor(BaseModel, ABC):
     class Config:
         arbitrary_types_allowed = True
 
-    partial_model: nx.DiGraph = nx.DiGraph()
+    partial_model: nx.DiGraph = Field(default_factory=nx.DiGraph)
     candidate_count: int = 0
+    embedding_runtime: list[float] = Field(default_factory=list)
+    graph_matching_runtime: list[float] = Field(default_factory=list)
 
     def __call__(self, models: list[nx.DiGraph], **kwargs) -> nx.DiGraph:
         return self.abstract(models)
@@ -44,6 +46,9 @@ class Abstractor(BaseModel, ABC):
 
 
 class Concretizer(ABC):
+    problem_definition_runtime: float = 0.0
+    problem_solve_runtime: float = 0.0
+
     @abstractmethod
     def concretize(self, relations: dict[tuple, tuple], nodes: list[str]) -> nx.DiGraph:
         pass

@@ -1,26 +1,26 @@
-import pandas as pd
+import json
 import os
+from multiprocessing import Pool
 from parser import ActivityParser
 
-from sentence_transformers import SentenceTransformer
-from abscon.abstraction import ActivityDiagramAbstractor
-from abscon.concretization import ActivityDiagramConcretizer, MajorityVotingConcretizer
-from loguru import logger
-from tqdm import tqdm
-import json
-import tiktoken
-from utils import graph_to_relation_set, partial_model_to_mermaid, soft_metrics
+import editdistance
 import networkx as nx
 import numpy as np
-from abscon.remote_encoder import RemoteEncoder
-from thefuzz import fuzz
-import numpy as np
-from multiprocessing import Pool
-
+import pandas as pd
+import tiktoken
+from loguru import logger
 from numpy import dot
 from numpy.linalg import norm
-import difflib
-import editdistance
+from sentence_transformers import SentenceTransformer
+from thefuzz import fuzz
+from tqdm import tqdm
+from utils import graph_to_relation_set, partial_model_to_mermaid, soft_metrics
+
+from abscon.abstraction import ActivityDiagramAbstractor
+from abscon.concretization import (ActivityDiagramConcretizer,
+                                   MajorityVotingConcretizer)
+from abscon.statistics import RuntimeStatistics
+
 
 class ActivityEvaluator:
     def __init__(
@@ -43,6 +43,11 @@ class ActivityEvaluator:
         self.num_abstracted_candidates = 0
         self.seed = seed
 
+        self.runtime_statistics = RuntimeStatistics()
+
+    def reset_runtime_statistics(self):
+        self.runtime_statistics = RuntimeStatistics()
+
     def evaluate_greedy_result(self) -> dict[str, float]:
         results_greedy = pd.read_csv(
             os.path.join(self.result_dir, "results_greedy.csv")
@@ -58,7 +63,7 @@ class ActivityEvaluator:
     ) -> list[str]:
         if self.num_abstracted_candidates > num_candidates:
             raise ValueError(
-                f"{self.num_abstracted_candidates} has already been abstracted but {num_candidates} candidates are required. "
+                f"{self.num_abstracted_candidates} has already been abstracted but {num_candidates} candidates are required. "  # noqa: E501
                 "Cannot remove candidates from the abstractor. Create a new evaluator."
             )
 
@@ -75,11 +80,6 @@ class ActivityEvaluator:
             if verbose
             else range(len(result_candidates[0]))
         )
-
-        if concretization_method == "solver":
-            concretizer = ActivityDiagramConcretizer(seed=self.seed)
-        else:
-            concretizer = MajorityVotingConcretizer()
 
         logger.info("Abstracting")
 
@@ -99,28 +99,49 @@ class ActivityEvaluator:
                 abstractor = self.abstractors[i]
                 parser = ActivityParser()
                 for candidate in candidates[
-                    self.num_abstracted_candidates : num_candidates
+                    self.num_abstracted_candidates : num_candidates  # noqa: E203
                 ]:
                     graph = parser.parse(candidate)
                     abstractor.add_concrete_model(graph)
+
+                # Record the runtime statistics for abstraction
+                self.runtime_statistics.embedding_runtime.append(
+                    abstractor.embedding_runtime
+                )
+                self.runtime_statistics.graph_matching_runtime.append(
+                    abstractor.graph_matching_runtime
+                )
 
         logger.info("Concretizing")
         iter_list = tqdm(self.abstractors) if verbose else self.abstractors
         concretized_results = []
         for abstractor in iter_list:
+            if concretization_method == "solver":
+                concretizer = ActivityDiagramConcretizer(seed=self.seed)
+            else:
+                concretizer = MajorityVotingConcretizer()
             concretized_graph = concretizer.concretize(abstractor.get_partial_model())
             concretized_results.append(partial_model_to_mermaid(concretized_graph))
+
+            # Record the runtime statistics for concretization
+            if concretization_method == "solver":
+                self.runtime_statistics.problem_build_runtimes.append(
+                    concretizer.problem_definition_runtime
+                )
+                self.runtime_statistics.problem_solve_runtimes.append(
+                    concretizer.problem_solve_runtime
+                )
 
         self.num_abstracted_candidates = num_candidates
 
         return concretized_results
 
-    def abstract_single_solution(
-        self, args
-    ) -> ActivityDiagramAbstractor:
+    def abstract_single_solution(self, args) -> ActivityDiagramAbstractor:
         abstractor, candidates = args
         parser = ActivityParser()
-        for candidate in candidates[self.num_abstracted_candidates : len(candidates)]:
+        for candidate in candidates[
+            self.num_abstracted_candidates : len(candidates)  # noqa: E203
+        ]:
             graph = parser.parse(candidate)
             abstractor.add_concrete_model(graph)
         return abstractor
@@ -134,7 +155,7 @@ class ActivityEvaluator:
     ) -> list[str]:
         if self.num_abstracted_candidates > num_candidates:
             raise ValueError(
-                f"{self.num_abstracted_candidates} has already been abstracted but {num_candidates} candidates are required. "
+                f"{self.num_abstracted_candidates} has already been abstracted but {num_candidates} candidates are required. "  # noqa: E501
                 "Cannot remove candidates from the abstractor. Create a new evaluator."
             )
 
@@ -151,11 +172,6 @@ class ActivityEvaluator:
             if verbose
             else range(len(result_candidates[0]))
         )
-
-        if concretization_method == "solver":
-            concretizer = ActivityDiagramConcretizer(seed=self.seed)
-        else:
-            concretizer = MajorityVotingConcretizer()
 
         logger.info("Abstracting")
 
@@ -176,24 +192,50 @@ class ActivityEvaluator:
             logger.info(f"Starting with {num_processes} processes")
 
             with Pool(processes=num_processes) as p:
-                self.abstractors = list(tqdm(
-                    p.imap(
-                        self.abstract_single_solution,
-                        [
-                            (abstractor, candidates)
-                            for abstractor, candidates in zip(
-                                self.abstractors, all_candidates
-                            )
-                        ]
-                    ), total=len(all_candidates), desc="Abstracting..."
-                ))
+                self.abstractors = list(
+                    tqdm(
+                        p.imap(
+                            self.abstract_single_solution,
+                            [
+                                (abstractor, candidates)
+                                for abstractor, candidates in zip(
+                                    self.abstractors, all_candidates
+                                )
+                            ],
+                        ),
+                        total=len(all_candidates),
+                        desc="Abstracting...",
+                    )
+                )
+
+        # collect the runtime result
+        for abstractor in self.abstractors:
+            self.runtime_statistics.embedding_runtime.append(
+                abstractor.embedding_runtime
+            )
+            self.runtime_statistics.graph_matching_runtime.append(
+                abstractor.graph_matching_runtime
+            )
 
         logger.info("Concretizing")
         iter_list = tqdm(self.abstractors) if verbose else self.abstractors
         concretized_results = []
         for abstractor in iter_list:
+            if concretization_method == "solver":
+                concretizer = ActivityDiagramConcretizer(seed=self.seed)
+            else:
+                concretizer = MajorityVotingConcretizer()
             concretized_graph = concretizer.concretize(abstractor.get_partial_model())
             concretized_results.append(partial_model_to_mermaid(concretized_graph))
+
+            # Record the runtime statistics for concretization
+            if concretization_method == "solver":
+                self.runtime_statistics.problem_build_runtimes.append(
+                    concretizer.problem_definition_runtime
+                )
+                self.runtime_statistics.problem_solve_runtimes.append(
+                    concretizer.problem_solve_runtime
+                )
 
         self.num_abstracted_candidates = num_candidates
 
@@ -263,7 +305,7 @@ class ActivityEvaluator:
                 "precision": [r["precision"] for r in results],
                 "f1": [r["f1"] for r in results],
                 "consistency": [r["consistency"] for r in results],
-                "num_violations": [r["num_violations"] for r in results]
+                "num_violations": [r["num_violations"] for r in results],
             }
 
 
@@ -309,7 +351,7 @@ class StringEditDistanceSimilarity:
 
 class EmbeddingSimilarity:
     def __init__(self):
-        self.encoder = RemoteEncoder(url=os.getenv("ENCODER_URL"))
+        # self.encoder = RemoteEncoder(url=os.getenv("ENCODER_URL"))
         self.cache = {}
 
     def cosine_similarity(self, a, b):

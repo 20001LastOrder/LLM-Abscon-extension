@@ -1,14 +1,40 @@
-from evaluation_utils import ClevrEvaluator
-import pandas as pd
-from argparse import ArgumentParser
-from loguru import logger
-import sys
-from sentence_transformers import SentenceTransformer
+import pickle
 import random
+import sys
+from argparse import ArgumentParser
+
+import networkx as nx
 import numpy as np
+import pandas as pd
+from evaluation_utils import ClevrEvaluator
+from loguru import logger
+from sentence_transformers import SentenceTransformer
 
 logger.remove()
 logger.add(sys.stderr, level="INFO")
+
+
+def build_runtime(evaluator: ClevrEvaluator):
+    runtime_obj = {
+        "embedding_runtime": evaluator.runtime_statistics.embedding_runtime,
+        "graph_matching_runtime": evaluator.runtime_statistics.graph_matching_runtime,
+        "problem_build_runtimes": evaluator.runtime_statistics.problem_build_runtimes,
+        "problem_solve_runtimes": evaluator.runtime_statistics.problem_solve_runtimes,
+    }
+
+    runtime_df = pd.DataFrame(runtime_obj)
+    evaluator.reset_runtime_statistics()
+    return runtime_df
+
+
+def get_partial_models(evaluator: ClevrEvaluator) -> list[nx.DiGraph]:
+    models = []
+    for abstractor in evaluator.abstractors:
+        if abstractor.partial_model is not None:
+            models.append(abstractor.partial_model)
+        else:
+            logger.error(f"Abstractor {abstractor.name} does not have a partial model.")
+    return models
 
 
 def main(args):
@@ -17,26 +43,39 @@ def main(args):
         args.dataset_name,
         data_folder=args.ground_truth_path,
         scene_file=args.scene_file,
-        seed=args.seed
+        seed=args.seed,
     )
 
-    encoder = SentenceTransformer(args.encoder, local_files_only=True)
+    encoder = SentenceTransformer(args.encoder)
 
     for num_candidates in range(args.num_candidates_start, args.num_candidates_end + 1):
         logger.info(f"Processing {num_candidates} candidates...")
-        mv_results = evaluator.combine_solutions(
-            num_candidates, encoder, concretization_method="mv", verbose=True
-        )
         abscon_results = evaluator.combine_solutions(
             num_candidates, encoder, concretization_method="solver", verbose=True
+        )
+        abscon_runtime = build_runtime(evaluator)
+
+        mv_results = evaluator.combine_solutions(
+            num_candidates, encoder, concretization_method="mv", verbose=True
         )
 
         pd.DataFrame(mv_results).to_csv(
             f"{args.folder_path}/{args.dataset_name}/results_mv_{num_candidates}.csv"
         )
         pd.DataFrame(abscon_results).to_csv(
-            f"{args.folder_path}/{args.dataset_name}/results_abscon_{num_candidates}.csv"
+            f"{args.folder_path}/{args.dataset_name}/results_abscon_{num_candidates}.csv"  # noqa: E501
         )
+        abscon_runtime.to_csv(
+            f"{args.folder_path}/{args.dataset_name}/runtime_abscon_{num_candidates}.csv"  # noqa: E501
+        )
+
+        if args.save_partial_models:
+            partial_models = get_partial_models(evaluator)
+            with open(
+                f"{args.folder_path}/{args.dataset_name}/partial_models_{num_candidates}.pkl",  # noqa: E501
+                "wb",
+            ) as f:
+                pickle.dump(partial_models, f)
 
 
 if __name__ == "__main__":
@@ -56,7 +95,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--num_candidates_end",
-        help="Ending number of candidates to abstract (inclusive). If -1 then it will be set the same number as num_candidates_start",
+        help="Ending number of candidates to abstract (inclusive). If -1 then it will be set the same number as num_candidates_start",  # noqa: E501
         type=int,
         default=False,
     )
@@ -64,7 +103,13 @@ if __name__ == "__main__":
         "--seed",
         help="The random seed to control randomness in the approximation algorithms",
         type=int,
-        default=42
+        default=42,
+    )
+    parser.add_argument(
+        "--save_partial_models",
+        help="If true, save the partial models for each case",
+        action="store_true",
+        default=False,
     )
 
     args = parser.parse_args()

@@ -1,12 +1,14 @@
-from collections import Counter
+import time
+from collections import Counter, defaultdict
+
+import networkx as nx
+import numpy as np
+import pulp
+from loguru import logger
+from networkx import DiGraph
+
 from abscon.base import Concretizer
 from abscon.utils import maximum_spanning_branch
-import networkx as nx
-from networkx import DiGraph
-import pulp
-import numpy as np
-from loguru import logger
-from collections import defaultdict
 
 
 def most_frequent(items: list[str]):
@@ -88,8 +90,10 @@ class TaxonomyConcretizer(Concretizer):
         """
         Concretize the edges using constraint optimization
 
-        Optimizing the cross entropy of an edge existence and make sure the solution is a valid activity diagram
+        Optimizing the cross entropy of an edge existence and make sure the solution is
+        a valid activity diagram
         """
+        start = time.time()
         edge_variables = pulp.LpVariable.dicts(
             "edges",
             list(partial_model.edges),
@@ -99,7 +103,8 @@ class TaxonomyConcretizer(Concretizer):
         )
 
         problem = pulp.LpProblem("Maximum Taxonomy", pulp.LpMaximize)
-        # One should be able to reach any node from the source node (formatted as a *phantom flow problem*)
+        # One should be able to reach any node from the source node (formatted as a
+        # *phantom flow problem*)
         reachability_variables = pulp.LpVariable.dicts(
             "reachability", list(partial_model.edges), lowBound=0, cat=pulp.LpInteger
         )
@@ -153,6 +158,7 @@ class TaxonomyConcretizer(Concretizer):
                     continue
 
                 paths = []
+
                 for path in nx.all_simple_paths(partial_model, source, target):
                     paths.append(path)
                     if len(paths) > self.MAXIMUM_PATH_TO_SAMPLE:
@@ -182,8 +188,12 @@ class TaxonomyConcretizer(Concretizer):
                 for (i, j) in edge_weights
             ]
         )
+        self.problem_definition_runtime = time.time() - start
 
-        status = problem.solve(pulp.PULP_CBC_CMD(msg=1, timeLimit=120))
+        start = time.time()
+        status = problem.solve(pulp.PULP_CBC_CMD(msg=0, timeLimit=120))
+        self.problem_solve_runtime = time.time() - start
+
         logger.debug(problem)
         logger.debug(f"Solving satus {pulp.LpStatus[status]}")
         logger.debug(f"optimum objective value {problem.objective.value()}")
@@ -205,7 +215,8 @@ class ClevrConcretizer(Concretizer):
     MATERIALS = ["rubber", "metal"]
     ATTRIBUTES = ["color", "size", "shape", "material"]
 
-    seed: int = 42
+    def __init__(self, seed: int = 42):
+        self.seed = seed
 
     def label_to_num_previous(self, label: str) -> int:
         label = label.lower().strip()
@@ -351,8 +362,10 @@ class ClevrConcretizer(Concretizer):
         """
         Concretize the edges using constraint optimization
 
-        Optimizing the cross entropy of an edge existence and make sure the solution is a valid activity diagram
+        Optimizing the cross entropy of an edge existence and make sure the solution is
+        a valid activity diagram
         """
+        start = time.time()
         edge_variables = pulp.LpVariable.dicts(
             "edges",
             list(partial_model.edges),
@@ -371,7 +384,8 @@ class ClevrConcretizer(Concretizer):
 
         problem = pulp.LpProblem("Maximum_Clevr_Program", pulp.LpMaximize)
 
-        # One should be able to reach any node from the source node (formatted as a *phantom flow problem*)
+        # One should be able to reach any node from the source node (formatted as a
+        # *phantom flow problem*)
         reachability_variables = pulp.LpVariable.dicts(
             "reachability", list(partial_model.edges), lowBound=0, cat=pulp.LpInteger
         )
@@ -503,11 +517,14 @@ class ClevrConcretizer(Concretizer):
             ]
         )
 
-        # print(partial_model.nodes(data=True))
+        self.problem_definition_runtime = time.time() - start
 
+        start = time.time()
         status = problem.solve(
-            pulp.PULP_CBC_CMD(msg=1, timeLimit=120, options=[f"RandomS {self.seed}"])
+            pulp.PULP_CBC_CMD(msg=0, timeLimit=120, options=[f"RandomS {self.seed}"])
         )
+        self.problem_solve_runtime = time.time() - start
+
         # logger.debug(problem)
         logger.debug(f"Solving satus {pulp.LpStatus[status]}")
         logger.debug(f"optimum objective value {problem.objective.value()}")
@@ -523,6 +540,9 @@ class ClevrConcretizer(Concretizer):
 
 class ActivityDiagramConcretizer(Concretizer):
     seed: int = 42
+
+    def __init__(self, seed: int = 42):
+        self.seed = seed
 
     def concretize(self, partial_model: DiGraph) -> DiGraph:
 
@@ -591,8 +611,10 @@ class ActivityDiagramConcretizer(Concretizer):
         """
         Concretize the edges using constraint optimization
 
-        Optimzing the cross entropy of an edge existance and make sure the solution is a valid activity diagram
+        Optimzing the cross entropy of an edge existance and make sure the solution is
+        a valid activity diagram
         """
+        start = time.time()
         termination_candidate = set()
         for node, data in partial_model.nodes(data=True):
             if data["termination_weight"] >= 0.5:
@@ -616,7 +638,8 @@ class ActivityDiagramConcretizer(Concretizer):
 
         problem = pulp.LpProblem("Maximum_activity_diagram", pulp.LpMaximize)
 
-        # One should be able to reach any node from the source node (formatted as a *phantom flow problem*)
+        # One should be able to reach any node from the source node (formatted as a
+        # *phantom flow problem*)
         reachability_variables = pulp.LpVariable.dicts(
             "reachability", list(partial_model.edges), lowBound=0, cat=pulp.LpInteger
         )
@@ -641,7 +664,8 @@ class ActivityDiagramConcretizer(Concretizer):
             # Only consumes the unit when the node is selected
             problem += incoming_sum == outgoing_sum + node_variables[i]
 
-        # 1. Selected non-termination candidate nodes must have at least one outgoing edge
+        # 1. Selected non-termination candidate nodes must have at least one outgoing
+        # edge
         # 2. A node may have outgoing edges only when it is seleccted in the final model
         # 3. if a node has either in edge or out edge, then the node must be selected
         for i in partial_model.nodes:
@@ -663,7 +687,8 @@ class ActivityDiagramConcretizer(Concretizer):
                 <= len(in_edges) * node_variables[i]
             )
 
-        # self.add_contradictory_edge_constraints(problem, partial_model, edge_variables)
+        # self.add_contradictory_edge_constraints(problem, partial_model,
+        # edge_variables)
 
         # The outgoing edges should be either labeled or unlabeled
         labeled_variables = pulp.LpVariable.dicts(
@@ -747,10 +772,14 @@ class ActivityDiagramConcretizer(Concretizer):
                 for i in node_weights
             ]
         )
+        self.problem_definition_runtime = time.time() - start
 
+        start = time.time()
         status = problem.solve(
-            pulp.PULP_CBC_CMD(msg=1, timeLimit=120, options=[f"RandomS {self.seed}"])
+            pulp.PULP_CBC_CMD(msg=0, timeLimit=120, options=[f"RandomS {self.seed}"])
         )
+        self.problem_solve_runtime = time.time() - start
+
         logger.debug(problem)
         logger.debug(f"Solving satus {pulp.LpStatus[status]}")
         logger.debug(f"optimum objective value {problem.objective.value()}")

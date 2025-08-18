@@ -1,19 +1,18 @@
-import pandas as pd
-from parser import ClevrParser
-import os
 import json
-from program_executor import (
-    programs_from_networkx,
-    set_scene,
-    evaluate,
-)
-from utils import partial_model_to_mermaid
-from tqdm import tqdm
+import os
+from collections import Counter
+from parser import ClevrParser
+
+import pandas as pd
+from loguru import logger
+from program_executor import evaluate, programs_from_networkx, set_scene
 from sentence_transformers import SentenceTransformer
+from tqdm import tqdm
+from utils import partial_model_to_mermaid
+
 from abscon.abstraction import ClevrAbstractor
 from abscon.concretization import ClevrConcretizer, MajorityVotingConcretizer
-from collections import Counter
-from loguru import logger
+from abscon.statistics import RuntimeStatistics
 
 
 def evaluate_graph_with_scene(mermaid_text: str, scene: dict, throw_error=False) -> str:
@@ -58,10 +57,7 @@ def evaluate_prediction(
             "accuracy": sum(corrects) / len(corrects),
         }
     else:
-        return {
-            "success_rate": [1 - error for error in errors],
-            "accuracy": corrects
-        }
+        return {"success_rate": [1 - error for error in errors], "accuracy": corrects}
 
 
 def get_most_frequent(items):
@@ -90,6 +86,11 @@ class ClevrEvaluator:
         self.num_abstracted_candidates = 0
         self.abstractors = []
         self.seed = seed
+
+        self.runtime_statistics = RuntimeStatistics()
+
+    def reset_runtime_statistics(self):
+        self.runtime_statistics = RuntimeStatistics()
 
     def evaluate_greedy_result(self) -> dict[str, float]:
         results_greedy = pd.read_csv(
@@ -158,10 +159,18 @@ class ClevrEvaluator:
                 abstractor = self.abstractors[i]
                 parser = ClevrParser()
                 for candidate_graph in candidates[
-                    self.num_abstracted_candidates : num_candidates
+                    self.num_abstracted_candidates : num_candidates  # noqa: E203
                 ]:
                     candidate_graph = parser.parse(candidate_graph)
                     abstractor.add_concrete_model(candidate_graph)
+
+                # Record the runtime statistics for abstraction
+                self.runtime_statistics.embedding_runtime.append(
+                    abstractor.embedding_runtime
+                )
+                self.runtime_statistics.graph_matching_runtime.append(
+                    abstractor.graph_matching_runtime
+                )
 
         logger.info("Concretizing")
         iter_list = tqdm(self.abstractors) if verbose else self.abstractors
@@ -169,6 +178,16 @@ class ClevrEvaluator:
         for abstractor in iter_list:
             concretized_graph = concretizer.concretize(abstractor.get_partial_model())
             concretized_results.append(partial_model_to_mermaid(concretized_graph))
+
+            # Record the runtime statistics for concretization
+            if concretization_method == "solver":
+                self.runtime_statistics.problem_build_runtimes.append(
+                    concretizer.problem_definition_runtime
+                )
+                self.runtime_statistics.problem_solve_runtimes.append(
+                    concretizer.problem_solve_runtime
+                )
+
         self.num_abstracted_candidates = num_candidates
 
         return concretized_results
@@ -203,7 +222,7 @@ class ClevrEvaluator:
                 scene = self.scenes[self.questions[i]["image_index"]]
                 result = evaluate_graph_with_scene(mermaid_text, scene)
 
-                if type(result) == list:
+                if type(result) is list:
                     result = str(result)
 
                 if not exclude_error or (exclude_error and result != "error"):
@@ -224,7 +243,9 @@ class ClevrEvaluator:
         else:
             return predicted_answers, evaluate_prediction(predicted_answers, gt_answers)
 
-    def evaluate_solutions(self, predicted_results: list[str], return_value="mean") -> dict[str, float]:
+    def evaluate_solutions(
+        self, predicted_results: list[str], return_value="mean"
+    ) -> dict[str, float]:
         gt_answers = []
         predicted_answers = []
 
@@ -235,4 +256,3 @@ class ClevrEvaluator:
             predicted_answers.append(result)
 
         return evaluate_prediction(predicted_answers, gt_answers, return_value)
-
