@@ -6,9 +6,9 @@ from loguru import logger
 
 class ActivityParser:
     relation_pattern = re.compile(r".+-->.+")
-    node_definition_pattern = re.compile('(\|.+\|)?\s*(\d+)[\{\[]"(.+)"[\}\]]$')
-    condition_pattern = re.compile('\|"(.+)"\|')
-    node_pattern = re.compile(r"(\|.+\|)?\s*(\d+)$")
+    node_definition_pattern = re.compile(r'(\|.+\|)?\s*([^\s\[\"\]]+)[\{\[]\"*(.+)\"*[\}\]]$')
+    condition_pattern = re.compile(r'\|["]*([^"]+)["]*\|')
+    node_pattern = re.compile(r"(\|.+\|)?\s*([^\s\[\"\]]+)$")
 
     def parse(self, mermaid_text: str) -> nx.DiGraph:
         # unify the edge type
@@ -16,8 +16,9 @@ class ActivityParser:
 
         graph = nx.DiGraph()
         relations = self.relation_pattern.findall(mermaid_text)
+        node_set = set()
         for relation in relations:
-            self.process_relation(relation, graph)
+            self.process_relation(relation, graph, node_set)
 
         for node, data in graph.nodes(data=True):
             if "label" not in data:
@@ -44,10 +45,11 @@ class ActivityParser:
 
         return graph
 
-    def process_relation(self, relation_text: str, graph: nx.DiGraph):
+    def process_relation(self, relation_text: str, graph: nx.DiGraph, node_set: set):
         nodes = relation_text.split("-->")
 
         if len(nodes) != 2:
+            print(relation_text)
             raise ValueError("Each relation must have exactly two nodes")
 
         processed_nodes = []
@@ -55,15 +57,21 @@ class ActivityParser:
             node = node.strip()
             if self.node_pattern.match(node):
                 match = self.node_pattern.match(node)
-                processed_nodes.append(int(match.group(2)))
+                node_label = match.group(2)
+
+                if node_label not in node_set:
+                    graph.add_node(node_label, label=node_label)
+                    node_set.add(node_label)
+                processed_nodes.append(match.group(2))
             elif self.node_definition_pattern.match(node):
                 match = self.node_definition_pattern.match(node)
-                node = int(match.group(2))
+                node = match.group(2).rstrip('"') # remove trailing quote if any
                 label = match.group(3)
-                graph.add_node(node, label=label, id=node)
+                graph.add_node(node, label=label)
+                node_set.add(node)
                 processed_nodes.append(node)
             else:
-                logger.debug(node)
+                logger.error(node)
                 raise ValueError("Node definition is malformed")
 
         condition_match = self.condition_pattern.search(relation_text)

@@ -1,88 +1,88 @@
-from prompts import get_prompt
-from abscon.llms import SelfHostedLLM
-import pandas as pd
-from utils import (
-    extract_mermaid,
-)
 import json
-
-from tqdm import tqdm
-from argparse import ArgumentParser
-from loguru import logger
-import sys
-from langchain_openai import ChatOpenAI
 import os
-from abscon.utils import serialize_output, construct_messages
+import sys
+from argparse import ArgumentParser
+from multiprocessing import Pool
+
+import pandas as pd
+from dotenv import load_dotenv
+from loguru import logger
+from prompts import get_prompt
+from tqdm import tqdm
+from utils import extract_mermaid
+
+from abscon.llms import get_llm
+from abscon.utils import serialize_output
+
+load_dotenv()
 
 logger.remove()
 logger.add(sys.stderr, level="INFO")
 
 
-proxy = os.environ.get("OPENAI_PROXY", None)
-base_url = os.environ.get("OPENAI_BASE_URL")
-
-
-def run_llama(
-    template,
-    llm,
-    questions,
-    args,
-    results,
-    results_raw,
-    serialize_frequency=1,
-):
-    for i, question in enumerate(tqdm(questions)):
-        text_input = question["question"]
-        messages = construct_messages(template, text_input)
-
-        result = None
-        while result is None:
-            response = llm(prompt="", messages=messages)
-            result = extract_mermaid(response)
-            if result is None or len(result) == 0:
-                logger.info(f"Result is none or empty!")
-
-        results_raw.append(response)
-        results.append(result)
-
-        if i % serialize_frequency == 0:
-            serialize_output(results, results_raw, args)
-    return results, results_raw
-
-
-def run_gpt(
-    template,
-    llm,
-    questions,
-    args,
-    results,
-    results_raw,
-    serialize_frequency=10,
-):
+def run_single_input(data):
+    index, question, args = data
+    template = get_prompt()
+    llm = get_llm(args)
     chain = template | llm
 
-    for i, question in enumerate(tqdm(questions)):
-        text_input = question["question"]
+    text_input = question["question"]
 
-        result = None
-        while result is None:
+    result = None
+    raw_content = None
+    while result is None:
+        try:
             result_raw = chain.invoke(input={"user_input": text_input})
-            result = extract_mermaid(result_raw.content)
-            if result is None or len(result) == 0:
-                print("result is None!")
+        except json.JSONDecodeError as e:
+            logger.error(f"JSON decode error: {e}")
+            continue
+        result = extract_mermaid(result_raw.content)
+        if result is None or len(result) == 0:
+            logger.warning("result is None!")
 
-        results.append(result)
-        results_raw.append(result_raw.content)
+        # Handle reasoning content
+        raw_content = result_raw.content
+        if "reasoning_content" in result_raw.additional_kwargs:
+            raw_content = f"<think>\n{result_raw.additional_kwargs['reasoning_content']}\n</think>\n\n{raw_content}"  # noqa: E501
 
-        if i % serialize_frequency == 0:
-            serialize_output(results, results_raw, args)
+    return index, result, raw_content
+
+
+def run_llm(
+    questions,
+    args,
+    results,
+    results_raw,
+):
+    batch_size = args.batch_size
+
+    for i in tqdm(range(0, len(questions), batch_size)):
+        batch = questions[i : min(i + batch_size, len(questions))]  # noqa: E203
+
+        batch = [(idx, question, args) for idx, question in enumerate(batch)]
+
+        with Pool(processes=args.num_processes) as pool:
+            results_batch = list(
+                tqdm(
+                    pool.imap_unordered(run_single_input, batch),
+                    total=len(batch),
+                    leave=False,
+                )
+            )
+
+        results_batch = sorted(results_batch, key=lambda x: x[0])
+        for _, res, raw in results_batch:
+            results.append(res)
+            results_raw.append(raw)
+        serialize_output(results, results_raw, args)
 
     return results, results_raw
 
 
 def load_cache(args):
-    output_path = f"{args.output_folder}/{args.llm_name}/{args.dataset}/results_{args.output_suffix}.csv"
-    output_path_raw = f"{args.output_folder}/{args.llm_name}/{args.dataset}/results_{args.output_suffix}_raw.csv"
+    llm_name = args.llm_name.split("/")[-1]
+    output_path = f"{args.output_folder}/{llm_name}/{args.dataset}/results_{args.output_suffix}.csv"  # noqa: E501
+    output_path_raw = f"{args.output_folder}/{llm_name}/{args.dataset}/results_{args.output_suffix}_raw.csv"  # noqa: E501
 
     if os.path.exists(output_path):
         results = pd.read_csv(output_path, index_col=0)
@@ -93,21 +93,6 @@ def load_cache(args):
 
 
 def main(args):
-    template = get_prompt()
-
-    if args.llm_type == "llama":
-        llm = SelfHostedLLM(
-            default_model=f"{args.llm_name}",
-            llm_config={"temperature": args.temperature, "max_tokens": 2500},
-        )
-    else:
-        llm = ChatOpenAI(
-            base_url=base_url,
-            openai_proxy=proxy,
-            model=args.llm_name,
-            temperature=args.temperature,
-        )
-
     with open(f"{args.input_folder}/{args.dataset}.json") as f:
         questions = json.load(f)["questions"]
 
@@ -116,24 +101,12 @@ def main(args):
 
     logger.info(f"Number of questions: {len(questions) - num_processed}")
 
-    if args.llm_type == "llama":
-        results, results_raw = run_llama(
-            template,
-            llm,
-            questions[num_processed:],
-            args,
-            results,
-            results_raw,
-        )
-    else:
-        results, results_raw = run_gpt(
-            template,
-            llm,
-            questions[num_processed:],
-            args,
-            results,
-            results_raw,
-        )
+    results, results_raw = run_llm(
+        questions[num_processed:],
+        args,
+        results,
+        results_raw,
+    )
 
     serialize_output(results=results, results_raw=results_raw, args=args)
 
@@ -145,9 +118,11 @@ if __name__ == "__main__":
     parser.add_argument("--dataset", type=str, choices=["clevr"], required=True)
     parser.add_argument("--output_folder", default="results")
     parser.add_argument("--output_suffix", type=str, required=True)
-    parser.add_argument("--llm_type", choices=["llama", "gpt"], required=True)
+    parser.add_argument("--llm_type", choices=["reasoning", "regular"], required=True)
     parser.add_argument("--llm_name", type=str, required=True)
     parser.add_argument("--temperature", type=float, default=0.7)
+    parser.add_argument("--num_processes", type=int, default=8)
+    parser.add_argument("--batch_size", type=int, default=50)
 
     args = parser.parse_args()
     main(args)

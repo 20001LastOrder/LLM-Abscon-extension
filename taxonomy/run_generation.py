@@ -1,94 +1,94 @@
+import json
 import os
 import sys
 from argparse import ArgumentParser
+from multiprocessing import Pool
 
 import pandas as pd
-from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
 from loguru import logger
 from output_parsers import TaxonomyOutputParser
 from prompts import get_prompt, get_relation
 from tqdm import tqdm
 from utils import construct_input, gather_concept_groups
 
-from abscon.llms import SelfHostedLLM
-from abscon.utils import construct_messages, serialize_output
+from abscon.llms import get_llm
+from abscon.utils import serialize_output
+
+load_dotenv()
+
 
 logger.remove()
 logger.add(sys.stderr, level="INFO")
 
 
-proxy = os.environ.get("OPENAI_PROXY", None)
 base_url = os.environ.get("OPENAI_BASE_URL")
 
 
-def run_llama(
-    template,
-    llm,
-    output_parser,
-    groups,
-    group_concepts,
-    args,
-    results,
-    results_raw,
-    serialize_frequency=1,
-):
+def run_single_input_openai(data):
+    args, concepts, group = data
 
-    for i, group in enumerate(tqdm(groups)):
-        text_input = construct_input(group_concepts[group])
-        messages = construct_messages(template, text_input)
+    template = get_prompt(args.dataset, args.prompt_type)
+    llm = get_llm(args)
+    chain = template | llm
 
-        result = []
-        while result is None or len(result) == 0:
-            response = llm(prompt="", messages=messages)
-            result = output_parser.parse(response, group)
-            if result is None or len(result) == 0:
-                logger.info("Result is none or empty!")
+    relation = get_relation(args.dataset)
+    output_parser = TaxonomyOutputParser(
+        pattern=r"```taxonomy\n((.|\n)+?)\n```", relation=relation
+    )
+    text_input = construct_input(concepts)
 
-        results_raw.append(response)
-        results.extend(result)
+    result = None
+    raw_content = None
+    while result is None:
+        try:
+            result_raw = chain.invoke(input={"user_input": text_input})
+        except json.JSONDecodeError as e:
+            logger.error(f"JSON decode error for group {group}: {e}")
+            continue
+        result = output_parser.parse(result_raw.content, group)
+        if result is None or len(result) == 0:
+            print("result is None!")
 
-        if i % serialize_frequency == 0:
-            serialize_output(results, results_raw, args)
-    return results, results_raw
+        raw_content = result_raw.content
+        if "reasoning_content" in result_raw.additional_kwargs:
+            raw_content = f"<think>\n{result_raw.additional_kwargs['reasoning_content']}\n</think>\n\n{raw_content}"  # noqa: E501
+
+    return group, result, raw_content
 
 
 def run_gpt(
-    template,
-    llm,
-    output_parser,
     groups,
     group_concepts,
     args,
     results,
     results_raw,
-    serialize_frequency=10,
 ):
-    chain = template | llm
+    all_data = [(args, group_concepts[group], group) for group in groups]
+    # outputs = [run_single_input_openai(all_data[0])]
 
-    # results = []
-    # results_raw = []
-    for i, group in enumerate(tqdm(groups)):
-        text_input = construct_input(group_concepts[group])
+    with Pool(processes=args.num_processes) as pool:
+        outputs = list(
+            tqdm(
+                pool.imap_unordered(run_single_input_openai, all_data),
+                total=len(all_data),
+            )
+        )
 
-        result = None
-        while result is None:
-            result_raw = chain.invoke(input={"user_input": text_input})
-            result = output_parser.parse(result_raw.content, group)
-            if result is None or len(result) == 0:
-                print("result is None!")
+    group_result_map = {r[0]: (r[1], r[2]) for r in outputs}
 
-        results.extend(result)
-        results_raw.append(result_raw.content)
-
-        if i % serialize_frequency == 0:
-            serialize_output(results, results_raw, args)
+    for group in groups:
+        output_result = group_result_map[group]
+        results.extend(output_result[0])
+        results_raw.append(output_result[1])
 
     return results, results_raw
 
 
 def load_cache(args):
-    output_path = f"{args.output_folder}/{args.llm_name}/{args.dataset}/results_{args.output_suffix}.csv"
-    output_path_raw = f"{args.output_folder}/{args.llm_name}/{args.dataset}/results_{args.output_suffix}_raw.csv"
+    llm_name = args.llm_name.split("/")[-1]
+    output_path = f"{args.output_folder}/{llm_name}/{args.dataset}/results_{args.output_suffix}.csv"  # noqa: E501
+    output_path_raw = f"{args.output_folder}/{llm_name}/{args.dataset}/results_{args.output_suffix}_raw.csv"  # noqa: E501
 
     if os.path.exists(output_path):
         results = pd.read_csv(output_path, index_col=0)
@@ -99,26 +99,6 @@ def load_cache(args):
 
 
 def main(args):
-    template = get_prompt(args.dataset)
-
-    if args.llm_type == "llama":
-        llm = SelfHostedLLM(
-            default_model=f"{args.llm_name}",
-            llm_config={"temperature": args.temperature},
-        )
-    else:
-        llm = ChatOpenAI(
-            base_url=base_url,
-            openai_proxy=proxy,
-            model=args.llm_name,
-            temperature=args.temperature,
-        )
-
-    relation = get_relation(args.dataset)
-    output_parser = TaxonomyOutputParser(
-        pattern=r"```taxonomy\n((.|\n)+?)\n```", relation=relation
-    )
-
     test_df = pd.read_csv(f"{args.input_folder}/{args.dataset}.csv")
 
     results, results_raw = load_cache(args)
@@ -132,28 +112,13 @@ def main(args):
 
     logger.info(f"Number of groups: {len(groups)}")
 
-    if args.llm_type == "llama":
-        results, results_raw = run_llama(
-            template,
-            llm,
-            output_parser,
-            groups,
-            group_concepts,
-            args,
-            results,
-            results_raw,
-        )
-    else:
-        results, results_raw = run_gpt(
-            template,
-            llm,
-            output_parser,
-            groups,
-            group_concepts,
-            args,
-            results,
-            results_raw,
-        )
+    results, results_raw = run_gpt(
+        groups,
+        group_concepts,
+        args,
+        results,
+        results_raw,
+    )
 
     serialize_output(results=results, results_raw=results_raw, args=args)
 
@@ -162,13 +127,16 @@ if __name__ == "__main__":
     parser = ArgumentParser()
 
     parser.add_argument("--input_folder", default="data")
-    parser.add_argument(
-        "--dataset", type=str, choices=["wordnet", "ccs"], required=True
-    )
+    parser.add_argument("--dataset", type=str, choices=["wordnet"], required=True)
     parser.add_argument("--output_folder", default="results")
     parser.add_argument("--output_suffix", type=str, required=True)
-    parser.add_argument("--llm_type", choices=["llama", "gpt"], required=True)
+    parser.add_argument("--llm_type", choices=["reasoning", "regular"], required=True)
     parser.add_argument("--llm_name", type=str, required=True)
+    parser.add_argument("--num_processes", type=int, default=8)
+    parser.add_argument(
+        "--prompt_type", choices=["simple", "fewshot"], type=str, required=True
+    )
+
     parser.add_argument("--temperature", type=float, default=0.7)
 
     args = parser.parse_args()

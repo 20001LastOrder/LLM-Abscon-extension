@@ -202,7 +202,7 @@ Notice that the activity diagram should respect the following constraints:
 4. The initial node should be able to reach all nodes in the activity diagram
 
 
-First identifying all activities and decisions, then describe how they can be connected, finally output the activity diagram as a mermaid graph:
+First identifying all activities and decisions, then describe how they can be connected, finally output the activity diagram as a mermaid graph. Make sure to only output one relation per line.
 ```mermaid
 <result>
 ```

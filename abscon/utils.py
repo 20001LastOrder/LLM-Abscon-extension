@@ -39,24 +39,12 @@ def maximum_spanning_branch(
 
 
 def serialize_output(results, results_raw, args):
-    output_path = f"{args.output_folder}/{args.llm_name}/{args.dataset}/results_{args.output_suffix}.csv"
+    llm_name = args.llm_name.split("/")[-1]
+
+    output_path = f"{args.output_folder}/{llm_name}/{args.dataset}/results_{args.output_suffix}.csv"
     results_df = pd.DataFrame(results)
     results_df.to_csv(output_path)
 
-    output_path_raw = f"{args.output_folder}/{args.llm_name}/{args.dataset}/results_{args.output_suffix}_raw.csv"
+    output_path_raw = f"{args.output_folder}/{llm_name}/{args.dataset}/results_{args.output_suffix}_raw.csv"
     results_raw_df = pd.DataFrame(results_raw)
     results_raw_df.to_csv(output_path_raw)
-
-
-def construct_messages(template, input_message) -> list[dict]:
-    prompt = template.invoke(input={"user_input": input_message})
-    messages = []
-    for message in prompt.messages:
-        # the template use ai for llm but the api uses assistant
-        if message.type == "ai":
-            message.type = "assistant"
-        elif message.type == "human":
-            message.type = "user"
-        messages.append({"role": message.type, "content": message.content.strip()})
-
-    return messages

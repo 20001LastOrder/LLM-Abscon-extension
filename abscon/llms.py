@@ -1,11 +1,13 @@
+import os
 from typing import Any, Dict, Iterator, List, Optional
 
+import requests
 from langchain_core.callbacks.manager import CallbackManagerForLLMRun
 from langchain_core.language_models import LLM
 from langchain_core.outputs import GenerationChunk
-import requests
+from langchain_deepseek import ChatDeepSeek
+from langchain_openai import ChatOpenAI
 from loguru import logger
-import os
 
 
 class SelfHostedLLM(LLM):
@@ -79,3 +81,24 @@ class SelfHostedLLM(LLM):
     def _llm_type(self) -> str:
         """Get the type of language model used by this chat model. Used for logging purposes only."""
         return f"HostedLLM: {self.default_model}"
+
+
+def get_llm(args):
+    if args.llm_type == "reasoning":
+        # ChatDeepSeek can be used to retrieve the reasoning content
+        llm = ChatDeepSeek(
+            api_base=os.environ.get("OPENAI_BASE_URL"),
+            api_key=os.environ.get("OPENAI_API_KEY"),
+            model=args.llm_name,
+            temperature=args.temperature,
+            # make sure only bf16 models are used when using OpenRouter
+            extra_body={"provider": {"quantizations": ["bf16"]}},
+        )
+    else:
+        llm = ChatOpenAI(
+            base_url=os.environ.get("OPENAI_BASE_URL"),
+            model=args.llm_name,
+            temperature=args.temperature,
+        )
+
+    return llm
