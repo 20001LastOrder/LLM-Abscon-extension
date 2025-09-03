@@ -24,9 +24,9 @@ def evaluate_graph_with_scene(mermaid_text: str, scene: dict, throw_error=False)
         set_scene(program, scene)
         result = evaluate(program)
 
-        if type(result) == int:
+        if type(result) is int:
             result = str(result)
-        elif type(result) == bool:
+        elif type(result) is bool:
             if result:
                 result = "yes"
             else:
@@ -116,7 +116,7 @@ class ClevrEvaluator:
     ) -> list[str]:
         if self.num_abstracted_candidates > num_candidates:
             raise ValueError(
-                f"{self.num_abstracted_candidates} has already been abstracted but {num_candidates} candidates are required. "
+                f"{self.num_abstracted_candidates} has already been abstracted but {num_candidates} candidates are required. "  # noqa: E501
                 "Cannot remove candidates from the abstractor. Create a new evaluator."
             )
 

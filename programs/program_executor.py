@@ -1,11 +1,12 @@
 from __future__ import annotations
-from enum import Enum
 
-from pydantic import BaseModel, Field
 from abc import ABC, abstractmethod
+from enum import Enum
 from typing import Any, Literal, Optional, Type
+
 import networkx as nx
 from loguru import logger
+from pydantic import BaseModel, Field
 
 
 class Property(Enum):
@@ -35,7 +36,7 @@ class ProgramNode(ABC, BaseModel):
             name (str): The name to check
         Returns:
             bool: True if the name should be considered as this type of node, False otherwise
-        """
+        """  # noqa: E501
         pass
 
     @classmethod
@@ -49,7 +50,7 @@ class ProgramNode(ABC, BaseModel):
         Returns:
             Optional[ProgramNode]: the created program node from the name if `cls.is_type(name)` is true,
             None otherwise.
-        """
+        """  # noqa: E501
         pass
 
     @property
@@ -651,9 +652,9 @@ def process_node(
 ) -> ProgramNode:
     label = graph.nodes[node]["label"].strip().lower()
     program_node = None
-    for Type in PROGRAM_TYPES:
-        if Type.is_type(label):
-            program_node = Type.from_name(label)
+    for node_type in PROGRAM_TYPES:
+        if node_type.is_type(label):
+            program_node = node_type.from_name(label)
             break
 
     if program_node is None:

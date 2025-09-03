@@ -1,6 +1,18 @@
+import networkx as nx
+
+from abscon.mermaid.parser import MermaidGraphParser
 import re
 
-import networkx as nx
+# class ClevrParser:
+#     def parse(self, mermaid_text: str) -> nx.DiGraph:
+#         parser = MermaidGraphParser()
+#         graph = parser.parse(mermaid_text)
+
+#         remapping = {node: count + 1 for count, node in enumerate(graph.nodes)}
+#         graph = nx.relabel_nodes(graph, remapping)
+#         for node_id, data in graph.nodes(data=True):
+#             data["id"] = node_id
+#         return graph
 
 
 class ClevrParser:
