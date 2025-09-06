@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "@mermaid-js/parser": "^0.6.2",
+    "happy-dom": "^18.0.1",
+    "mermaid": "^11.10.1"
+  },
+  "name": "js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "rollup": "^4.50.0"
+  }
+}

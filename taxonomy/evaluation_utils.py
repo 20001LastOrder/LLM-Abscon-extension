@@ -220,7 +220,7 @@ class TaxonomyEvaluator:
             )
             metrics = self.evaluate_taxonomies(final_df, dataset, return_value="all")
             results.append(metrics)
-        metrics = ["f1", "recall", "precision"]
+        metrics = ["f1", "recall", "precision", "consistency"]
 
         metric_result = {}
         for metric in metrics:
@@ -255,5 +255,5 @@ class TaxonomyEvaluator:
             "recall": recall,
             "precision": precision,
             "f1": f1,
-            "consistency": consistency,
+            "consistency": consistency["consistency"],
         }

@@ -1,9 +1,45 @@
 # parser_caller.py
 import json
 import shutil
-import subprocess
+import pythonmonkey as pm
 
-mermaid_graph = """
+import networkx as nx
+import asyncio
+from pathlib import Path
+
+folder = Path(__file__).parent.parent
+parse_mermaid_js = pm.require(f"{folder}/js/native_parser.bundle.js")
+
+NODE = shutil.which("node") or "node"  # help on Windows PATH issues
+
+
+class MermaidGraphParser:
+    def parse(self, mermaid_text: str) -> nx.DiGraph:
+        graph = nx.DiGraph()
+        graph_json = asyncio.run(parse_mermaid_py(mermaid_text))
+
+        for node_id, (raw_label, node) in enumerate(graph_json["vertices"].items()):
+            graph.add_node(raw_label, label=node.get("text", raw_label), id=node_id)
+        for edge in graph_json["edges"]:
+            start = edge["start"]
+            end = edge["end"]
+
+            if edge.get("text", ""):
+                graph.add_edge(start, end, label=edge["text"])
+            else:
+                graph.add_edge(start, end)
+
+        return graph
+
+
+async def parse_mermaid_py(src: str):
+    # Use top-level await inside this eval call
+    s = await parse_mermaid_js["parse_mermaid"](src)
+    return json.loads(s)
+
+
+if __name__ == "__main__":
+    mermaid_graph = """
     graph TD
         StartNode --> DetectIncident["Detect incident"]
         DetectIncident --> CheckFinancialImpact{"Check financial impact?"}
@@ -23,22 +59,8 @@ mermaid_graph = """
         CheckVendor -->|Yes| FixVendor["Fix the issue (vendor fix)"] --> ResolveEMS
         CheckVendor -->|No| Failover["Failover to COB"] --> ResolveEMS
     """
+    import asyncio
 
-
-NODE = shutil.which("node") or "node"  # help on Windows PATH issues
-
-
-def parse_mermaid_py(text: str) -> dict:
-    try:
-        proc = subprocess.run(
-            # Note that the path is relative to the project root
-            [NODE, "abscon/mermaid/native_parser.mjs"],
-            input=json.dumps({"text": text}),
-            text=True,
-            capture_output=True,
-            check=True,
-        )
-        print(proc.stdout)  # Debug: print the raw output
-        return json.loads(proc.stdout)
-    except subprocess.CalledProcessError as e:
-        raise RuntimeError(f"Node error:\n{e.stderr}") from e
+    result = asyncio.run(parse_mermaid_py(mermaid_graph))
+    print(result.keys())
+    print(result["vertices"])

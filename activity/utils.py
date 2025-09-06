@@ -1,4 +1,5 @@
 import re
+from loguru import logger
 import networkx as nx
 import numpy as np
 from typing import Callable
@@ -64,10 +65,10 @@ def extract_mermaid(result: str) -> str:
         text = match.group(1)
         # only keep the ones that are syntactically correct
         try:
-            # TODO: Improve the parsing strategy
             parser.parse(text)
             return text
-        except ValueError:
+        except Exception as e:
+            logger.warning(f"Error parsing mermaid text: {e}")
             return None
     else:
         return None
