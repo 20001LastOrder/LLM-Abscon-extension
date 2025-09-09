@@ -1,7 +1,7 @@
 import re
 import networkx as nx
 import numpy as np
-from parser import ClevrParser
+from programs.parser import ClevrParser
 
 
 def process_scene(scene: dict) -> dict:

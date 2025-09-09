@@ -550,7 +550,7 @@
 4[""Add mail number and date""] --> 5[""Record and archive the letter""]
 6[""Transmit the letter and register it with Miranda""] --> 7[""Make a membership decision""]
 7 --> |""No""|8[""Provide a negative answer""]
-7 --> |""Yes""|9[""Stamp \""new member\"" and the date""]
+7 --> |""Yes""|9[""Stamp new member and the date""]
 9 --> 10[""Check for membership""]
 10 --> |""No""|8
 21[""Add the new member""] --> 22[""Calculate the membership fee""]
@@ -2284,7 +2284,7 @@
 14[""Check if computer has been repaired""] --> |""No""|13[""EndNode""]"
 241,"flowchart LR
 1[""Invoices entered to validation office""] --> 2[""Invoices validation""]
-2 --> 3[""Ticked box ""invoice entered correctly"" on invoices form""]
+2 --> 3[""Ticked box invoice entered correctly on invoices form""]
 3 --> 4[""Log into SAP""]
 4 --> 5[""Changed data status from parked to validated""]
 5 --> 6[""Forwarded validated invoices to Registry officers""]
@@ -2353,7 +2353,7 @@
 15 --> 16[""Enter Billing Address""]"
 249,"flowchart LR
 0[""StartNode""] --> 1[""Log and route complaint""]
-1 --> 2[""Is complaint \""instructor resolvable\""?""]
+1 --> 2[""Is complaint instructor resolvable?""]
 2 --> |""No""|3[""Handle complaint""]
 3 --> 4[""Should complaint be escalated?""]
 4 --> |""Yes""|6[""Send email to student and cc Complaint Staff""]
@@ -2872,7 +2872,7 @@
 300,"flowchart LR
 0[""StartNode""] --> 1[""Vendor sends the invoice""]
 1 --> 2[""Vendor receives the invoice""]
-2 --> 3[""Instruction - \""send over the invoice\"" or \""contact the vendor\""""]
+2 --> 3[""Instruction - send over the invoice or contact the vendor""]
 3 --> |""send over the invoice""|4[""Enter invoice information in Payment Out Module""]
 4 --> 6[""Make payment""]
 5[""Revising the invoice on the spot""] --> 1

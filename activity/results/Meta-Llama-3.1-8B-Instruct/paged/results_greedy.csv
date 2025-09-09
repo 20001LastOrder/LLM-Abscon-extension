@@ -716,7 +716,7 @@ graph LR
 55,"
 graph LR
 0[""StartNode""] --> 1[""Verify RFQ""]
-1 --> 2{""RFQ verified as \""ok\""?""}
+1 --> 2{""RFQ verified as ok?""}
 2 --> |""Yes""|3[""Provide LandM cost estimates""]
 2 --> |""No""|4[""Ask for more information""]
 4 --> 1
@@ -1965,18 +1965,18 @@ graph LR
 17 --> 18[""replace it_vbfa_completo-secuencia with corresponding it_lifex-lifex""]
 18 --> 19[""perform busca_pedido_vbapt""]
 19 --> 20[""perform busca_factura_vbapt""]
-20 --> 21{""c_si in r_valida"" is ""no""}
+20 --> 21{""c_si in r_valida is no""}
 21 --> |""Yes""|22[""left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
-21 --> |""No""|23{""pvstel in r_exclog"" is ""yes""}
+21 --> |""No""|23{""pvstel in r_exclog is yes""}
 23 --> |""Yes""|24[""remove rows from it_nofacturado that aren't errors""]
-23 --> |""No""|25{""pvstel in r_exclog"" is ""no""}
+23 --> |""No""|25{""pvstel in r_exclog is no""}
 25 --> |""Yes""|26[""left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
 25 --> |""No""|27[""transfer maktl from imaktl to it_vbfa_completo""]
-27 --> 28{""it_nofacturado empty?"" is ""no""}
+27 --> 28{""it_nofacturado empty? is no""}
 28 --> |""Yes""|29[""set & print error""]
-28 --> |""No""|30{""error?"" is ""no""}
+28 --> |""No""|30{""error? is no""}
 30 --> |""Yes""|31[""left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
-30 --> |""No""|32{""error?"" is ""yes""}
+30 --> |""No""|32{""error? is yes""}
 32 --> 33[""EndNode""]
 "
 150,"
@@ -4245,7 +4245,7 @@ graph LR
 13 --> |""Yes""|14[""Transfer vbeln values from it_vbfa_completo to itransp and remove duplicates""]
 13 --> |""No""|14
 14 --> |""Yes""|15{""it_nofacturado empty?""}
-15 --> |""Yes""|16[""Check error?"" condition""]
+15 --> |""Yes""|16[""Check error? condition""]
 15 --> |""No""|16
 16 --> |""Yes""|17[""Left outer join between vbfa and itransp, store in itnum""]
 16 --> |""No""|17

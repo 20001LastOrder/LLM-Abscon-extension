@@ -1,24 +1,15 @@
 import json
 import os
-import sys
-from argparse import ArgumentParser
 from multiprocessing import Pool
 
 import pandas as pd
-from dotenv import load_dotenv
 from loguru import logger
-from prompts import get_prompt
+from activity.prompts import get_prompt
 from tqdm import tqdm
-from utils import extract_mermaid
-
-from abscon.llms import get_llm
+from activity.utils import extract_mermaid
 from abscon.utils import serialize_output
 
-load_dotenv()
-
-
-logger.remove()
-logger.add(sys.stderr, level="INFO")
+from abscon.llms import get_llm
 
 
 def run_single_result(data):
@@ -95,7 +86,7 @@ def load_cache(args):
         return [], []
 
 
-def main(args):
+def generate_activity_diagrams(args):
 
     with open(f"{args.input_folder}/{args.dataset}.json") as f:
         samples = json.load(f)
@@ -107,24 +98,4 @@ def main(args):
 
     results, results_raw = run_gpt(samples[num_processed:], args, results, results_raw)
 
-    serialize_output(results=results, results_raw=results_raw, args=args)
-
-
-if __name__ == "__main__":
-    parser = ArgumentParser()
-
-    parser.add_argument("--input_folder", default="data")
-    parser.add_argument("--dataset", type=str, choices=["paged"], required=True)
-    parser.add_argument("--output_folder", default="results")
-    parser.add_argument("--output_suffix", type=str, required=True)
-    parser.add_argument(
-        "--prompt_type", type=str, default="fewshot", choices=["fewshot", "simple"]
-    )
-    parser.add_argument("--llm_type", choices=["regular", "reasoning"], required=True)
-    parser.add_argument("--llm_name", type=str, required=True)
-    parser.add_argument("--temperature", type=float, default=0.7)
-    parser.add_argument("--num_processes", type=int, default=8)
-    parser.add_argument("--batch_size", type=int, default=16)
-
-    args = parser.parse_args()
-    main(args)
+    return results, results_raw

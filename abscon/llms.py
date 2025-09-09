@@ -79,7 +79,8 @@ class SelfHostedLLM(LLM):
 
     @property
     def _llm_type(self) -> str:
-        """Get the type of language model used by this chat model. Used for logging purposes only."""
+        """Get the type of language model used by this chat model. Used for logging 
+        purposes only."""
         return f"HostedLLM: {self.default_model}"
 
 
@@ -92,7 +93,7 @@ def get_llm(args):
             model=args.llm_name,
             temperature=args.temperature,
             # make sure only bf16 models are used when using OpenRouter
-            extra_body={"provider": {"quantizations": ["bf16"]}},
+            extra_body={"provider": {"quantizations": ["bf16", "fp16"]}},
         )
     else:
         llm = ChatOpenAI(

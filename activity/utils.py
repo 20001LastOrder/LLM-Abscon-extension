@@ -3,8 +3,7 @@ from loguru import logger
 import networkx as nx
 import numpy as np
 from typing import Callable
-from parser import ActivityParser
-import networkx as nx
+from activity.parser import ActivityParser
 
 
 def partial_model_to_mermaid(

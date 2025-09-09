@@ -630,10 +630,10 @@
 5 --> 6[""Transmit the letter and register it with Miranda""]
 6 --> 7[""Make a membership decision""]
 7 --> |""No""|8[""Provide a negative answer""]
-7 --> |""Yes""|9[""Stamp \""new member\"" and the date""]
+7 --> |""Yes""|9[""Stamp new member and the date""]
 9 --> 10[""Check for membership""]
 10 --> |""No""|8
-10 --> |""Yes""|11[""Stamp \""new member\"" and the date""]
+10 --> |""Yes""|11[""Stamp new member and the date""]
 11 --> 17[""Check for membership""]
 16[""Send the membership card""] --> 25[""Send the invoices""]
 17 --> 35[""Membership decision?""]
@@ -2600,7 +2600,7 @@
 241,"flowchart LR
 0[""StartNode""] --> 1[""Invoices entered to validation office""]
 1 --> 2[""Invoices validation""]
-2 --> 3[""Ticked box ""invoice entered correctly"" on invoices form""]
+2 --> 3[""Ticked box invoice entered correctly on invoices form""]
 3 --> 4[""Log into SAP""]
 4 --> 5[""Changed data status from parked to validated""]
 5 --> 6[""Forwarded validated invoices to Registry officers""]
@@ -2690,7 +2690,7 @@
 16 --> 13"
 249,"flowchart LR
 0[""StartNode""] --> 1[""Log and route complaint""]
-1 --> 2[""Is complaint \""instructor resolvable\""?""]
+1 --> 2[""Is complaint instructor resolvable?""]
 2 --> |""No""|3[""Handle complaint""]
 2 --> |""Yes""|9[""Handle the complaint""]
 3 --> 4[""Should complaint be escalated?""]
@@ -3283,7 +3283,7 @@
 300,"flowchart LR
 0[""StartNode""] --> 1[""Vendor sends the invoice""]
 1 --> 2[""Vendor receives the invoice""]
-2 --> 3[""Instruction - \""send over the invoice\"" or \""contact the vendor\""""]
+2 --> 3[""Instruction - send over the invoice or contact the vendor""]
 3 --> |""send over the invoice""|4[""Enter invoice information in Payment Out Module""]
 3 --> |""contact the vendor""|5[""Revising the invoice on the spot""]
 4 --> 6[""Make payment""]
@@ -3505,7 +3505,7 @@
 0[""StartNode""] --> 1[""Left outer join between lips and it_likp, store result in it_lipsm""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Left outer join between vbfa and it_likpsm, store result in it_vbfa_completo""]
-3 --> 4[""Remove rows from it_vbfa_completo where plmin is not ""+""""]
+3 --> 4[""Remove rows from it_vbfa_completo where plmin is not +""]
 4 --> 5[""Copy vbeln values from it_vbfa_completo to it_unolips and remove duplicates""]
 5 --> 6[""Left outer join between lips and it_unolips, store result in it_lips""]
 6 --> 7[""Copy lifex values from it_likp to it_lifex and sort""]
