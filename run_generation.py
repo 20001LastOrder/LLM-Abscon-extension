@@ -55,6 +55,7 @@ if __name__ == "__main__":
     parser.add_argument("--temperature", type=float, default=0.7)
     parser.add_argument("--num_processes", type=int, default=8)
     parser.add_argument("--batch_size", type=int, default=16)
+    parser.add_argument("--tolerance", type=int, default=5)
 
     args = parser.parse_args()
     main(args)

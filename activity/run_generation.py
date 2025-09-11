@@ -21,17 +21,22 @@ def run_single_result(data):
 
     result = None
     raw_content = None
+    tries = 0
     while result is None:
+        tries += 1
         try:
             result_raw = chain.invoke(input={"user_input": text_input})
         except json.JSONDecodeError as e:
             logger.error(f"JSON decode error: {e}")
             continue
+
         result = extract_mermaid(result_raw.content)
         if result is None or len(result) == 0:
             logger.warning(result_raw.content)
             logger.warning("result is None!")
-            # Handle reasoning content
+            if tries >= args.tolerance:
+                logger.error("Max retries reached, return an empty graph.")
+                result = "graph TD\n"
 
         raw_content = result_raw.content
         if "reasoning_content" in result_raw.additional_kwargs:
