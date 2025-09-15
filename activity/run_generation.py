@@ -35,7 +35,7 @@ def run_single_result(data):
             logger.warning(result_raw.content)
             logger.warning("result is None!")
             if tries >= args.tolerance:
-                logger.error("Max retries reached, return an empty graph.")
+                logger.warning("Max retries reached, return an empty graph.")
                 result = "graph TD\n"
 
         raw_content = result_raw.content

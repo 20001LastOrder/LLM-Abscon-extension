@@ -2,6 +2,7 @@ import re
 import networkx as nx
 import numpy as np
 from programs.parser import ClevrParser
+from loguru import logger
 
 
 def process_scene(scene: dict) -> dict:
@@ -31,7 +32,8 @@ def extract_mermaid(result: str) -> str:
         try:
             parser.parse(text)
             return text
-        except ValueError:
+        except Exception as e:
+            logger.error(f"Failed to parse mermaid: {e}")
             return None
     else:
         return None
