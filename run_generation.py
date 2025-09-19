@@ -30,6 +30,7 @@ def main(args):
 
     args.input_folder = f"{root_folder}/{args.input_folder}"
     args.output_folder = f"{root_folder}/{args.output_folder}"
+
     results, results_raw = generation_function(args)
 
     serialize_output(results=results, results_raw=results_raw, args=args)

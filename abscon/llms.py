@@ -92,8 +92,8 @@ def get_llm(args):
             api_key=os.environ.get("OPENAI_API_KEY"),
             model=args.llm_name,
             temperature=args.temperature,
-            # make sure only bf16 models are used when using OpenRouter
-            extra_body={"provider": {"quantizations": ["bf16", "fp16"]}},
+            # make sure only specific quantized models are used when using OpenRouter
+            extra_body={"provider": {"quantizations": ["bf16", "fp16", "fp8"]}},
         )
     else:
         llm = ChatOpenAI(

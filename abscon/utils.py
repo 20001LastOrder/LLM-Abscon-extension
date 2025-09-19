@@ -1,5 +1,6 @@
 import networkx as nx
 import pandas as pd
+import os
 
 
 def maximum_spanning_branch(
@@ -40,6 +41,8 @@ def maximum_spanning_branch(
 
 def serialize_output(results, results_raw, args):
     llm_name = args.llm_name.split("/")[-1]
+    # Create output folder if not exists
+    os.makedirs(f"{args.output_folder}/{llm_name}/{args.dataset}", exist_ok=True)
 
     output_path = f"{args.output_folder}/{llm_name}/{args.dataset}/results_{args.output_suffix}.csv"
     results_df = pd.DataFrame(results)
