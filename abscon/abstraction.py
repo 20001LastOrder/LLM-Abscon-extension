@@ -295,15 +295,14 @@ class ActivityDiagramAbstractor(Abstractor):
         return cosine_similarity_batch(embeddings1, embeddings2)
 
     def add_concrete_model(self, model: nx.DiGraph):
+        # Skip empty graphs
+        if len(model.nodes) == 0:
+            return
         if self.candidate_count == 0:
             self.set_seed_model(model)
             return
 
         self.candidate_count += 1
-
-        # Skip empty graphs
-        if len(model.nodes) == 0:
-            return
 
         target_nodes = [data["label"].strip() for _, data in model.nodes(data=True)]
 

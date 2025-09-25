@@ -545,7 +545,9 @@ class ActivityDiagramConcretizer(Concretizer):
         self.seed = seed
 
     def concretize(self, partial_model: DiGraph) -> DiGraph:
-
+        if len(partial_model.edges) == 0:
+            logger.warning("Empty partial model!")
+            return partial_model
         # remove isolated nodes and self loops
         partial_model.remove_nodes_from(list(nx.isolates(partial_model)))
         partial_model.remove_edges_from(list(nx.selfloop_edges(partial_model)))
