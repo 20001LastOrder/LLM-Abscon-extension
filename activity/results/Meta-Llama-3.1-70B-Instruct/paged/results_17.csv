@@ -2568,7 +2568,6 @@ graph LR
 10 --> |""No""|12[""Reminder""]
 11 --> 13[""EndNode""]
 12 --> 13
-note right of 10: The Payment Received decision is repeated again.
 "
 190,"
 graph LR
@@ -3352,7 +3351,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Log and route the complaint""]
 1 --> 2{""Is the complaint 'instructor resolvable'?""}
-2 --> |""Yes"" or ""No""| 3[""Handle the complaint""]
+2 --> |""Yes or No""| 3[""Handle the complaint""]
 3 --> 4{""Should the complaint be escalated?""}
 4 --> |""Yes""| 3
 4 --> |""No""| 5[""Send an email to the student and cc the Complaint Staff""]
@@ -4275,7 +4274,7 @@ graph LR
 3 --> |""Yes""|4[""Ordered shipment realized""]
 3 --> |""No""|5[""Acquisition of carriers (Link A)""]
 5 --> 3
-3 --> |""No"", ""second time""|6[""EndNode""]
+3 --> |""No, second time""|6[""EndNode""]
 "
 319,"
 graph LR
@@ -4285,7 +4284,6 @@ graph LR
 1 --> 4[""EndNode""]
 2 --> 4
 3 --> 4
-note right of 3: Survey Document
 "
 320,"
 graph LR

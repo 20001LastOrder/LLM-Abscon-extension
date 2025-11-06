@@ -700,7 +700,7 @@ graph LR
 55,"
 graph LR
 0[""StartNode""] --> 1[""Verify RFQ""]
-1 --> 2{""RFQ verified as \""ok\""?""}
+1 --> 2{""RFQ verified as ok?""}
 2 --> |""Yes""|3[""Provide LandM cost estimates""]
 2 --> |""No""|4[""Ask for more information""]
 4 --> 5[""Check RFQ with additional information""]
@@ -742,7 +742,7 @@ graph LR
 6 --> 7[""Register with Miranda""]
 7 --> 8{""Membership?""}
 8 --> |""no""|9[""Provide Negative Answer""]
-8 --> |""yes""|10[""Stamp \""New Member\""""]
+8 --> |""yes""|10[""Stamp New Member""]
 10 --> 11[""Check Membership""]
 11 --> |""no""|9
 11 --> |""yes""|12[""Calculate Membership Fee""]
@@ -838,7 +838,7 @@ graph LR
 0[""StartNode""] --> 1[""Visit www.katyd.cz""]
 1 --> 2[""Fill out form with basic information""]
 2 --> 3{""Method of payment?""}
-3 --> |""Offline""|4[""Check \""Variant of subscription?\"" option""]
+3 --> |""Offline""|4[""Check Variant of subscription? option""]
 3 --> |""Online""|5[""Show payment process""]
 5 --> 6{""Variant of subscription?""}
 6 --> |""Online or print&online""|7[""Generate code""]
@@ -1964,9 +1964,9 @@ graph LR
 18 --> |""no""| 19[""Perform a left outer join between vbap and it_vbfa_completo""]
 18 --> |""yes""| 20[""Clear any errors""]
 20 --> 21{""it_nofacturado empty?""}
-21 --> |""no""| 22[""Check if \""error?\"" is \""no\""""]
+21 --> |""no""| 22[""Check if error? is no""]
 21 --> |""yes""| 23[""Transfer maktl from imaktl to it_vbfa_completo""]
-22 --> |""no""| 24[""Check if \""error?\"" is \""yes\""""]
+22 --> |""no""| 24[""Check if error? is yes""]
 22 --> |""yes""| 25[""EndNode""]
 24 --> |""no""| 19
 25 --> 19
@@ -3081,11 +3081,11 @@ graph LR
 0[""StartNode""] --> 1[""Incident Identification""]
 1 --> 2[""Incident Logging""]
 2 --> 3[""Incident Categorization""]
-3 --> 4{""Is it a \""Service Request\""?""}
+3 --> 4{""Is it a Service Request?""}
 4 --> |""Yes""|5[""Request Fulfilment""]
 4 --> |""No""|6[""Incident Prioritization""]
 5 --> 7[""EndNode""]
-6 --> 8{""Is it a \""Major Incident\""?""}
+6 --> 8{""Is it a Major Incident?""}
 8 --> |""Yes""|9[""Escalate Incident""]
 8 --> |""No""|10[""Initial Diagnosis""]
 10 --> 11{""Hierarchic escalation is needed?""}
@@ -3140,7 +3140,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Enter invoices to the validation office""]
 1 --> 2[""Invoices validation""]
-2 --> 3[""Tick the box ""invoice entered correctly\""""]
+2 --> 3[""Tick the box invoice entered correctly""]
 3 --> 4[""Log into SAP""]
 4 --> 5[""Change data status from parked to validated""]
 5 --> 6[""Forward the validated invoices to the Registry officers""]
@@ -4260,7 +4260,7 @@ graph LR
 0[""StartNode""] --> 1[""Left outer join between lips and it_likp""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Left outer join between vbfa and it_likpsm""]
-3 --> 4[""Remove rows from it_vbfa_completo where plmin is not equal to ""+""""]
+3 --> 4[""Remove rows from it_vbfa_completo where plmin is not equal to +""]
 4 --> 5[""Copy vbeln to it_unolips and remove duplicates""]
 5 --> 6[""Left outer join between lips and it_unolips""]
 6 --> 7[""Copy lifex to it_lifex and sort""]

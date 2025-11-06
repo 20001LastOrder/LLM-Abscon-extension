@@ -3,6 +3,7 @@ import networkx as nx
 from abscon.mermaid.parser import MermaidGraphParser
 import re
 
+
 class ClevrParser:
     def parse(self, mermaid_text: str) -> nx.DiGraph:
         parser = MermaidGraphParser()

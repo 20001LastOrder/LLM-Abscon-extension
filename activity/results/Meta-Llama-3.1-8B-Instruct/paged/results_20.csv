@@ -47,7 +47,7 @@ graph LR
 3,"
 graph LR
 0[""StartNode""] --> 1[""Detect incident""]
-1 --> 2{""Is financial impact \""YES?\""""}
+1 --> 2{""Is financial impact YES?""}
 2 --> |""YES""|3[""Open EMS""]
 2 --> |""NO""|4[""End process""]
 3 --> 5[""Contact Application Team""]
@@ -726,10 +726,10 @@ graph LR
 "
 55,"
 graph LR
-0[""StartNode""] --> 1{""Is RFQ verified as \""ok\""?""}
+0[""StartNode""] --> 1{""Is RFQ verified as ok?""}
 1 --> |""Yes""|2[""Provide LandM cost estimates""]
 1 --> |""No""|3[""Provide additional information""]
-3 --> 4{""Is RFQ verified as \""ok\""?""}
+3 --> 4{""Is RFQ verified as ok?""}
 4 --> |""Yes""|5[""Add overhead cost""]
 4 --> |""No""|6[""Provide clarification""]
 5 --> 7[""Generate pricing options""]
@@ -872,10 +872,10 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Visit www.katyd.cz""]
 1 --> 2[""Fill out the form""]
-2 --> 3[""Check Method of payment?"" option""]
+2 --> 3[""Check Method of payment? option""]
 3 --> |""offline""|4[""Payment information shown""]
 3 --> |""online""|5[""Payment process initiated""]
-4 --> 6[""Check Variant of subscription?"" option""]
+4 --> 6[""Check Variant of subscription? option""]
 5 --> 6
 6 --> |""only print""|7[""Payment information registered for accounting purposes""]
 7 --> |""online or online&print""|8[""Code generated""]
@@ -1981,12 +1981,12 @@ graph LR
 16 --> 17[""replace it_vbfa_completo-secuencia with corresponding it_lifex-lifex""]
 17 --> 18[""perform busca_pedido_vbapt and busca_factura_vbapt""]
 18 --> 19[""clear any errors""]
-19 --> 20{""c_si in r_valida"" is ""no""}
+19 --> 20{""c_si in r_valida is no""}
 20 --> |""yes""| 21[""perform left outer join between vbap and it_vbfa_completo""]
 21 --> 22[""transfer maktl from imaktl to it_vbfa_completo""]
-22 --> 23{""it_nofacturado empty?"" is ""no""}
+22 --> 23{""it_nofacturado empty? is no""}
 23 --> |""yes""| 24[""set and print error""]
-23 --> |""no""| 25{""error?"" is ""no""}
+23 --> |""no""| 25{""error? is no""}
 25 --> |""yes""| 26[""perform left outer join between vbap and it_vbfa_completo""]
 26 --> 27[""EndNode""]
 "
@@ -2208,7 +2208,7 @@ graph LR
 4 --> 5[""Bring letter book and member register to Secretary""]
 5 --> 6{""Check if applicant becomes a member""}
 6 --> |""No""|3
-6 --> |""Yes""|7[""Stamp \""new member\"" on letter""]
+6 --> |""Yes""|7[""Stamp new member on letter""]
 7 --> 8[""Write date on letter""]
 8 --> 9[""Add member to member register""]
 9 --> 10[""Calculate membership fee""]
@@ -3121,9 +3121,9 @@ graph LR
 0[""StartNode""] --> 1[""Incident Identification""]
 1 --> 2[""Incident Logging""]
 2 --> 3[""Incident Categorization""]
-3 --> 4{""Is it a \""Service Request\""?""}
+3 --> 4{""Is it a Service Request?""}
 4 --> |""Yes""|5[""Request Fulfilment""]
-4 --> |""No""|6{""Is it a \""Major Incident\""?""}
+4 --> |""No""|6{""Is it a Major Incident?""}
 6 --> |""Yes""|7[""Escalate Incident""]
 6 --> |""No""|8[""Incident Prioritization""]
 8 --> 9{""Is Hierarchic escalation needed?""}

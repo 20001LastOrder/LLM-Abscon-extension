@@ -791,7 +791,7 @@ graph LR
     4 --> 5[""same_size""]
     5 --> 6[""count""]
     6 --> 7[""less_than""]
-    7 --> 8[""const"", ""2""]
+    7 --> 8[""const2""]
 "
 62,"
 graph LR
@@ -2311,7 +2311,7 @@ graph LR
     9 --> 11[""equal_size""]
     10 --> 12[""And""]
     11 --> 12
-    12 --> 13[""yes""]  or 13[""no""]
+    12 --> 13[""yes""]
 "
 175,"
 graph LR

@@ -718,7 +718,7 @@ graph LR
 55,"
 graph LR
 0[""StartNode""] --> 1[""Verify RFQ""]
-1 --> 2{""RFQ verified as \""ok\""?""}
+1 --> 2{""RFQ verified as ok?""}
 2 --> |""Yes""|3[""Provide LandM cost estimates""]
 2 --> |""No""|4[""Ask for more information""]
 3 --> 5{""More information needed?""}
@@ -728,7 +728,7 @@ graph LR
 6 --> 5
 5 --> |""Yes""|4
 5 --> |""No""|7[""Generate sales quote""]
-7 --> 8{""RFQ verified as \""ok\""?""}
+7 --> 8{""RFQ verified as ok?""}
 8 --> |""Yes""|9[""EndNode""]
 8 --> |""No""|7
 "
@@ -763,7 +763,7 @@ graph LR
 6 --> 7[""Transmit letter and register it with Miranda""]
 7 --> 8{""Membership decision?""}
 8 --> |""No""|9[""Provide negative answer""]
-8 --> |""Yes""|10[""Stamp \""new member\"" and date""]
+8 --> |""Yes""|10[""Stamp new member and date""]
 10 --> 11[""Add new member""]
 11 --> 12{""Membership status?""}
 12 --> |""No""|9
@@ -1968,15 +1968,15 @@ graph LR
 17 --> 18[""replace it_vbfa_completo-secuencia with corresponding it_lifex-lifex""]
 18 --> 19[""perform busca_pedido_vbapt""]
 19 --> 20[""perform busca_factura_vbapt""]
-20 --> 21{""c_si in r_valida"" is ""no"" or ""yes?""}
+20 --> 21{""c_si in r_valida is no or yes?""}
 21 --> |""no""|22[""left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
-21 --> |""yes""|23{""pvstel in r_exclog"" is ""yes"" or ""no?""}
+21 --> |""yes""|23{""pvstel in r_exclog is yes or no?""}
 23 --> |""yes""|24[""remove rows from it_nofacturado that aren't errors""]
 23 --> |""no""|25[""left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
 25 --> 26[""transfer maktl from imaktl to it_vbfa_completo""]
-26 --> 27{""it_nofacturado empty?"" is ""no"" or ""yes?""}
+26 --> 27{""it_nofacturado empty? is no or yes?""}
 27 --> |""no""|28[""set & print error""]
-27 --> |""yes""|29{""error?"" is ""yes"" or ""no?""}
+27 --> |""yes""|29{""error? is yes or no?""}
 29 --> |""no""|30[""left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
 29 --> |""yes""|31[""EndNode""]
 30 --> 31
@@ -2202,9 +2202,9 @@ graph LR
 1 --> |""Yes""|3[""Add incoming mail number""]
 3 --> 4[""Archive letter""]
 4 --> 5[""Bring letter book and member register to Secretary""]
-5 --> 6[""Access data object \""letter book\""""]
+5 --> 6[""Access data object letter book""]
 6 --> 7{""Applicant is member?""}
-7 --> |""Yes""|8[""Stamp \""new member\"" on letter and write date on it""]
+7 --> |""Yes""|8[""Stamp new member on letter and write date on it""]
 7 --> |""No""|9[""Write letter to applicant explaining why they can't become a member""]
 8 --> 10[""Add member to member register""]
 10 --> 11[""Calculate membership fee""]
@@ -3149,7 +3149,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Entered invoices to the validation office""]
 1 --> 2[""Proceed with the invoices validation""]
-2 --> 3[""Ticked the box \""invoice entered correctly\"" on the invoices form""]
+2 --> 3[""Ticked the box invoice entered correctly on the invoices form""]
 3 --> 4[""Logged into SAP""]
 4 --> 5[""Changed the data status from parked to validated""]
 4 --> 6[""Forwarded the validated invoices to the Registry officers""]
@@ -3401,7 +3401,7 @@ graph LR
 260,"
 graph LR
 0[""StartNode""] --> 1[""Invoice arrives""]
-1 --> 2{""Invoice is complete?""]
+1 --> 2{""Invoice is complete?""}
 2 --> |""Yes""|3[""Check if invoice can be paid""]
 2 --> |""No""|4[""Return invoice to client""]
 3 --> |""Yes""|5[""Sort invoice by client and vendor""]
@@ -3838,7 +3838,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""start_element""]
 1 --> 2[""myTaskOne""]
-2 --> 3{""myMessageEvent"" or ""myTimeEvent_60minutes""}
+2 --> 3{""myMessageEvent or myTimeEvent_60minutes""}
 3 --> |""myMessageEvent""|4[""myTaskTwo""]
 3 --> |""myTimeEvent_60minutes""|5[""myTaskThree""]
 4 --> 6[""myEndEvent""]

@@ -1999,15 +1999,15 @@ graph LR
 13 --> 14[""Perform busca_pedido_vbapt""]
 14 --> 15[""Perform busca_factura_vbapt""]
 15 --> 16[""Clear any errors""]
-16 --> 17{""c_si in r_valida"" is ""no""}
+16 --> 17{""c_si in r_valida is no""}
 17 --> |""Yes""|18[""Left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
 17 --> |""No""|19[""Remove rows from it_nofacturado that aren't errors""]
-19 --> 20{""it_nofacturado empty?"" is ""no""}
+19 --> 20{""it_nofacturado empty? is no""}
 20 --> |""Yes""|21[""Set & print error""]
-20 --> |""No""|22[""Check if \""error?\"" is \""no\""""]
+20 --> |""No""|22[""Check if error? is no""]
 22 --> |""Yes""|23[""Left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
 22 --> |""No""|24[""Transfer maktl from imaktl to it_vbfa_completo""]
-24 --> 25{""error?"" is ""no""}
+24 --> 25{""error? is no""}
 25 --> |""Yes""|26[""Perform busca_pedido_vbapt and busca_factura_vbapt""]
 25 --> |""No""|27[""EndNode""]
 "
@@ -2544,7 +2544,7 @@ graph LR
 4 --> 6{""Job profile released?""}
 6 --> |""Yes""|7[""Create job profile""]
 6 --> |""No""|8[""Choose recruiting channels""]
-7 --> 9[""Create data object \""Job Profile\""""]
+7 --> 9[""Create data object Job Profile""]
 9 --> 8[""Select recruiting channels""]
 8 --> 10[""EndNode""]
 "
@@ -3465,8 +3465,8 @@ graph LR
 3 --> |""Yes""|4[""Open EMS""]
 4 --> 5[""Contact Application Team""]
 5 --> 6[""Open conference line""]
-4 --|""No""| 7[""End process""]
-2 --|""No""| 7[""End process""]
+4 --> |""No""| 7[""End process""]
+2 --> |""No""| 7[""End process""]
 7 --> 8[""End process""]
 "
 263,"

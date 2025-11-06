@@ -70,13 +70,12 @@
     1[""scene""] --> 2[""filter_color_blue""]
     1 --> 5[""filter_shape_cylinder""]
     2 --> 3[""filter_size_large""]
-    3 --> 4[""unique""]
-    4 --> 13[""equal_shape""]
-    5 --> 11[""unique""]
-    7[""unique""] --> 13
-    8[""relate_right""] --> 18[""filter_size_small""]
-    11 --> 8
-    18 --> 7
+    3 --> 11[""unique""]
+    4[""unique""] --> 8[""relate_right""]
+    5 --> 4
+    7[""unique""] --> 12[""equal_shape""]
+    8 --> 7
+    11 --> 12
 "
 8,"graph LR
     1[""scene""] --> 2[""filter_color_gray""]
@@ -181,10 +180,11 @@
 "
 17,"graph LR
     1[""scene""] --> 2[""filter_size_large""]
-    2 --> 3[""filter_color_yellow""]
+    1 --> 10[""filter_size_large""]
     2 --> 4[""And""]
-    3 --> 4
+    3[""filter_color_yellow""] --> 4
     4 --> 11[""count""]
+    10 --> 3
 "
 18,"graph LR
     1[""scene""] --> 2[""filter_size_small""]
@@ -712,8 +712,8 @@
     5 --> 6[""filter_color_green""]
     6 --> 7[""unique""]
     7 --> 8[""relate_in_front""]
-    8 --> 17[""unique""]
-    17 --> 10[""query_material""]
+    8 --> 18[""unique""]
+    18 --> 10[""query_material""]
 "
 69,"graph LR
     1[""scene""] --> 2[""filter_color_green""]
@@ -780,8 +780,7 @@
     9 --> 4
     10 --> 11[""relate_left""]
     11 --> 13
-    12[""filter_shape_cylinder""] --> 14[""unique""]
-    13 --> 12
+    13 --> 14[""unique""]
     14 --> 15[""query_color""]
 "
 75,"graph LR
@@ -924,15 +923,15 @@
     3 --> 4[""relate_right""]
     4 --> 6[""filter_shape_sphere""]
     5 --> 2
-    6 --> 14[""unique""]
+    6 --> 15[""unique""]
     7[""relate_in_front""] --> 8[""filter_size_large""]
     8 --> 9[""filter_material_metal""]
-    9 --> 15[""unique""]
+    9 --> 14[""unique""]
     10[""relate_right""] --> 11[""filter_material_metal""]
     11 --> 12[""unique""]
     12 --> 13[""query_color""]
-    14 --> 7
-    15 --> 10
+    14 --> 10
+    15 --> 7
 "
 89,"graph LR
     1[""scene""] --> 2[""filter_size_small""]
@@ -940,11 +939,13 @@
     3 --> 4[""unique""]
     4 --> 5[""relate_right""]
     5 --> 8[""unique""]
+    6[""filter_material_rubber""] --> 12[""unique""]
     8 --> 9[""relate_left""]
     9 --> 11[""filter_size_small""]
-    11 --> 15[""filter_material_metal""]
-    14[""unique""] --> 10[""query_size""]
-    15 --> 14
+    11 --> 6
+    12 --> 13[""relate_left""]
+    13 --> 14[""unique""]
+    14 --> 10[""query_size""]
 "
 90,"graph LR
     1[""scene""] --> 2[""filter_color_purple""]
@@ -1024,13 +1025,15 @@
     8 --> 11
 "
 99,"graph LR
-    1[""scene""] --> 2[""filter_color_yellow""]
-    2 --> 4[""filter_material_metal""]
-    3[""filter_size_large""] --> 5[""unique""]
-    4 --> 3
-    5 --> 6[""relate_in_front""]
+    1[""scene""] --> 7[""filter_color_red""]
+    5[""unique""] --> 6[""relate_in_front""]
     6 --> 11[""filter_size_large""]
+    7 --> 8[""filter_shape_cylinder""]
+    8 --> 9[""unique""]
+    9 --> 10[""relate_in_front""]
+    10 --> 13[""filter_size_large""]
     11 --> 14[""count""]
+    13 --> 5
 "
 100,"graph LR
     1[""scene""] --> 2[""filter_color_red""]
@@ -1086,12 +1089,11 @@
     7 --> 8[""unique""]
     8 --> 9[""relate_right""]
     9 --> 18[""filter_size_small""]
-    10[""filter_color_red""] --> 11[""unique""]
-    11 --> 12[""relate_right""]
-    12 --> 13[""filter_shape_sphere""]
+    12[""relate_right""] --> 13[""filter_shape_sphere""]
     13 --> 14[""unique""]
     14 --> 15[""query_material""]
-    18 --> 10
+    16[""unique""] --> 12
+    18 --> 16
 "
 105,"graph LR
     1[""scene""] --> 4[""filter_size_large""]
@@ -1129,12 +1131,12 @@
     1 --> 7[""filter_color_gray""]
     2 --> 3[""filter_size_small""]
     3 --> 10[""filter_material_rubber""]
-    4[""unique""] --> 14[""relate_behind""]
+    4[""unique""] --> 11[""relate_behind""]
     6[""filter_size_large""] --> 8[""OR""]
     7 --> 8
     8 --> 9[""count""]
     10 --> 4
-    14 --> 6
+    11 --> 6
 "
 109,"graph LR
     1[""scene""] --> 2[""filter_color_brown""]
@@ -1163,13 +1165,13 @@
 "
 111,"graph LR
     1[""scene""] --> 6[""filter_color_green""]
-    4[""unique""] --> 5[""relate_in_front""]
-    5 --> 11[""filter_shape_sphere""]
+    3[""filter_shape_sphere""] --> 4[""unique""]
+    4 --> 12[""query_material""]
+    5[""relate_in_front""] --> 3
     6 --> 15[""unique""]
     7[""relate_behind""] --> 9[""filter_shape_cube""]
-    9 --> 4
-    10[""unique""] --> 12[""query_material""]
-    11 --> 10
+    9 --> 10[""unique""]
+    10 --> 5
     15 --> 7
 "
 112,"graph LR
@@ -1357,9 +1359,9 @@
     2 --> 3[""filter_size_small""]
     3 --> 4[""unique""]
     4 --> 7[""relate_in_front""]
-    5[""filter_size_small""] --> 10[""unique""]
+    5[""filter_size_small""] --> 6[""unique""]
+    6 --> 13[""query_material""]
     7 --> 5
-    10 --> 11[""query_material""]
 "
 129,"graph LR
     1[""scene""] --> 2[""filter_color_cyan""]
@@ -1401,8 +1403,7 @@
     1[""scene""] --> 2[""filter_color_purple""]
     1 --> 6[""filter_color_yellow""]
     2 --> 3[""filter_size_small""]
-    3 --> 4[""filter_material_metal""]
-    4 --> 5[""unique""]
+    3 --> 5[""unique""]
     5 --> 10[""relate_in_front""]
     6 --> 7[""filter_shape_cylinder""]
     7 --> 8[""unique""]
@@ -1483,21 +1484,20 @@
     2[""filter_size_large""] --> 4[""unique""]
     3 --> 2
     4 --> 9[""relate_in_front""]
-    6 --> 11[""unique""]
-    7[""relate_behind""] --> 8[""unique""]
-    8 --> 14[""equal_material""]
+    6 --> 8[""unique""]
+    7[""relate_behind""] --> 16[""unique""]
+    8 --> 7
     9 --> 10[""filter_shape_cube""]
-    10 --> 17[""unique""]
-    11 --> 7
-    17 --> 14
+    10 --> 11[""unique""]
+    11 --> 14[""equal_material""]
+    16 --> 14
 "
 142,"graph LR
     1[""scene""] --> 2[""filter_color_yellow""]
-    1 --> 6[""filter_color_yellow""]
     2 --> 3[""unique""]
+    2 --> 4[""unique""]
     3 --> 5[""equal_size""]
-    4[""unique""] --> 5
-    6 --> 4
+    4 --> 5
 "
 143,"graph LR
     1[""scene""] --> 2[""filter_color_green""]
@@ -1511,13 +1511,12 @@
     12 --> 7
 "
 144,"graph LR
-    1[""scene""] --> 2[""filter_size_large""]
-    2 --> 3[""filter_color_yellow""]
-    3 --> 4[""unique""]
-    4 --> 5[""relate_left""]
-    5 --> 14[""filter_material_metal""]
-    14 --> 15[""unique""]
-    15 --> 19[""query_color""]
+    1[""scene""] --> 7[""filter_color_green""]
+    6[""unique""] --> 18[""query_color""]
+    7 --> 9[""unique""]
+    9 --> 16[""relate_behind""]
+    16 --> 17[""filter_shape_cylinder""]
+    17 --> 6
 "
 145,"graph LR
     1[""scene""] --> 3[""filter_material_metal""]
@@ -1536,18 +1535,21 @@
     9 --> 10[""query_shape""]
 "
 147,"graph LR
-    1[""scene""] --> 2[""filter_shape_sphere""]
-    2 --> 3[""unique""]
-    3 --> 16[""relate_in_front""]
-    6[""unique""] --> 7[""relate_right""]
-    7 --> 8[""filter_size_small""]
+    1[""scene""] --> 15[""filter_size_large""]
+    2[""filter_shape_sphere""] --> 8[""filter_size_small""]
+    3[""unique""] --> 16[""relate_in_front""]
+    5[""filter_shape_cube""] --> 6[""unique""]
+    6 --> 7[""relate_right""]
+    7 --> 2
     8 --> 9[""unique""]
     9 --> 10[""relate_right""]
     10 --> 11[""filter_size_small""]
     11 --> 12[""filter_material_rubber""]
     12 --> 13[""unique""]
     13 --> 14[""query_shape""]
-    16 --> 6
+    15 --> 3
+    16 --> 17[""filter_color_gray""]
+    17 --> 5
 "
 148,"graph LR
     1[""scene""] --> 5[""filter_size_small""]
@@ -1624,27 +1626,26 @@
     7 --> 8[""count""]
 "
 155,"graph LR
-    1[""scene""] --> 12[""filter_material_rubber""]
+    1[""scene""] --> 11[""filter_material_rubber""]
     3[""unique""] --> 4[""relate_behind""]
     4 --> 5[""filter_material_metal""]
     5 --> 6[""unique""]
     6 --> 7[""relate_in_front""]
     7 --> 9[""filter_color_blue""]
     9 --> 10[""exist""]
-    12 --> 3
+    11 --> 3
 "
 156,"graph LR
-    1[""scene""] --> 9[""filter_size_large""]
-    2[""filter_color_green""] --> 3[""filter_material_metal""]
-    3 --> 10[""unique""]
-    6[""relate_left""] --> 11[""filter_shape_cylinder""]
-    7[""filter_shape_cube""] --> 13[""unique""]
-    8[""filter_material_rubber""] --> 7
-    9 --> 2
-    10 --> 6
+    1[""scene""] --> 2[""filter_color_green""]
+    2 --> 3[""filter_material_metal""]
+    3 --> 4[""filter_size_large""]
+    4 --> 5[""unique""]
+    5 --> 6[""relate_left""]
+    5 --> 14[""equal_color""]
+    6 --> 11[""filter_shape_cylinder""]
     11 --> 12[""filter_size_large""]
-    12 --> 8
-    13 --> 16[""query_color""]
+    12 --> 13[""unique""]
+    13 --> 14
 "
 157,"graph LR
     1[""scene""] --> 2[""filter_color_green""]
@@ -1751,20 +1752,19 @@
     10 --> 9[""count""]
 "
 168,"graph LR
-    1[""scene""] --> 2[""filter_size_large""]
-    1 --> 6[""filter_material_metal""]
-    2 --> 4[""unique""]
-    4 --> 16[""relate_behind""]
-    5[""filter_size_large""] --> 8[""unique""]
-    6 --> 5
-    8 --> 9[""relate_behind""]
+    1[""scene""] --> 6[""filter_material_metal""]
+    1 --> 11[""filter_color_purple""]
+    2[""filter_size_large""] --> 3[""filter_shape_sphere""]
+    3 --> 5[""filter_size_large""]
+    4[""unique""] --> 15[""relate_behind""]
+    5 --> 4
+    6 --> 2
+    8[""unique""] --> 9[""relate_behind""]
     9 --> 10[""OR""]
-    10 --> 11[""filter_color_purple""]
+    10 --> 14[""count""]
     11 --> 12[""filter_material_rubber""]
-    12 --> 15[""unique""]
-    13[""relate_behind""] --> 14[""count""]
-    15 --> 13
-    16 --> 10
+    12 --> 8
+    15 --> 10
 "
 169,"graph LR
     1[""scene""] --> 2[""filter_size_small""]
@@ -1927,15 +1927,17 @@
 "
 185,"graph LR
     1[""scene""] --> 2[""filter_size_small""]
-    1 --> 5[""filter_size_small""]
+    1 --> 12[""filter_size_large""]
     2 --> 3[""filter_color_blue""]
-    3 --> 7[""filter_shape_cylinder""]
-    5 --> 14[""filter_material_metal""]
-    7 --> 8[""unique""]
-    8 --> 9[""relate_left""]
+    3 --> 4[""unique""]
+    4 --> 24[""relate_in_front""]
+    8[""unique""] --> 9[""relate_left""]
     9 --> 27[""And""]
+    12 --> 13[""filter_color_gray""]
+    13 --> 14[""filter_material_metal""]
     14 --> 27
     19[""unique""] --> 21[""query_color""]
+    24 --> 8
     27 --> 28[""filter_shape_cylinder""]
     28 --> 19
 "
@@ -1944,8 +1946,8 @@
     5 --> 6[""filter_material_rubber""]
     6 --> 7[""unique""]
     7 --> 8[""relate_behind""]
-    8 --> 11[""unique""]
-    11 --> 13[""query_material""]
+    8 --> 9[""unique""]
+    9 --> 14[""query_material""]
 "
 187,"graph LR
     1[""scene""] --> 2[""filter_color_yellow""]
@@ -2074,16 +2076,13 @@
 201,"graph LR
     1[""scene""] --> 5[""filter_size_large""]
     1 --> 9[""filter_color_green""]
-    2[""filter_shape_sphere""] --> 10[""unique""]
-    5 --> 14[""filter_material_metal""]
+    5 --> 7[""filter_shape_sphere""]
     6[""relate_right""] --> 15[""filter_size_large""]
-    7[""filter_shape_sphere""] --> 8[""unique""]
+    7 --> 8[""unique""]
     8 --> 6
-    9 --> 7
+    9 --> 10[""unique""]
     10 --> 13[""equal_material""]
-    14 --> 2
-    15 --> 16[""filter_material_metal""]
-    16 --> 17[""filter_shape_sphere""]
+    15 --> 17[""filter_shape_sphere""]
     17 --> 18[""unique""]
     18 --> 13
 "
@@ -2417,24 +2416,24 @@
     1[""scene""] --> 2[""filter_color_red""]
     2 --> 3[""filter_material_rubber""]
     3 --> 4[""unique""]
-    4 --> 20[""relate_behind""]
+    4 --> 22[""relate_behind""]
     6[""filter_color_cyan""] --> 18[""filter_size_small""]
     7[""filter_material_metal""] --> 12[""unique""]
     8[""unique""] --> 9[""relate_in_front""]
-    9 --> 11[""filter_color_cyan""]
-    10[""filter_size_small""] --> 19[""unique""]
-    11 --> 10
+    9 --> 20[""filter_color_cyan""]
+    10[""filter_size_small""] --> 7
+    11[""filter_color_cyan""] --> 10
     12 --> 13[""relate_behind""]
     13 --> 14[""filter_size_small""]
     14 --> 15[""filter_material_rubber""]
     15 --> 24[""filter_shape_cube""]
     16[""unique""] --> 17[""query_color""]
     18 --> 8
-    19 --> 21[""relate_behind""]
-    20 --> 6
-    21 --> 23[""filter_color_cyan""]
-    22[""filter_size_small""] --> 7
-    23 --> 22
+    19[""filter_size_small""] --> 21[""unique""]
+    20 --> 19
+    21 --> 23[""relate_behind""]
+    22 --> 6
+    23 --> 11
     24 --> 16
 "
 238,"graph LR
@@ -2521,10 +2520,10 @@
     1 --> 13[""filter_color_blue""]
     2 --> 4[""unique""]
     4 --> 5[""relate_right""]
-    5 --> 9[""filter_size_large""]
-    7[""filter_color_blue""] --> 8[""filter_material_metal""]
+    5 --> 6[""filter_size_large""]
+    6 --> 7[""filter_color_blue""]
+    7 --> 8[""filter_material_metal""]
     8 --> 19[""count""]
-    9 --> 7
     13 --> 14[""unique""]
     14 --> 15[""relate_right""]
     15 --> 16[""filter_color_gray""]
@@ -2905,7 +2904,7 @@
 "
 286,"graph LR
     1[""scene""] --> 5[""filter_size_small""]
-    1 --> 15[""filter_size_large""]
+    1 --> 14[""filter_size_large""]
     2[""filter_color_red""] --> 10[""filter_material_metal""]
     4[""unique""] --> 9[""relate_left""]
     5 --> 6[""filter_color_green""]
@@ -2915,7 +2914,7 @@
     9 --> 11
     10 --> 4
     11 --> 12[""count""]
-    15 --> 2
+    14 --> 2
 "
 287,"graph LR
     1[""scene""] --> 2[""filter_color_cyan""]
@@ -3001,15 +3000,15 @@
 297,"graph LR
     1[""scene""] --> 2[""filter_size_large""]
     1 --> 5[""filter_color_purple""]
-    2 --> 11[""filter_material_metal""]
-    4[""unique""] --> 9[""relate_behind""]
+    2 --> 3[""filter_material_metal""]
+    3 --> 4[""unique""]
+    4 --> 9[""relate_behind""]
     5 --> 6[""filter_material_metal""]
     6 --> 7[""unique""]
     7 --> 8[""relate_in_front""]
     8 --> 10[""And""]
     9 --> 10
     10 --> 13[""unique""]
-    11 --> 4
     13 --> 12[""query_size""]
 "
 298,"graph LR

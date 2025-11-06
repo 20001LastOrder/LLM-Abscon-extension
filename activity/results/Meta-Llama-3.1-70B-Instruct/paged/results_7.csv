@@ -1880,8 +1880,8 @@ graph LR
 0 --> 2[""Conduct property survey""]
 1 --> 3[""Search for property title""]
 2 --> 3
-1 -.> 4[""credit history file""]
-2 -.> 5[""Survey Document""]
+1 --> 4[""credit history file""]
+2 --> 5[""Survey Document""]
 3 --> 6[""EndNode""]
 "
 143,"
@@ -4338,7 +4338,7 @@ graph LR
 0[""StartNode""] --> 1[""Perform left outer join between lips and it_likp""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Perform left outer join between vbfa and it_likpsm""]
-3 --> 4[""Remove lines from it_vbfa_completo where plmin is not equal to ""+""]
+3 --> 4[""Remove lines from it_vbfa_completo where plmin is not equal to +""]
 4 --> 5{""c_si in r_valida""}
 5 --> |""Yes""|6[""Execute busca_pedido_vbap and busca_factura_vbap functions""]
 5 --> |""No""|7[""Perform left outer join between vbap and it_vbfa_completo""]

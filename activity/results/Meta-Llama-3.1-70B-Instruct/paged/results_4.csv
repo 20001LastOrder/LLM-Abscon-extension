@@ -326,7 +326,7 @@ graph LR
 3 --> |""No""|4[""EndNode""]
 3 --> |""Yes""|5[""Obtain second letter""]
 5 --> 3
-3 --> |""Yes"" and second time|6[""Pay fee""]
+3 --> |""Yes and second time""|6[""Pay fee""]
 6 --> 7[""Receive card""]
 7 --> 4
 "
@@ -548,7 +548,7 @@ graph LR
 5 --> 6{""Content prepared?""}
 6 --> |""No""|7[""Develop site""]
 6 --> |""Yes""|8[""Initial draft""]
-8 --> 9[""Site has marketing view?""}
+8 --> 9{""Site has marketing view?""}
 9 --> |""No""|10[""Final version""]
 9 --> |""Yes""|11[""Marketing review""]
 9 --> |""Yes""|12[""Design process""]
@@ -1932,7 +1932,7 @@ graph LR
 6 --> 7[""Design phase""]
 6 --> 8[""Initial draft of content""]
 7 --> 9[""Development phase""]
-9 --> 10[""Need for Marketing Review?""}
+9 --> 10{""Need for Marketing Review?""}
 10 --> |""40%""|11[""Marketing review preparation""]
 10 --> |""60%""|12[""Marketing review""]
 11 --> 13[""Building phase""]
@@ -4328,7 +4328,6 @@ graph LR
 "
 324,"
 flowchart LR
-... (activities 0-11)
 12{""c_si in r_valida""} --> |""true""|13{""pvstel in r_exclog""}
 12 --> |""false""|14
 13 --> |""true""|15

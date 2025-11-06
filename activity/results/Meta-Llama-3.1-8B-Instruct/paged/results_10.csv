@@ -890,14 +890,14 @@ graph LR
 1 --> 2[""Fill out form with basic information""]
 2 --> 3{""Method of payment?""}
 3 --> |""offline""|4[""Show payment information""]
-3 --> |""online""|5[""Check Variant of subscription?""""]
-5 --> |""online or print&online"" or ""online or online&print""|6[""Assign subscription rights""]
+3 --> |""online""|5[""Check Variant of subscription?""]
+5 --> |""online or print&online or online or online&print""|6[""Assign subscription rights""]
 5 --> |""only print""|7[""Register payment information for accounting purposes""]
 6 --> 8[""Renew subscription""]
 7 --> 8
 8 --> 9{""Variant of subscription?""}
 9 --> |""only print""|10[""Subscription rights assigned""]
-9 --> |""online or print&online"" or ""online or online&print""|11[""Generate code""]
+9 --> |""online or print&online or online or online&print""|11[""Generate code""]
 10 --> 12[""EndNode""]
 11 --> 13[""Enter code on www.katyd.cz""]
 13 --> 9

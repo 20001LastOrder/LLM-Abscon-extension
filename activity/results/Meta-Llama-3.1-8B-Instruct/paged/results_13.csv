@@ -773,9 +773,9 @@ graph LR
 5 --> 6[""Transmit the letter and register it with Miranda""]
 6 --> 7{""Membership decision""}
 7 --> |""No""|8[""Provide a negative answer""]
-7 --> |""Yes""|9[""Stamp ""new member"" and the date""]
+7 --> |""Yes""|9[""Stamp new member and the date""]
 9 --> 10{""Membership check""}
-10 --> |""Yes""|11[""Stamp ""new member"" and the date""]
+10 --> |""Yes""|11[""Stamp new member and the date""]
 10 --> |""No""|12[""Provide a negative answer""]
 11 --> 13[""Add the new member""]
 13 --> 14[""Calculate the membership fee""]
@@ -875,10 +875,10 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Visit www.katyd.cz""]
 1 --> 2[""Fill out form with basic information""]
-2 --> 3[""Check \""Method of payment?\"" option""]
+2 --> 3[""Check Method of payment? option""]
 3 --> |""offline""|4[""Show payment information""]
 3 --> |""online""|5[""Initiate payment process""]
-5 --> 6[""Check \""Variant of subscription?\"" option""]
+5 --> 6[""Check Variant of subscription? option""]
 6 --> |""only print""|7[""Register payment information for accounting purposes""]
 6 --> |""online or online&print""|8[""Generate code""]
 7 --> 9[""Renew subscription""]
@@ -1419,8 +1419,8 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Master Production Scheduling""]
 1 --> 2[""MRP run""]
-2 --> 3{""Capacity plan review and adjustment""]
-3 --> 4{""Production plan review""]
+2 --> 3[""Capacity plan review and adjustment""]
+3 --> 4[""Production plan review""]
 3 --> 5{""Local supply planning""}
 3 --> 6{""PIM plan review""}
 2 --> 6
@@ -1465,7 +1465,7 @@ graph LR
 0[""StartNode""] --> 1[""Create Supplier master data""]
 1 --> 2[""Prepare supplier master data for target system""]
 2 --> |Access Derivation rules for transfer, Supplier master data, Business context|3[""Distribute to target system""]
-2 --> |Create Supplier master data to transfer (derived)|3
+2 --> |""Create Supplier master data to transfer (derived)""|3
 3 --> 4[""Notify requestor and stewards""]
 4 --> 5[""Deploy supplier master data to target system(s)""]
 5 --> 6[""Notify Business Data Steward(s) and Supplier Data Requestor""]
@@ -2581,7 +2581,7 @@ flowchart LR
 192,"
 graph LR
 0[""StartNode""] --> 1[""Check customer credit history""]
-1 --> |access ""Credit history file""| 2[""Search property title""]
+1 --> |access Credit history file| 2[""Search property title""]
 1 --> 2
 2 --> 3[""Conduct property survey""]
 3 --> 4[""EndNode""]
@@ -3324,7 +3324,7 @@ graph LR
 249,"
 graph LR
 0[""StartNode""] --> 1[""Log and route complaint""]
-1 --> 2[""Check if complaint is ""instructor resolvable""""]
+1 --> 2[""Check if complaint is instructor resolvable""]
 2 --> |""Yes""| 3[""Handle complaint""]
 2 --> 3
 3 --> 4{""Should complaint be escalated?""}
@@ -3640,7 +3640,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Send Mortgage Offer""]
 1 --> 2[""Wait for Answer""]
-2 --> 3{""Answer is \""decline\""?""}
+2 --> 3{""Answer is decline?""}
 3 --> |""Yes""|4[""Update Details""]
 3 --> |""No""|5[""Check Offer Completeness""]
 4 --> 6[""Complete Offer""]

@@ -729,7 +729,7 @@ graph LR
 2 --> |""Yes""|3[""Provide LandM cost estimates""]
 2 --> |""No""|4[""Ask for more information""]
 4 --> 1
-2 --> |""No"" after 1|5[""Provide clarification""]
+2 --> |""No after 1""|5[""Provide clarification""]
 3 --> 6[""Add overhead cost""]
 6 --> 7[""Generate pricing options""]
 7 --> 8[""Generate sales quote""]
@@ -2633,7 +2633,7 @@ graph LR
 0[""StartNode""] --> 1[""Procure Part""]
 1 --> 2{""All parts available?""}
 2 --> |""Yes""|3[""EndNode""]
-2 --> |""No""|4[""Check All parts available?""}
+2 --> |""No""|4[""Check All parts available?""]
 4 --> 2
 2 --> |""No""|5[""Part Auction""]
 5 --> 3
@@ -4316,7 +4316,7 @@ graph LR
 0[""Start""] --> 1[""Perform left outer join between lips and it_likp""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Perform left outer join between vbfa and it_likpsm""]
-3 --> 4[""Remove lines from it_vbfa_completo where plmin is not equal to ""+""]
+3 --> 4[""Remove lines from it_vbfa_completo where plmin is not equal to +""]
 4 --> 5[""Copy vbeln values from it_vbfa_completo to it_unolips, remove duplicates""]
 5 --> 6[""Perform left outer join between lips and it_unolips""]
 6 --> 7[""Execute busca_pedido_vbap and busca_factura_vbap functions""]

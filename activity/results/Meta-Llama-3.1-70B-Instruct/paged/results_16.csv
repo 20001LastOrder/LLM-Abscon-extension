@@ -2270,7 +2270,7 @@ graph LR
 0[""StartNode""] --> 1[""Assess weak points in development""]
 1 --> 2[""Choose employees for training""]
 2 --> 3[""Specify education needs""]
-3 --> 4[""Decide on training method"" and ""Check availability of employees for training""]
+3 --> 4[""Decide on training method and Check availability of employees for training""]
 4 --> 5[""Consult with employee""]
 4 --> 6[""Set possible dates for training""]
 5 --> 7[""Finalize education requirements""]
@@ -3593,8 +3593,8 @@ graph LR
 1 --> 2[""Receive answer""]
 2 --> 3{""Is answer decline?""}
 3 --> |""Yes""|4[""Update details""]
-3 --> |""No""|5[""Is offer complete?""}
-4 --> 6[""Is offer complete?""}
+3 --> |""No""|5{""Is offer complete?""}
+4 --> 6{""Is offer complete?""}
 5 --> |""Yes""|7[""Update details""]
 5 --> |""No""|8[""Send message to customer""]
 6 --> |""Yes""|9[""Complete offer""]

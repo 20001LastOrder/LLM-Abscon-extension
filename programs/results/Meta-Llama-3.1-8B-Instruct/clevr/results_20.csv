@@ -1214,12 +1214,12 @@ graph LR
     7 --> 8[""filter_material_rubber""]
     8 --> 9[""filter_material_metal""]
     9 --> 10[""filter_color""]
-    10-.> 6
+    10 --> 6
     10 --> 11[""OR""]
     7 --> 11
     11 --> 12[""count""]
     12 --> 13[""greater_than""]
-    13-.> 0
+    13 --> 0
 "
 96,"
 graph LR

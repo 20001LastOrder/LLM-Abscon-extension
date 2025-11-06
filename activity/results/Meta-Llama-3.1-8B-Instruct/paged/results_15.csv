@@ -1867,7 +1867,7 @@ graph LR
 0[""StartNode""] --> 1[""Possess a driver's license""]
 1 --> 2[""Be 17 years old""]
 2 --> 3{""17 years old?""}
-3 --> |""Yes""|4[""On 17th birthday?""}
+3 --> |""Yes""|4[""On 17th birthday?""]
 3 --> |""Yes""|5[""Find an accompanying person""]
 4 --> 6{""Over 30 years old""}
 6 --> |""Yes""|7[""Held a driver's license for at least 5 years""]
@@ -1988,13 +1988,13 @@ graph LR
 11 --> 12[""Sort it_likp by vbeln and select * from it_likp where lifex != space, storing the result in it_lifex sorted by vbeln""]
 12 --> 13[""Replace it_vbfa_completo-secuencia with corresponding it_lifex-lifex""]
 13 --> 14[""Perform busca_pedido_vbapt and busca_factura_vbapt, and clear any errors""]
-14 --> 15{""c_si in r_valida"" is ""no""}
+14 --> 15{""c_si in r_valida is no""}
 15 --> |""No""| 16[""Perform a left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
-15 --> |""Yes""| 17{""pvstel in r_exclog"" is ""yes""}
+15 --> |""Yes""| 17{""pvstel in r_exclog is yes""}
 17 --> |""Yes""| 18[""Remove rows from it_nofacturado that aren't errors""]
-17 --> |""No""| 19{""it_nofacturado empty?"" is ""no""}
+17 --> |""No""| 19{""it_nofacturado empty? is no""}
 19 --> |""Yes""| 20[""Set & print error""]
-19 --> |""No""| 21{""error?"" is ""no""}
+19 --> |""No""| 21{""error? is no""}
 21 --> |""Yes""| 22[""Perform a left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
 21 --> |""No""| 23[""EndNode""]
 20 --> 23
@@ -2424,7 +2424,7 @@ graph LR
 3 --> 4{""Application complete?""}
 4 --> |""No, <20%""|5[""Send email to applicant""]
 5 --> 6[""EndNode""]
-4 --> |""Yes"" or ""<80%""|7[""Verify application completeness""]
+4 --> |""Yes or <80%""|7[""Verify application completeness""]
 7 --> |""80%""|8[""Send documents to academic recognition agency""]
 8 --> 6
 7 --> |""<80%""|9[""Conduct completeness check""]
@@ -3504,7 +3504,7 @@ graph LR
 1 --> 2[""Analyze response""]
 1 --> 3[""Wait for two weeks""]
 2 --> 4{""Response received?""}
-4 --> |""Yes""|5[""Response accepted?""}
+4 --> |""Yes""|5{""Response accepted?""}
 4 --> |""No""|6[""Update details""]
 5 --> |""Yes""|7[""Check status of documents""]
 5 --> |""No""|8[""Update details""]
@@ -3590,9 +3590,9 @@ graph LR
 272,"
 graph LR
 0[""StartNode""] --> 1[""Send mortgage offer""]
-1 --> 2{""Is answer a \""decline\""?""}
+1 --> 2{""Is answer a decline?""}
 2 --> |""Yes""|3[""Update details""]
-2 --> |""No""|4[""Is offer \""complete\""?""]
+2 --> |""No""|4[""Is offer complete?""]
 3 --> 5[""Waiting for customer's answer""]
 3 --> 6[""EndNode""]
 4 --> |""Yes""|7[""Complete offer""]

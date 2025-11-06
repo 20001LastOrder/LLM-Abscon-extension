@@ -2741,7 +2741,6 @@ graph LR
 5 --> 6[""Wait for article to be received""]
 6 --> 7[""Procure article""]
 7 --> 3
-0 <-- 7
 "
 206,"
 graph LR
@@ -4305,7 +4304,7 @@ graph LR
 0[""StartNode""] --> 1[""Perform left outer join between lips and it_likp""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Perform left outer join between vbfa and it_likpsm""]
-3 --> 4[""Remove lines in it_vbfa_completo where plmin is not ""+""]
+3 --> 4[""Remove lines in it_vbfa_completo where plmin is not +""]
 4 --> 5[""Copy vbeln values from it_vbfa_completo to it_unolips""]
 5 --> 6[""Remove duplicates from it_unolips""]
 6 --> 7[""Perform left outer join between lips and it_unolips""]

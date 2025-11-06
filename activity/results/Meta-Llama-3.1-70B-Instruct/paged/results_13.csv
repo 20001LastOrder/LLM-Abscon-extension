@@ -3421,7 +3421,7 @@ graph LR
 2 --> |""No""|4[""Send an email to the support system""]
 3 --> 5[""EndNode""]
 4 --> 5
-2 --> 6[""Reevaluate: Can I handle this on my own?""}
+2 --> 6{""Reevaluate: Can I handle this on my own?""}
 6 --> |""Yes""|3
 6 --> |""No""|4
 "
@@ -4276,7 +4276,6 @@ graph LR
 1 --> 4[""EndNode""]
 2 --> 4
 3 --> 4
-note right of 3: generates ""Survey Document""
 "
 320,"
 graph LR
@@ -4321,7 +4320,7 @@ graph LR
 0[""StartNode""] --> 1[""Left outer join lips and it_likp, store in it_lipsm""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Left outer join vbfa and it_likpsm, store in it_vbfa_completo""]
-3 --> 4[""Remove lines from it_vbfa_completo where plmin != ""+""]
+3 --> 4[""Remove lines from it_vbfa_completo where plmin != +""]
 4 --> 5[""Copy vbeln from it_vbfa_completo to it_unolips, remove duplicates""]
 5 --> 6[""Left outer join lips and it_unolips, store in it_lips""]
 6 --> 7[""Copy lifex from it_likp to it_lifex, sort""]

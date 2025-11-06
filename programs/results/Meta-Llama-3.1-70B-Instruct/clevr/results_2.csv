@@ -1946,7 +1946,7 @@ graph LR
     3 --> 4[""query_material""]
     1 --> 5[""filter_color_gray""]
     5 --> 6[""filter_shape_cylinder""]
-    6 --> 7[""filter_material_{""+4+""}""]
+    6 --> 7[""filter_material_{+4+}""]
     7 --> 8[""count""]
 "
 151,"

@@ -649,10 +649,10 @@
 5 --> 6[""Transmit the letter and register it with Miranda""]
 6 --> 7[""Make a membership decision""]
 7 --> |""No""|8[""Provide a negative answer""]
-7 --> |""Yes""|9[""Stamp \""new member\"" and the date""]
+7 --> |""Yes""|9[""Stamp new member and the date""]
 9 --> 10[""Check for membership""]
 10 --> |""No""|8
-10 --> |""Yes""|11[""Stamp \""new member\"" and the date""]
+10 --> |""Yes""|11[""Stamp new member and the date""]
 11 --> 12[""Add the new member""]
 12 --> 13[""Calculate the membership fee""]
 13 --> 14[""Write down the amount""]
@@ -661,7 +661,7 @@
 16 --> 17[""Check for membership""]
 16 --> 20[""Transmit the letter to Charles""]
 17 --> |""No""|18[""Provide a negative answer""]
-17 --> |""Yes""|19[""Stamp \""new member\"" and the date""]
+17 --> |""Yes""|19[""Stamp new member and the date""]
 19 --> 20
 20 --> 21[""Add the new member""]
 21 --> 22[""Calculate the membership fee""]
@@ -1178,8 +1178,8 @@
 4 --> |""No""|5[""Take home if estimate is not satisfactory""]
 4 --> |""Yes""|6[""Authorize repair""]
 6 --> 7[""Pick up computer""]
-7 --> 8[""Access \""Invoice\""""]
-8 --> 9[""Access \""Report Problems and Solutions\""""]
+7 --> 8[""Access Invoice""]
+8 --> 9[""Access Report Problems and Solutions""]
 9 --> 10[""Make payment""]
 10 --> 11[""EndNode""]"
 107,"flowchart LR
@@ -2213,12 +2213,12 @@
 2 --> 3[""Run payment file process""]
 3 --> 4[""Generate payment report""]
 4 --> 5[""Send payment report to client""]
-4 --> 7[""Send payment report to registry""]
-5 --> 6[""Send report of fees $35 per invoice to client""]
-7 --> 8[""Archive invoice""]
-7 --> 9[""Generate monthly invoices for SSP's clients""]
-9 --> 10[""Generate bills for SSP clients""]
-10 --> 6"
+4 --> 6[""Send payment report to registry""]
+5 --> 10[""Send report of fees $35 per invoice to client""]
+6 --> 7[""Archive invoice""]
+6 --> 8[""Generate monthly invoices for SSP's clients""]
+8 --> 9[""Generate bills for SSP clients""]
+9 --> 10"
 203,"flowchart LR
 0[""StartNode""] --> 1[""Validate invoice information for payment""]
 1 --> 2[""Check validated invoices from SAP""]
@@ -2487,12 +2487,12 @@
 230,"flowchart LR
 0[""StartNode""] --> 1[""Check if Change Request is realizable""]
 1 --> |""Yes""|2[""Create new transport request""]
-1 --> |""No""|3[""Release transport request""]
-2 --> 4[""Select request type""]
-3 --> 7[""Pass correction to test""]
-4 --> 5[""Log on to development system""]
-5 --> 6[""Workbench or customizing development""]
-6 --> 3
+1 --> |""No""|6[""Release transport request""]
+2 --> 3[""Select request type""]
+3 --> 4[""Log on to development system""]
+4 --> 5[""Workbench or customizing development""]
+5 --> 6
+6 --> 7[""Pass correction to test""]
 7 --> 8[""Log on to test system""]
 8 --> 9[""Test status""]
 9 --> |""To Be Tested""|10[""Confirm successful test""]
@@ -2628,13 +2628,13 @@
 7 --> 8[""Check if computer has been repaired""]
 8 --> |""Yes""|9[""Pay for work done""]
 8 --> |""No""|12[""Take computer back""]
-9 --> 10[""Access data object \""problem and solution for customer file\""""]
+9 --> 10[""Access data object problem and solution for customer file""]
 9 --> 11[""EndNode""]
 12 --> 11"
 241,"flowchart LR
 0[""StartNode""] --> 1[""Invoices entered to validation office""]
 1 --> 2[""Invoices validation""]
-2 --> 3[""Ticked box ""invoice entered correctly"" on invoices form""]
+2 --> 3[""Ticked box invoice entered correctly on invoices form""]
 3 --> 4[""Logged into SAP""]
 4 --> 5[""Changed data status from parked to validated""]
 5 --> 6[""Forwarded validated invoices to Registry officers""]
@@ -2719,7 +2719,7 @@
 6 --> 7[""EndNode""]"
 249,"flowchart LR
 0[""StartNode""] --> 1[""Log and route complaint""]
-1 --> 2[""Is complaint \""instructor resolvable\""?""]
+1 --> 2[""Is complaint instructor resolvable?""]
 2 --> |""No""|3[""Handle complaint""]
 3 --> 4[""Should complaint be escalated?""]
 4 --> |""No""|5[""Send email to student and cc Complaint Staff""]
@@ -3039,7 +3039,7 @@
 9 --> 12
 10 --> 11
 11 --> 13[""13""]
-11 --> 14[""14""]
+11 --> 14[""EndNode""]
 12 --> 13
 13 --> 14"
 277,"flowchart LR
@@ -3149,18 +3149,18 @@
 0[""StartNode""] --> 1[""Informational Meeting""]
 1 --> 2[""Meeting Successful?""]
 2 --> |""Yes""|3[""Create Storyboard""]
-2 --> |""No""|4[""EndNode""]
-3 --> 5[""Design Website""]
-4 --> 12[""EndNode""]
-5 --> 6[""Develop Website""]
-6 --> 7[""Prepare Content""]
-7 --> 8[""Create Initial Draft""]
-8 --> 9[""Review Initial Draft""]
-9 --> |""No""|4
-9 --> |""Yes""|10[""Review Draft""]
+2 --> |""No""|9[""EndNode""]
+3 --> 4[""Design Website""]
+4 --> 5[""Develop Website""]
+5 --> 6[""Prepare Content""]
+6 --> 7[""Create Initial Draft""]
+7 --> 8[""Review Initial Draft""]
+8 --> |""No""|9
+8 --> |""Yes""|10[""Review Draft""]
+9 --> 12[""EndNode""]
 10 --> 11[""Review Draft""]
-11 --> |""Yes""|9
-11 --> |""No""|4"
+11 --> |""Yes""|8
+11 --> |""No""|9"
 287,"flowchart LR
 0[""StartNode""] --> 1[""Receive customer inquiry""]
 1 --> 2[""Prepare quotation""]
@@ -3304,7 +3304,7 @@
 300,"flowchart LR
 0[""StartNode""] --> 1[""Vendor sends the invoice""]
 1 --> 2[""Vendor receives the invoice""]
-2 --> 3[""Instruction - \""send over the invoice\"" or \""contact the vendor\""""]
+2 --> 3[""Instruction - send over the invoice or contact the vendor""]
 3 --> |""send over the invoice""|4[""Enter invoice information in Payment Out Module""]
 3 --> |""contact the vendor""|5[""Revising the invoice on the spot""]
 4 --> 6[""Make payment""]
@@ -3538,7 +3538,7 @@
 0[""StartNode""] --> 1[""Left outer join between lips and it_likp, store result in it_lipsm""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Left outer join between vbfa and it_likpsm, store result in it_vbfa_completo""]
-3 --> 4[""Remove rows from it_vbfa_completo where plmin is not ""+""""]
+3 --> 4[""Remove rows from it_vbfa_completo where plmin is not +""]
 4 --> 5[""Copy vbeln values from it_vbfa_completo to it_unolips and remove duplicates""]
 5 --> 6[""Left outer join between lips and it_unolips, store result in it_lips""]
 6 --> 7[""Copy lifex values from it_likp to it_lifex and sort""]
@@ -3547,14 +3547,14 @@
 9 --> 10[""c_si in r_valida?""]
 10 --> |""Yes""|11[""Check pvstel in r_exclog""]
 11 --> |""Yes""|12[""Left outer join between vbap and it_vbfa_completo, store result in imaktl""]
-11 --> |""No""|13[""Transfer maktl values from imaktl to it_vbfa_completo and remove non-error rows from it_nofacturado""]
-12 --> 14[""Transfer vbeln values from it_vbfa_completo to itransp and remove duplicates""]
-13 --> 19[""Transfer tknum values from itnum-vbeln to it_vbfa_completo and remove rows without tknum""]
-14 --> 15[""it_nofacturado empty?""]
-15 --> |""Yes""|16[""Check error?""]
-16 --> |""Yes""|17[""Left outer join between vbfa and itransp, store result in itnum""]
-16 --> |""No""|18[""Left outer join between vbap and it_vbfa_completo, store result in imaktl""]
-17 --> 13
+11 --> |""No""|18[""Transfer maktl values from imaktl to it_vbfa_completo and remove non-error rows from it_nofacturado""]
+12 --> 13[""Transfer vbeln values from it_vbfa_completo to itransp and remove duplicates""]
+13 --> 14[""it_nofacturado empty?""]
+14 --> |""Yes""|15[""Check error?""]
+15 --> |""Yes""|16[""Left outer join between vbfa and itransp, store result in itnum""]
+15 --> |""No""|17[""Left outer join between vbap and it_vbfa_completo, store result in imaktl""]
+16 --> 18
+18 --> 19[""Transfer tknum values from itnum-vbeln to it_vbfa_completo and remove rows without tknum""]
 19 --> 20[""tknum is in so_tknum?""]
 20 --> |""Yes""|21[""EndNode""]
 20 --> |""No""|22[""EndNode""]"

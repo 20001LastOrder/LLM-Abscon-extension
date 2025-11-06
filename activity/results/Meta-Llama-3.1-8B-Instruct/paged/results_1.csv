@@ -773,10 +773,10 @@ graph LR
 5 --> 6[""Transmit the letter and register it with Miranda""]
 6 --> 7{""Make a membership decision""}
 7 --> |""No""| 8[""Provide a negative answer""]
-7 --> |""Yes""| 9[""Stamp \""new member\"" and the date""]
+7 --> |""Yes""| 9[""Stamp new member and the date""]
 9 --> 10{""Check for membership""}
 10 --> |""No""| 8
-10 --> |""Yes""| 11[""Stamp \""new member\"" and the date""]
+10 --> |""Yes""| 11[""Stamp new member and the date""]
 11 --> 12[""Add the new member""]
 12 --> 13[""Calculate the membership fee""]
 13 --> 14[""Write down the amount""]
@@ -784,7 +784,7 @@ graph LR
 15 --> 16[""Send the membership card""]
 16 --> 17{""Check for membership""}
 17 --> |""No""| 18[""Provide a negative answer""]
-17 --> |""Yes""| 19[""Stamp \""new member\"" and the date""]
+17 --> |""Yes""| 19[""Stamp new member and the date""]
 19 --> 20[""Transmit the letter to Charles""]
 20 --> 21[""Add the new member""]
 21 --> 22[""Calculate the membership fee""]
@@ -887,7 +887,7 @@ graph LR
 1 --> 2[""Fill out the form""]
 2 --> 3{""Method of payment?""}
 3 --> |""offline""|4[""Payment information shown""]
-3 --> |""online""|5[""Check the Variant of subscription?""}
+3 --> |""online""|5{""Check the Variant of subscription?""}
 5 --> |""only print""|6[""Payment information registered""]
 5 --> |""online or online&print""|7[""Code generated""]
 7 --> 8[""Enter code on www.katyd.cz""]
@@ -1413,8 +1413,8 @@ graph LR
 4 --> |""No""|5[""Take home if estimate is not satisfactory""]
 4 --> |""Yes""|6[""Authorize repair""]
 6 --> 7[""Pick up computer""]
-7 --> 8[""Access \""Invoice\""""]
-8 --> 9[""Access \""Report Problems and Solutions\""""]
+7 --> 8[""Access Invoice""]
+8 --> 9[""Access Report Problems and Solutions""]
 9 --> 10[""Make payment""]
 10 --> 11[""EndNode""]
 "
@@ -3158,7 +3158,7 @@ graph LR
 5 --> 7[""Pick up notice for computer pickup""]
 7 --> 8[""Check if computer has been repaired""]
 8 --> |""Yes""|9[""Pay for work done""]
-9 --> 10[""Access data object \""problem and solution for customer file\""""]
+9 --> 10[""Access data object problem and solution for customer file""]
 9 --> 11[""EndNode""]
 8 --> |""No""|12[""Take computer back""]
 12 --> 11
@@ -3167,7 +3167,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Invoices entered to validation office""]
 1 --> 2[""Invoices validation""]
-2 --> 3[""Ticked box ""invoice entered correctly"" on invoices form""]
+2 --> 3[""Ticked box invoice entered correctly on invoices form""]
 3 --> 4[""Logged into SAP""]
 4 --> 5[""Changed data status from parked to validated""]
 5 --> 6[""Forwarded validated invoices to Registry officers""]
@@ -3269,7 +3269,7 @@ graph LR
 249,"
 graph LR
 0[""StartNode""] --> 1[""Log and route complaint""]
-1 --> 2{""Is complaint \""instructor resolvable\""?""}
+1 --> 2{""Is complaint instructor resolvable?""}
 2 --> |""Yes""|3[""Handle complaint""]
 2 --> |""No""|3
 3 --> 4{""Should complaint be escalated?""}
@@ -3966,7 +3966,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Vendor sends the invoice""]
 1 --> 2[""Vendor receives the invoice""]
-2 --> 3{""Instruction - \""send over the invoice\"" or \""contact the vendor\""""}
+2 --> 3{""Instruction - send over the invoice or contact the vendor""}
 3 --> |""send over the invoice""|4[""Enter invoice information in Payment Out Module""]
 3 --> |""contact the vendor""|5[""Revising the invoice on the spot""]
 5 --> 1
@@ -4262,7 +4262,7 @@ graph LR
 11 --> |""No""|18[""Transfer maktl values from imaktl to it_vbfa_completo and remove non-error rows from it_nofacturado""]
 12 --> 13[""Transfer vbeln values from it_vbfa_completo to itransp and remove duplicates""]
 13 --> 14{""it_nofacturado empty?""}
-14 --> |""Yes""|15[""Check error?""}
+14 --> |""Yes""|15{""Check error?""}
 15 --> |""Yes""|16[""Left outer join between vbfa and itransp, store result in itnum""]
 15 --> |""No""|17[""Left outer join between vbap and it_vbfa_completo, store result in imaktl""]
 16 --> 18

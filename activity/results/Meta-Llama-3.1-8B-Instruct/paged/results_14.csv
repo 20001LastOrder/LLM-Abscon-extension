@@ -1158,7 +1158,7 @@ graph LR
 88,"
 graph LR
 0[""StartNode""] --> 1[""Backing up the database""]
-1 --> 2[""Check \""Account Defaulter\"" table for changes""]
+1 --> 2[""Check Account Defaulter table for changes""]
 2 --> |""Yes""|3{""Table has changed?""}
 2 --> |""No""|4[""Check CRM system for new returns""]
 3 --> |""Yes""|5[""Alert supervisor""]
@@ -3093,15 +3093,15 @@ graph LR
 0[""StartNode""] --> 1[""Incident Identification""]
 1 --> 2[""Incident Logging""]
 2 --> 3[""Incident Categorization""]
-3 --> 4{""Is it a \""Service Request\""?""}
+3 --> 4{""Is it a Service Request?""}
 4 --> |""No""|5[""Incident Prioritization""]
 4 --> |""Yes""|6[""Request Fulfilment""]
 5 --> 6
-3 --> 7{""Is it a \""Major Incident\""?""}
+3 --> 7{""Is it a Major Incident?""}
 7 --> |""No""|8[""Initial Diagnosis""]
 7 --> |""Yes""|9[""Escalation""]
 8 --> 9
-6 --> 10{""Was the incident \""Fixed in agreed time\""?""}
+6 --> 10{""Was the incident Fixed in agreed time?""}
 10 --> |""No""|11{""Is hierarchic escalation needed?""}
 11 --> |""Yes""|9
 11 --> |""No""|12[""Investigation and Diagnosis""]
@@ -3153,7 +3153,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Entered invoices to validation office""]
 1 --> 2[""Proceed with invoices validation""]
-2 --> 3[""Ticked box \""invoice entered correctly\"" on invoices form""]
+2 --> 3[""Ticked box invoice entered correctly on invoices form""]
 3 --> 4[""Logged into SAP""]
 4 --> 5[""Changed data status from parked to validated""]
 5 --> 6[""Forwarded validated invoices to Registry officers""]

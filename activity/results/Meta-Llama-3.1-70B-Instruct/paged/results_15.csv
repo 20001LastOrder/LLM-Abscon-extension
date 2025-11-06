@@ -135,7 +135,7 @@ graph LR
 4 --> 5[""EndNode""]
 3 --> |""Yes""|6[""Perform risk assessment""]
 6 --> 2
-3 --> |""Yes"" again|7[""Check reinsurance option""]
+3 --> |""Yes again""|7[""Check reinsurance option""]
 7 --> 8[""Finish contract""]
 8 --> 5
 "
@@ -1241,7 +1241,6 @@ graph LR
 1 --> 4[""Lodge the application""]
 2 --> 4
 3 --> 4
-4 [""EndNode""]
 "
 91,"
 graph LR
@@ -2009,15 +2008,15 @@ graph LR
 10 --> 11[""perform a left outer join between lips and it_unolips, and store the result in it_lips""]
 11 --> 12[""sort it_likp by vbeln and select * from it_likp where lifex != space, storing the result in it_lifex sorted by vbeln""]
 12 --> 13[""replace it_vbfa_completo-secuencia with corresponding it_lifex-lifex""]
-13 --> 14{""c_si in r_valida"" is ""no""}
+13 --> 14{""c_si in r_valida is no""}
 14 --> |""yes""|15[""perform a left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
-14 --> |""no""|16{""pvstel in r_exclog"" is ""yes""}
+14 --> |""no""|16{""pvstel in r_exclog is yes""}
 16 --> |""yes""|17[""remove rows from it_nofacturado that aren't errors""]
 16 --> |""no""|15
 15 --> 18[""transfer maktl from imaktl to it_vbfa_completo""]
-18 --> 19{""it_nofacturado empty?"" is ""no""}
+18 --> 19{""it_nofacturado empty? is no""}
 19 --> |""yes""|20[""set & print error""]
-19 --> |""no""|21{""error?"" is ""yes""}
+19 --> |""no""|21{""error? is yes""}
 21 --> |""yes""|22[""EndNode""]
 21 --> |""no""|15
 "
@@ -3347,7 +3346,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Log and route the complaint""]
 1 --> 2{""Is the complaint 'instructor resolvable'?""}
-2 --> |""Yes"" or ""No""| 3[""Handle the complaint""]
+2 --> |""Yes or No""| 3[""Handle the complaint""]
 3 --> 4{""Should the complaint be escalated?""}
 4 --> |""Yes""| 5[""Handle the complaint and escalate""]
 4 --> |""No""| 6[""Send an email to the student and cc the Complaint Staff""]
@@ -3857,7 +3856,7 @@ graph LR
 8 --> |""Yes""|9[""Process the payment""]
 8 --> |""No""|10[""Send a reminder""]
 10 --> 8
-8 --> |""No"" -> ""Yes""|9
+8 --> |""No -> Yes""|9
 "
 285,"
 graph LR
@@ -4351,7 +4350,7 @@ graph LR
 0[""StartNode""] --> 1[""Perform left outer join between lips and it_likp, store in it_lipsm""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Perform left outer join between vbfa and it_likpsm, store in it_vbfa_completo""]
-3 --> 4[""Remove lines in it_vbfa_completo where plmin is not equal to ""+""]
+3 --> 4[""Remove lines in it_vbfa_completo where plmin is not equal to +""]
 4 --> 5[""Copy vbeln values from it_vbfa_completo to it_unolips, remove duplicates""]
 5 --> 6[""Perform left outer join between lips and it_unolips, store in it_lips""]
 6 --> 7[""Copy lifex values from it_likp to it_lifex, sort""]

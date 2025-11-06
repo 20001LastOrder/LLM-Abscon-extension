@@ -379,7 +379,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Place an order""]
 1 --> 2[""Verify customer""]
-2 --> 3{""Is the customer \""okay\""?""}
+2 --> 3{""Is the customer okay?""}
 3 --> |""Yes""|4[""Check availability""]
 4 --> 5{""Product available?""}
 5 --> |""Yes""|6[""Ship goods""]
@@ -757,7 +757,7 @@ graph LR
 55,"
 graph LR
 0[""StartNode""] --> 1[""Verify RFQ""]
-1 --> 2{""RFQ verified as \""ok\""?""}
+1 --> 2{""RFQ verified as ok?""}
 2 --> |""Yes""|3[""Provide LandM cost estimates""]
 2 --> |""No""|4[""Ask for more information""]
 3 --> 5[""Add overhead cost and generate pricing options""]
@@ -2262,7 +2262,7 @@ graph LR
 3 --> 5[""Bring letter book and member register to Secretary""]
 5 --> 6{""Applicant is a member?""}
 6 --> |""No""|7[""Write letter explaining why can't become a member""]
-6 --> |""Yes""|8[""Stamp \""new member\"" on letter and write date""]
+6 --> |""Yes""|8[""Stamp new member on letter and write date""]
 7 --> 9[""EndNode""]
 8 --> 10[""Add member to member register""]
 10 --> 11[""Calculate membership fee""]
@@ -3056,7 +3056,7 @@ graph LR
 4 --> 5[""Provide L&M Cost Estimates""]
 5 --> 6[""Provide clarification""]
 6 --> 1
-1 --> |> |""Yes""|7[""Verify RFQ""]
+1 --> |""Yes""|7[""Verify RFQ""]
 7 --> 8[""Add overhead costs""]
 8 --> 9[""Generate pricing options""]
 9 --> 10[""Generate Sales Quote""]

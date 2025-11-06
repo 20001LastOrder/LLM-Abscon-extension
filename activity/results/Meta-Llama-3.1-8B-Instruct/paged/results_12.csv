@@ -186,7 +186,7 @@ graph LR
 0[""StartNode""] --> 1[""Prepare shipment order""]
 1 --> 2[""Send shipment order""]
 2 --> 3[""Receive carrier response""]
-3 --> 4{""Carrier response is ""yes""?""}
+3 --> 4{""Carrier response is yes?""}
 4 --> |""No""|5[""Acquisition of carriers""]
 4 --> |""Yes""|6[""Accept shipment order""]
 6 --> 3
@@ -1972,18 +1972,18 @@ graph LR
 18 --> 19[""perform busca_pedido_vbapt""]
 19 --> 20[""perform busca_factura_vbapt""]
 20 --> 21[""clear any errors""]
-21 --> 22{""c_si in r_valida"" is ""no""}
+21 --> 22{""c_si in r_valida is no""}
 22 --> |""no""|23[""left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
-22 --> |""yes""|24{""c_si in r_valida"" is ""yes""}
-24 --> |""yes""|25{""pvstel in r_exclog"" is ""yes""}
-24 --> |""no""|26{""pvstel in r_exclog"" is ""no""}
+22 --> |""yes""|24{""c_si in r_valida is yes""}
+24 --> |""yes""|25{""pvstel in r_exclog is yes""}
+24 --> |""no""|26{""pvstel in r_exclog is no""}
 26 --> |""yes""|27[""left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
 26 --> |""no""|28[""transfer maktl from imaktl to it_vbfa_completo""]
-28 --> 29{""it_nofacturado empty?"" is ""no""}
+28 --> 29{""it_nofacturado empty? is no""}
 29 --> |""yes""|30[""set & print error""]
-29 --> |""no""|31{""error?"" is ""no""}
+29 --> |""no""|31{""error? is no""}
 31 --> |""yes""|32[""left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
-31 --> |""no""|33{""error?"" is ""yes""}
+31 --> |""no""|33{""error? is yes""}
 33 --> 34[""process ends""]
 "
 150,"
@@ -2990,7 +2990,7 @@ graph LR
 "
 230,"
 graph LR
-0[""StartNode""] --> 1[""Check if <br>\""Change Request\"" <br>is realizable""]
+0[""StartNode""] --> 1[""Check if <br>Change Request <br>is realizable""]
 1 --> |""Yes""|2[""Create a new <br>transport request""]
 1 --> |""No""|3[""Withdraw correction""]
 2 --> 4[""Select request type""]
@@ -3507,7 +3507,7 @@ graph LR
 1 --> 3[""Wait two weeks""]
 2 --> 4{""Response received?""}
 3 --> 4
-4 --> |""Yes""|5{""Response is \""accepted\""?""}
+4 --> |""Yes""|5{""Response is accepted?""}
 5 --> |""Yes""|6[""Check status of documents""]
 5 --> |""No""|7[""Update details""]
 4 --> |""No""|7
@@ -4326,7 +4326,7 @@ graph LR
 13 --> 14{""pvstel in r_exclog?""}
 14 --> |""Yes""|15[""Transfer vbeln values from it_vbfa_completo to itransp, remove duplicates""]
 15 --> 16{""it_nofacturado empty?""}
-16 --> |""Yes""|17[""Check error?""}
+16 --> |""Yes""|17{""Check error?""}
 17 --> |""Yes""|18[""Perform left outer join between vbfa and itransp, store result in itnum""]
 18 --> |""Yes""|19[""Perform left outer join between vbap and it_vbfa_completo, store result in imaktl""]
 19 --> |""Yes""|20[""Transfer itnum values from it_vbfa_completo to ivttk_t""]

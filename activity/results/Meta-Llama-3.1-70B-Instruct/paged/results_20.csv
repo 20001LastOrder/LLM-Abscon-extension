@@ -3738,13 +3738,13 @@ graph LR
 4 --> 5[""Weekly planning run""]
 5 --> 6[""Production plan loading""]
 6 --> 7[""Local production planning""]
-1 -->| produces ""Stock-related figures""| 4
-2 -->| produces ""Stock-related figures""| 4
-3 -->| produces ""Total demand""| 4
-4 -->| requires ""Total demand"" and ""Stock-related figures""| 5
-5 -->| produces ""Optimized net requirements (ONR)"" and ""Shipment plan""| 6
-6 -->| requires ""Optimized net requirements (ONR)""| 7
-7 -->| requires ""Constrained/ unconstrained plan""| 8[""EndNode""]
+1 -->|produces Stock-related figures| 4
+2 -->|produces Stock-related figures| 4
+3 -->|produces Total demand| 4
+4 -->|requires Total demand and Stock-related figures| 5
+5 -->|""produces Optimized net requirements (ONR) and Shipment plan""| 6
+6 -->|""requires Optimized net requirements (ONR)""| 7
+7 -->|""requires Constrained/ unconstrained plan""| 8[""EndNode""]
 "
 280,"
 graph LR
@@ -3956,8 +3956,6 @@ graph LR
 1 --> 3[""Search for property title""]
 2 --> 3
 3 --> 4[""EndNode""]
-note right of 1: produces ""Credit History File""
-note right of 2: produces ""Survey Document""
 "
 295,"
 graph LR
@@ -4306,7 +4304,7 @@ graph LR
 0[""StartNode""] --> 1[""Perform left outer join between lips and it_likp, store in it_lipsm""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Perform left outer join between vbfa and it_likpsm, store in it_vbfa_completo""]
-3 --> 4[""Remove lines from it_vbfa_completo where plmin != ""+""]
+3 --> 4[""Remove lines from it_vbfa_completo where plmin != +""]
 4 --> 5[""Copy vbeln from it_vbfa_completo to it_unolips, remove duplicates""]
 5 --> 6[""Perform left outer join between lips and it_unolips, store in it_lips""]
 6 --> 7[""Copy lifex from it_likp to it_lifex, sort""]

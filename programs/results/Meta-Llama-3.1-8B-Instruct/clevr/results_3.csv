@@ -2351,7 +2351,7 @@ graph LR
     2 --> 3[""filter_size_small""]
     3 --> 4[""unique""]
     4 --> 5[""query_material""]
-    1 --> 6[""filter_material_"" + ""rubber"" if material is rubber, otherwise ""metal""]
+    1 --> 6[""filter_material_rubber if material is rubber, otherwise metal""]
     6 --> 7[""filter_color_brown""]
     7 --> 8[""unique""]
     8 --> 9[""query_shape""]

@@ -42,15 +42,15 @@
 10[""Troubleshoot issue""] --> 11[""Contact DBA Team""]
 12[""resolution is known?""] --> |""YES""|13[""Fix issue""]
 12 --> |""NO""|14[""Check with vendor""]
-23[""Check if vendor has a fix""] --> |""YES""|19[""Fix issue""]
-23 --> |""NO""|20[""Failover to COB""]"
+13 --> 15[""Resolve and close EMS""]"
 4,"flowchart LR
 0[""StartNode""] --> 1[""Open event creation page""]
-1 --> 10[""Populate the name form""]
-3[""Populate time forms""] --> 4[""Populate the location forms""]
+1 --> 10[""Populate name form""]
+3[""Populate the time forms""] --> 4[""Populate the location forms""]
 4 --> 5[""Populate additional information""]
 5 --> 6[""Configure privacy settings""]
 6 --> 8[""Name form populated?""]
+10 --> 3
 11[""End time occurs after start time?""] --> |""Yes""|12[""Save event information""]
 11 --> |""No""|13[""Display incorrect time notification""]
 12 --> 14[""Pay attention to event saved on Facebook""]
@@ -73,6 +73,8 @@
 2 --> |""No""|3[""Ask for more information""]
 2 --> |""Yes""|4[""Analyze RFQ""]
 4 --> 5[""Provide L&M cost estimates""]
+5 --> 6[""Check if RFQ is verified""]
+6 --> |""Yes""|7[""Provide clarification""]
 8[""Add overhead costs""] --> 9[""Generate pricing options""]
 9 --> 10[""Generate sales quote""]
 10 --> 11[""EndNode""]"
@@ -105,7 +107,8 @@
 0[""StartNode""] --> 1[""Obtain problem description""]
 1 --> 2[""Can handle problem?""]
 2 --> |""No""|4[""Send email to support system""]
-3[""Explain solution""] --> 5[""EndNode""]"
+3[""Explain solution""] --> 5[""EndNode""]
+4 --> 6[""Can handle problem?""]"
 11,"flowchart LR
 0[""StartNode""] --> 1[""Complete Purchase Order""]
 1 --> 2[""Send Invoice""]
@@ -129,6 +132,8 @@
 5 --> 6[""Confirm payment""]
 6 --> 7[""EndNode""]"
 14,"flowchart LR
+0[""StartNode""] --> 1[""Can we fulfill the order?""]
+1 --> |""No""|3[""Reject the order""]
 4[""Check if we can fulfill the order""] --> 5[""Can we fulfill the order?""]
 5 --> |""Yes""|6[""Confirm the order""]
 5 --> |""No""|7[""Reject the order""]
@@ -136,13 +141,11 @@
 8 --> 11[""Notify order successfully delivered""]"
 15,"flowchart LR
 0[""StartNode""] --> 1[""Verify RFQ""]
-1 --> 2[""Verification successful?""]
-2 --> |""No""|3[""Ask for more information""]
+2[""Verification successful?""] --> |""No""|3[""Ask for more information""]
 2 --> |""Yes""|4[""Analyze RFQ""]
 5[""Provide L&M cost estimates""] --> 6[""Verify RFQ""]
-6 --> |""No""|13[""Ask for more information""]
 9[""Generate sales quote""] --> 10[""EndNode""]
-11[""Add overhead cost and generate pricing options""] --> 9"
+12[""Add overhead cost and generate pricing options""] --> 9"
 16,"flowchart LR
 0[""StartNode""] --> 1[""Check Customer's Credit History""]
 0 --> 2[""Conduct a Property Survey""]
@@ -203,7 +206,7 @@
 23,"flowchart LR
 0[""StartNode""] --> 1[""Write a letter""]
 1 --> 2[""Obtain letter""]
-2 --> 3[""Applicant is a member?""]
+2 --> 3[""Are you a member?""]
 3 --> |""No""|4[""EndNode""]
 3 --> |""Yes""|5[""Check if member""]
 7[""Obtain second letter""] --> 8[""Pay fee""]
@@ -230,11 +233,12 @@
 1 --> 2[""Register process seminar results""]
 1 --> 3[""Create a purchase request""]
 2 --> 4[""EndNode""]
-3 --> 5[""Purchase request approve?""]
+3 --> 5[""purchase request approve?""]
 5 --> |""Rejected""|6[""Notify rejection""]
 5 --> |""Approved""|7[""Send approved notification""]
 6 --> 8[""EndNode""]
-7 --> 2"
+9[""Purchase request approve?""] --> |""Approved""|10[""Send approved notification""]
+10 --> 2"
 27,"flowchart LR
 0[""StartNode""] --> 1[""Place an order""]
 1 --> 2[""Verify customer""]
@@ -262,17 +266,18 @@
 5 --> 6[""Process concludes""]"
 30,"flowchart LR
 0[""StartNode""] --> 1[""Receive payment from previous week""]
-1 --> 2[""Payment received?""]
-2 --> |""No""|3[""Document bad credit against accounts receivable and member's file""]
-7[""Update members and accounts receivable file""] --> 8[""Process order""]
-8 --> 5[""Payment received?""]
+1 --> 5[""Payment received for previous week?""]
+2[""Payment received?""] --> |""No""|3[""Document bad credit against accounts receivable and member's file""]
+5 --> |""Yes""|7[""Update members and accounts receivable file""]
+5 --> |""No""|15[""Document bad credit against accounts receivable and member's file""]
+7 --> 8[""Process order""]
+8 --> 5
 10[""Suspend future order processing""] --> 11[""Complete credit check""]
 12[""Inform members about bad credit status""] --> 10
-16[""Document bad credit against accounts receivable and member's file""] --> 12"
+15 --> 12"
 31,"flowchart LR
-0[""StartNode""] --> 1[""Verify RFQ""]
-1 --> 2[""RFQ verified?""]
-2 --> |""No""|3[""Ask for more information""]
+0[""StartNode""] --> 10[""Verify RFQ""]
+2[""RFQ verified?""] --> |""No""|3[""Ask for more information""]
 2 --> |""Yes""|4[""Analyze RFQ""]
 4 --> 5[""Provide L&M cost estimates""]
 5 --> 6[""Verify RFQ""]
@@ -281,7 +286,7 @@
 7[""Add overhead costs""] --> 8[""Generate pricing options""]
 8 --> 11[""Generate sales quote""]
 9 --> 7
-10[""Verify RFQ""] --> 2
+10 --> 2
 11 --> 12[""EndNode""]"
 32,"flowchart LR
 0[""StartNode""] --> 1[""Bring computer to ACM""]
@@ -363,6 +368,7 @@
 0[""StartNode""] --> 1[""Informational meeting""]
 1 --> 2[""Meeting successful?""]
 2 --> |""Yes""|3[""Storyboard meeting""]
+2 --> |""No""|4[""EndNode""]
 3 --> 5[""Content prepared""]
 5 --> 6[""Develop site""]
 6 --> 7[""Initial draft""]
@@ -401,10 +407,11 @@
 0[""StartNode""] --> 1[""Customer has a problem""]
 1 --> 2[""Provide problem description""]
 2 --> 3[""Can handle the problem themselves?""]
-3 --> |""Yes""|4[""Explain solution""]
 3 --> |""No""|5[""Ask for 1st level support""]
+3 --> |""Yes""|12[""Explain solution""]
 5 --> 6[""Check result""]
-12[""Explain solution""] --> 9[""Provide feedback for account manager""]"
+8[""Provide feedback for 1st level support""] --> 9[""Provide feedback for account manager""]
+13[""Explain solution""] --> 14[""Provide feedback for account manager""]"
 46,"flowchart LR
 0[""Deploy DB Tier""] --> 1[""Deploy Web Tier""]
 1 --> 2[""Deploy VM (mySQL)""]
@@ -431,7 +438,7 @@
 3[""Send to storage manager""] --> 4[""Product available?""]
 4 --> |""Yes""|5[""Check availability""]
 7[""Prepare Product for Shipping""] --> 8[""Add delivery confirmation""]
-12[""Send delivery confirmation to storage manager""] --> 13[""Add delivery confirmation to product""]
+8 --> 9[""Send product back to employee""]
 14[""Send invoice to accountant""] --> 15[""EndNode""]
 27 --> 3"
 48,"flowchart LR
@@ -445,7 +452,7 @@
 7 --> |""No""|4
 7 --> |""Yes""|3"
 49,"flowchart LR
-0[""StartNode""] --> 5[""Notify the successful payment""]"
+0[""StartNode""] --> 4[""Notify the successful payment""]"
 50,"flowchart LR
 0[""StartNode""] --> 1[""Move cargo to the warehouse""]
 1 --> 2[""Conduct a physical examination of the cargo""]
@@ -466,12 +473,12 @@
 0[""StartNode""] --> 1[""Receive issue""]
 1 --> 2[""Open ticket""]
 2 --> 3[""Edit 1st level ticket""]
-4[""Issue resolved?""] --> |""Yes""|5[""Send email to account manager""]
+3 --> 4[""Issue resolved?""]
+4 --> |""No""|8[""Fix scheduled for next release?""]
 6[""Issue classified as 2nd level issue?""] --> |""Yes""|7[""Edit 2nd level ticket""]
-8[""Fix scheduled for next release?""] --> |""Yes""|9[""Insert issue into product backlog""]
-8 --> |""No""|5
-10[""Close ticket""] --> 11[""EndNode""]
-12[""Issue resolved?""] --> |""Yes""|13[""Send email to account manager""]"
+8 --> |""Yes""|9[""Insert issue into product backlog""]
+8 --> |""No""|5[""Send email to account manager""]
+10[""Close ticket""] --> 11[""EndNode""]"
 53,"flowchart LR
 0[""StartNode""] --> 1[""Pay the Airline Company""]
 0 --> 2[""Pay the HOTEL""]
@@ -503,18 +510,18 @@
 1 --> 3[""EndNode""]"
 58,"flowchart LR
 0[""StartNode""] --> 1[""Send a letter""]
-1 --> 2[""Check for correctness""]
-2 --> 27[""Correctness answer?""]
-4[""Add mail number and date""] --> 5[""Record and archive the letter""]
+4[""Add mail number and date""] --> 2[""Check for correctness""]
+4 --> 5[""Record and archive the letter""]
 6[""Transmit the letter and register it with Miranda""] --> 7[""Make a membership decision""]
+7 --> |""Yes""|9[""Stamp new member and date""]
+7 --> |""No""|18[""Provide a negative answer""]
 21[""Add the new member""] --> 22[""Calculate the membership fee""]
 22 --> 23[""Write down the amount""]
 23 --> 24[""Prepare the invoice at home""]
-24 --> 36[""Send the membership card""]
 25[""Send the invoices""] --> 26[""Print the membership card""]
-27 --> |""No""|3[""Make a phone call""]
-27 --> |""Yes""|4
-36 --> 26"
+28[""Correctness answer?""] --> |""No""|3[""Make a phone call""]
+28 --> |""Yes""|4
+37[""Send the membership card""] --> 26"
 59,"flowchart LR
 0[""StartNode""] --> 1[""Incoming Frozen Item""]
 1 --> 2[""Poultry""]
@@ -594,8 +601,7 @@
 0[""StartNode""] --> 1[""Can we fulfill the order?""]
 1 --> |""Yes""|2[""Confirm the order""]
 1 --> |""No""|3[""Reject the order""]
-7[""Can we fulfill the order?""] --> |""Yes""|8[""Confirm the order""]
-8 --> 6[""Deliver the order""]"
+4[""Confirm the order""] --> 6[""Deliver the order""]"
 69,"flowchart LR
 0[""Generate payment report""] --> 1[""Pay vendor""]
 0 --> 2[""Send payment report to Accounts Receivable Department""]
@@ -741,6 +747,7 @@
 6[""Knives""] --> 15
 7[""Spoons""] --> 15
 8[""Aluminum/Plastic Containers""] --> 15
+9 --> 11[""Item Categorization (Aluminum Foil, etc)""]
 10[""Container Lids""] --> 15
 14[""Item Categorization (Surface cleaners, etc)""] --> 5
 15 --> 22[""Store items based on item policy""]
@@ -750,7 +757,7 @@
 1 --> 2[""Can order be fulfilled?""]
 2 --> |""Yes""|3[""Order confirmed""]
 4[""Capacity sufficient? Parts need to be ordered?""] --> |""No""|6[""Order rejected""]
-11[""All parts obtained?""] --> |""No""|6"
+11[""All parts have been obtained?""] --> |""No""|6"
 87,"flowchart LR
 0[""StartNode""] --> 1[""Validate invoice""]
 1 --> 2[""Run payment process""]
@@ -762,8 +769,11 @@
 0[""StartNode""] --> 1[""Back up database""]
 1 --> 3[""Has Account Defaulter table changed?""]
 3 --> |""Yes""|4[""Is it before 2:30 pm?""]
-3 --> |""No""|5[""Check CRM system""]
-4 --> |""Yes""|6[""Register defaulting accounts and customers""]"
+3 --> |""No""|5[""Check CRM system for new returns""]
+4 --> |""Yes""|6[""Register defaulting accounts and customers""]
+4 --> |""No""|12[""Alert supervisor""]
+9[""Is it before 4:00 pm?""] --> |""No""|10[""Alert supervisor""]
+9 --> |""Yes""|15[""End process""]"
 89,"flowchart LR
 0[""StartNode""] --> 1[""Identify demand for material""]
 1 --> 2[""Goods Available?""]
@@ -835,10 +845,11 @@
 95,"flowchart LR
 0[""StartNode""] --> 1[""Identify the demand""]
 1 --> 2[""Choose the supplier""]
-2 --> 3[""Company checked?""]
-3 --> |""No""|4[""EndNode""]
-7[""Is the company ours?""] --> |""No""|4
-7 --> |""Yes""|5[""Place an order""]"
+2 --> 7[""Is the company ours?""]
+3[""Company checked?""] --> |""No""|4[""EndNode""]
+3 --> |""Yes""|5[""Place an order""]
+5 --> 4
+7 --> |""No""|4"
 96,"flowchart LR
 0[""StartNode""] --> 1[""Customer encounters a problem""]
 1 --> 2[""Ask questions""]
@@ -877,10 +888,8 @@
 100,"flowchart LR
 0[""StartNode""] --> 1[""Send Main Document""]
 1 --> 2[""Should Supplement A be sent?""]
-2 --> |""Yes""|3[""Send Supplement A""]
 2 --> |""No""|4[""EndNode""]
-3 --> 5[""Should Supplement A be sent?""]
-5 --> |""Yes""|6[""Send Supplement A""]
+5[""Should Supplement A be sent?""] --> |""Yes""|6[""Send Supplement A""]
 5 --> |""No""|7[""EndNode""]
 9[""Send Supplement B""] --> 10[""Should Supplement B be sent?""]
 10 --> |""Yes""|11[""Send Supplement B""]
@@ -1022,6 +1031,7 @@
 2 --> |""Yes""|4[""Check raw material in production line""]
 4 --> 5[""Is raw material in production line?""]
 5 --> |""No""|6[""Request transfer of raw material""]
+5 --> |""Yes""|7[""Allocate raw material to production line""]
 6 --> 8[""Allocate raw material to production line""]"
 118,"flowchart LR
 0[""StartNode""] --> 1[""Go to the supermarket""]
@@ -1060,7 +1070,9 @@
 8[""Resolution identified?""] --> |""Yes""|9[""Incident Recovery""]
 8 --> |""No""|10[""Escalation""]
 9 --> 11[""EndNode""]
-12 --> |""Yes""|13[""Incident Recovery""]"
+12 --> |""Yes""|13[""Incident Recovery""]
+12 --> |""No""|14[""Escalation""]
+13 --> 8"
 122,"flowchart LR
 0[""StartNode""] --> 1[""Log in""]
 1 --> 2[""Enter Apple ID""]
@@ -1070,10 +1082,11 @@
 4 --> 5[""EndNode""]"
 123,"flowchart LR
 0[""StartNode""] --> 1[""Verify contents""]
-1 --> 7[""Perform quality inspection""]
+1 --> 6[""Perform quality inspection""]
 3[""Material okay?""] --> |""Yes""|4[""Store Material""]
 3 --> |""No""|5[""EndNode""]
-7 --> 3"
+6 --> 7[""Material okay?""]
+7 --> |""No""|5"
 124,"flowchart LR
 0[""StartNode""] --> 1[""Check customer's credit history""]
 0 --> 2[""Conduct property survey""]
@@ -1132,6 +1145,7 @@
 5 --> 6[""Web site design successful?""]
 6 --> |""Yes""|7[""Preparation of contents""]
 7 --> 8[""Preparation of contents successful?""]
+10[""Web site development successful?""] --> 11[""Web site development""]
 12[""Marketing review successful?""] --> |""Yes""|13[""Preparation of the final version""]
 14[""Preparation of the final version successful?""] --> |""Yes""|15[""Building phase""]
 15 --> 16[""Building phase successful?""]
@@ -1144,13 +1158,11 @@
 1 --> 2[""Wait 7 days""]
 2 --> 6[""Existing account?""]
 4[""Automatic review""] --> 7[""Send approval in progress email""]
-6 --> |""Yes""|4
 6 --> |""No""|5[""Create new account""]
 7 --> 8[""Amounts under $200?""]
 8 --> |""No""|10[""Review by supervisor""]
 15[""Transfer reimbursement to employee's bank account""] --> 14[""EndNode""]
-18[""Automatically approve expense""] --> 15
-19[""Review by supervisor""] --> 21[""Check if 28th day after request""]"
+18[""Automatically approve expense""] --> 15"
 132,"flowchart LR
 0[""StartNode""] --> 1[""Low Inventory""]
 1 --> 2[""Create P.R.""]
@@ -1272,7 +1284,8 @@
 2 --> |""Successful""|4[""Full-day meeting to create storyboard""]
 9[""Need for marketing review""] --> |""60%""|11[""EndNode""]
 13[""Building phase""] --> 14[""Checking phase""]
-15[""Outcome of checking phase""] --> |""Failed""|16[""Additional building""]"
+14 --> 15[""Outcome of checking phase""]
+15 --> |""Failed""|16[""Additional building""]"
 145,"flowchart LR
 0[""StartNode""] --> 1[""Go Home""]
 0 --> 2[""Hear Music""]
@@ -1312,6 +1325,7 @@
 8 --> 1"
 149,"flowchart LR
 0[""StartNode""] --> 2[""Select vbelv & vbeln from vbfa into ivbfa_completo_t""]
+2 --> 32[""Sort the result of step 0""]
 4[""Perform NOP""] --> 5[""Copy vbelv's from ivbfa_completo_t to it_unolips""]
 5 --> 7[""Sort it_unolips and remove duplicates""]
 7 --> 8[""Remove entries from it_likp that don't have a vbeln in it_unolips""]
@@ -1324,6 +1338,8 @@
 20[""Clear any errors""] --> 21[""c_si in r_valida""]
 21 --> |""Yes""|22[""Perform a left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
 26[""it_nofacturado empty?""] --> |""Yes""|27[""Set & print error""]
+28[""error?""] --> |""Yes""|30[""EndNode""]
+32 --> 4
 33[""Perform busca_factura_vbapt""] --> 20"
 150,"flowchart LR
 0[""StartNode""] --> 1[""Visit Travel agency""]
@@ -1466,6 +1482,7 @@
 2 --> |""No""|3[""Inform IT Manager""]
 2 --> |""Yes""|4[""Check for permanent solution""]
 4 --> 5[""Permanent solution found?""]
+5 --> |""No""|3
 5 --> |""Yes""|6[""Close service call""]
 6 --> 7[""Service call closed?""]
 7 --> |""Yes""|8[""EndNode""]
@@ -1502,12 +1519,13 @@
 1 --> 2[""Send Order""]
 1 --> 11[""Execute CallOff""]
 1 --> 12[""Transport Transport""]
-6[""AskForInvoice""] --> 8[""Send Invoice""]"
+2 --> 6[""AskForInvoice""]
+6 --> 8[""Send Invoice""]"
 169,"flowchart LR
-1[""Set travel schedules""] --> 2[""Look for accommodation""]
+0[""StartNode""] --> 1[""Set travel schedules""]
+1 --> 2[""Look for accommodation""]
 2 --> 3[""Request quote""]
-20[""Financier is Employer?""] --> |""No""|35[""Make a mission order without expenses (MOWE)""]
-29[""StartNode""] --> 1"
+20[""Financier is Employer?""] --> |""No""|35[""Make a mission order without expenses (MOWE)""]"
 170,"flowchart LR
 0[""StartNode""] --> 1[""Assess weak points in development""]
 1 --> 2[""Choose employees for training""]
@@ -1586,18 +1604,18 @@
 179,"flowchart LR
 0[""StartNode""] --> 1[""Announce arrival""]
 1 --> 2[""Request registration form""]
-2 --> 16[""Registration form obtained?""]
+2 --> 3[""Registration form has been obtained?""]
+3 --> |""Yes""|4[""Provide registration form""]
+3 --> |""No""|5[""Send registration details""]
 6[""Announce measurement""] --> 7[""Registration can be done in the van?""]
 7 --> |""Yes""|8[""Permit registration""]
 7 --> |""No""|9[""Request person to leave van""]
-8 --> 10[""Registration form has been obtained?""]
 9 --> 18[""EndNode""]
-10 --> |""Yes""|11[""Permit registration""]
-11 --> 13[""Send questionnaire answers""]
+11[""Permit registration""] --> 13[""Send questionnaire answers""]
 11 --> 14[""Send registration ID""]
 13 --> 14
 14 --> 18
-16 --> |""Yes""|17[""Provide registration form""]
+16[""Registration form has been obtained?""] --> |""Yes""|17[""Provide registration form""]
 16 --> |""No""|15[""Send registration details""]"
 180,"flowchart LR
 0[""StartNode""] --> 1[""Send invoice""]
@@ -1787,10 +1805,10 @@
 2 --> 3[""Run Payment File Process""]
 3 --> 4[""Generate Payment Report""]
 4 --> 5[""Send payment report to client""]
-4 --> 7[""Send payment report to registry""]
+4 --> 6[""Send payment report to registry""]
 5 --> 12[""EndNode""]
-7 --> 8[""Archive invoice""]
-8 --> 9[""Generate Monthly Invoices""]
+6 --> 7[""Archive invoice""]
+7 --> 8[""Generate Monthly Invoices""]
 11[""StartNode""] --> 0"
 203,"flowchart LR
 0[""StartNode""] --> 1[""Validate invoice information for payment""]
@@ -1804,8 +1822,7 @@
 6 --> 9[""Send payment reports to the accounts receivable department officer""]
 9 --> 10[""Receive payment reports""]
 10 --> 11[""Generate monthly invoices""]
-11 --> 12[""Send monthly invoices to the client""]
-12 --> 13[""EndNode""]"
+11 --> 12[""Send monthly invoices to the client""]"
 204,"flowchart LR
 0[""StartNode""] --> 1[""Finish meal""]
 1 --> 10[""Wash down with a refreshing drink?""]
@@ -1902,15 +1919,15 @@
 213,"flowchart LR
 0[""StartNode""] --> 1[""Check if order has been received""]
 1 --> 4[""Check availability of article""]
-2[""Article available?""] --> |""No""|3[""Procurement process""]
-2 --> |""Yes""|7[""Financial settlement""]
+2[""Article available?""] --> |""Yes""|7[""Financial settlement""]
+2 --> |""No""|11[""Procurement process""]
 4 --> 5[""Article available?""]
+5 --> |""No""|3[""Procurement process""]
 5 --> |""Yes""|6[""Ship article""]
-5 --> |""No""|10[""Procurement process""]
-6 --> 11[""Check article availability""]
+6 --> 10[""Check article availability""]
 7 --> 8[""Wait for payment to be received""]
 8 --> 9[""EndNode""]
-11 --> 2"
+10 --> 2"
 214,"flowchart LR
 0[""StartNode""] --> 1[""Mark Invoice as Paid""]
 1 --> 2[""Send the report""]
@@ -1986,9 +2003,7 @@
 222,"flowchart LR
 0[""StartNode""] --> 1[""Can we fulfill the order request?""]
 1 --> |""Yes""|2[""Order confirmation""]
-1 --> |""No""|3[""Reject the order""]
-2 --> 4[""EndNode""]
-3 --> 4
+1 --> |""No""|3[""Reject order""]
 9[""StartNode""] --> 1"
 223,"flowchart LR
 0[""StartNode""] --> 1[""Determine workday""]
@@ -2047,21 +2062,20 @@
 230,"flowchart LR
 0[""StartNode""] --> 1[""Check if Change Request is realizable""]
 1 --> 13[""Change Request realizable?""]
-2[""Create new transport request""] --> 4[""Select request type""]
-3[""Release transport request""] --> 7[""Pass correction to test""]
-5[""Log on to development system""] --> 6[""Proceed with customizing or workbench development""]
-6 --> 3
+2[""Create new transport request""] --> 3[""Select request type""]
+4[""Log on to development system""] --> 5[""Proceed with customizing or workbench development""]
+5 --> 6[""Release transport request""]
+6 --> 7[""Pass correction to test""]
 10[""Confirm successful test""] --> 12[""Send email to change manager""]
 12 --> 19[""EndNode""]
-13 --> |""Yes""|2
-13 --> |""No""|18[""Withdraw correction""]"
+13 --> |""Yes""|2"
 231,"flowchart LR
 0[""StartNode""] --> 1[""Ask 1st Level Support""]
 1 --> 2[""Issue resolved?""]
 2 --> |""Yes""|3[""Provide Feedback for Account Manager""]
 2 --> |""No""|4[""Ask developer for assistance""]
-4 --> 5[""Check issue result""]
-6[""Issue resolved?""] --> |""Yes""|3
+5[""Check issue result""] --> 6[""Issue resolved?""]
+6 --> |""Yes""|3
 8[""Provide Feedback for Account Manager""] --> 10[""EndNode""]
 9[""Provide feedback for 1st Level support""] --> 8"
 232,"flowchart LR
@@ -2125,14 +2139,16 @@
 0[""StartNode""] --> 1[""Incident Identification""]
 1 --> 2[""Incident Logging""]
 2 --> 3[""Incident Categorization""]
-3 --> 18[""Is it a \""Service Request\""?""]
-6[""Incident Prioritization""] --> 7[""Is it a \""Major Incident\""?""]
+3 --> 18[""Is it a Service Request?""]
+6[""Incident Prioritization""] --> 7[""Is it a Major Incident?""]
 7 --> |""Yes""|8[""Escalate Incident""]
+7 --> |""No""|17[""Was the incident Fixed in agreed time?""]
 10[""Hierarchic escalation is needed?""] --> |""No""|12[""Investigation and Diagnosis""]
 12 --> 13[""Hierarchic escalation is needed?""]
 13 --> |""Yes""|14[""Escalate Incident""]
 13 --> |""No""|15[""Incident Closure""]
 15 --> 16[""EndNode""]
+17 --> |""No""|10
 18 --> |""Yes""|5[""Request Fulfilment""]"
 238,"flowchart LR
 0[""StartNode""] --> 1[""Send Main Document""]
@@ -2161,13 +2177,14 @@
 4 --> |""No""|12[""Take computer back""]
 5 --> 7[""Pick up notice for computer pickup""]
 7 --> 14[""Check if computer has been repaired""]
+9[""Pay for work done""] --> 10[""Access problem and solution for customer file""]
 12 --> 11[""EndNode""]
 14 --> |""No""|13[""EndNode""]
-14 --> |""Yes""|9[""Pay for work done""]"
+14 --> |""Yes""|9"
 241,"flowchart LR
 0[""StartNode""] --> 1[""Invoices entered to validation office""]
 1 --> 2[""Invoices validation""]
-2 --> 3[""Ticked box ""invoice entered correctly"" on invoices form""]
+2 --> 3[""Ticked box invoice entered correctly on invoices form""]
 3 --> 4[""Log into SAP""]
 4 --> 5[""Change data status from parked to validated""]
 5 --> 6[""Forwarded validated invoices to Registry officers""]
@@ -2177,8 +2194,9 @@
 1 --> 2[""Open the ticket""]
 2 --> 3[""Edit the 1st level ticket""]
 3 --> 13[""Result?""]
+5[""Send email to Account Manager""] --> 11[""Close the ticket""]
 10[""Insert issue into product backlog""] --> 12[""EndNode""]
-13 --> |""2nd level issue""|7[""Edit the 2nd level ticket""]
+13 --> |""Issue resolved""|5
 17[""Send email to Account Manager""] --> 10"
 243,"flowchart LR
 0[""StartNode""] --> 1[""Submit loan application""]
@@ -2200,11 +2218,11 @@
 0[""StartNode""] --> 1[""Send main contract document""]
 1 --> 2[""Send supplement A?""]
 2 --> |""Yes""|3[""Send supplement A""]
-2 --> |""No""|4[""EndNode""]
 3 --> 5[""Send supplement B?""]
 5 --> |""Yes""|6[""Send supplement B""]
-5 --> |""No""|7[""EndNode""]
-6 --> 8[""Conclude process""]"
+5 --> |""No""|4[""EndNode""]
+6 --> 8[""Conclude process""]
+8 --> 7[""EndNode""]"
 246,"flowchart LR
 0[""StartNode""] --> 1[""Customer order""]
 1 --> 2[""Receive Order""]
@@ -2225,7 +2243,8 @@
 0[""StartNode""] --> 1[""Go to iTunes Store Home""]
 1 --> 2[""Search for Album""]
 2 --> 3[""Expand Search Using Artist Name""]
-4[""Select Album""] --> 5[""Confirm Purchase Choice""]
+3 --> |""Select Album""|4[""Select Album""]
+4 --> 5[""Confirm Purchase Choice""]
 5 --> 6[""Download Album""]
 6 --> 7[""EndNode""]
 13[""Confirm Registration""] --> 5
@@ -2234,7 +2253,7 @@
 16 --> 13"
 249,"flowchart LR
 0[""StartNode""] --> 1[""Log and route the complaint""]
-1 --> 2[""Is complaint \""instructor resolvable\""?""]
+1 --> 2[""Is complaint instructor resolvable?""]
 2 --> |""No""|3[""Handle complaint""]
 3 --> 4[""Should the complaint be escalated?""]
 4 --> |""Yes""|6[""Send email to student and cc Complaint Staff""]
@@ -2248,10 +2267,11 @@
 3 --> |""No""|5[""EndNode""]"
 251,"flowchart LR
 0[""StartNode""] --> 1[""Change code""]
+1 --> 2[""Update from SVN""]
 8[""Update from SVN""] --> 9[""Change code""]
 13[""Deploy to QA""] --> 15[""Deploy to production""]
 15 --> 20[""EndNode""]
-17[""Change code""] --> 18[""Commit to SVN""]"
+18[""Commit to SVN""] --> 19[""Deploy to QA""]"
 252,"flowchart LR
 0[""StartNode""] --> 1[""Determine rent conditions""]
 1 --> 2[""Find suitable piece of land""]
@@ -2272,7 +2292,7 @@
 2[""Confirm order""] --> 4[""Deliver order""]
 3[""Reject order""] --> 10[""EndNode""]
 7[""Can fulfill order?""] --> |""No""|3
-15[""Confirm order""] --> 11[""Deliver order""]"
+14[""Confirm order""] --> 15[""Deliver order""]"
 254,"flowchart LR
 0[""StartNode""] --> 1[""TASK1""]
 1 --> 2[""TASK2""]
@@ -2308,12 +2328,12 @@
 3 --> |""No""|4[""Initiate procurement process""]
 3 --> |""Yes""|5[""Ship article""]
 5 --> 8[""Complete financial settlement""]
-5 --> 13[""Article available?""]
+5 --> 12[""Article available?""]
 6[""Check availability of article""] --> 7[""Article available?""]
 7 --> |""Yes""|5
 8 --> 9[""Receive payment""]
 9 --> 10[""EndNode""]
-13 --> |""No""|4"
+12 --> |""No""|4"
 259,"flowchart LR
 0[""StartNode""] --> 1[""Turn on computer""]
 1 --> 2[""Connect to internet""]
@@ -2388,11 +2408,12 @@
 1 --> 2[""Analyze response""]
 1 --> 3[""Wait for two weeks""]
 2 --> 4[""Response received?""]
+4 --> |""Yes""|5[""Response is 'accepted'?""]
+5 --> |""Yes""|7[""Check status of documents""]
 6[""Require additional documents""] --> 11[""EndNode""]
 8[""Check status of documents""] --> |""Complete""|9[""Move case""]
 8 --> |""Incomplete""|6
-9 --> 11
-12[""Response received?""] --> |""No""|13[""Update details""]"
+9 --> 11"
 267,"flowchart LR
 0[""StartNode""] --> 1[""Register for event participation""]
 1 --> 5[""Fees required?""]
@@ -2445,11 +2466,12 @@
 272,"flowchart LR
 0[""StartNode""] --> 1[""Send Mortgage Offer""]
 1 --> 10[""Wait for Answer""]
-3[""Answer is 'decline'?""] --> |""Yes""|4[""Update details""]
-3 --> |""No""|7[""Offer is 'complete'?""]
-7 --> |""Yes""|8[""Complete Offer""]
+3[""Answer is a 'decline'?""] --> |""Yes""|4[""Update details""]
+7[""Offer is 'complete'?""] --> |""Yes""|8[""Complete Offer""]
 7 --> |""No""|9[""Send message to customer""]
-10 --> 3"
+10 --> 11[""Answer is 'decline'?""]
+11 --> |""Yes""|4
+11 --> |""No""|7"
 273,"flowchart LR
 0[""StartNode""] --> 10[""Check if there are fees involved""]
 1[""Fees involved?""] --> |""No""|2[""Registration process""]
@@ -2483,13 +2505,20 @@
 1 --> 2[""Case""]
 1 --> 3[""Other""]
 1 --> 4[""Can""]
-1 --> 15[""Perishable""]
-1 --> 16[""Fruit""]
-1 --> 17[""Vegetable""]
-9[""Sack""] --> 10[""QC""]
-10 --> 11[""Weight""]
+1 --> 6[""Perishable""]
+6 --> 10[""QC""]
+6 --> 11[""Weight""]
+6 --> 12[""Date Center""]
+7[""Fruit""] --> 10
+7 --> 11
+7 --> 12
+8[""Vegetable""] --> 10
+8 --> 11
+8 --> 12
+9[""Sack""] --> 10
+10 --> 11
 11 --> 13[""13""]
-12[""Date Center""] --> 13
+12 --> 13
 18[""Non-perishable""] --> 10
 18 --> 11
 18 --> 12"
@@ -2499,6 +2528,7 @@
 2 --> 15[""Update IS""]
 4[""Sort shipments by service type""] --> 5[""Sort shipments by destination node""]
 5 --> 6[""Sort shipments by size""]
+6 --> 19[""Calculate route to next node""]
 8[""Vehicle available?""] --> |""No""|10[""Set waiting time limit""]
 11[""Load shipment onto vehicle""] --> 17[""Update IS""]
 12[""Unload shipment""] --> 20[""Destination warehouse reached?""]
@@ -2582,12 +2612,12 @@
 0[""StartNode""] --> 1[""Informational Meeting""]
 1 --> 2[""Meeting successful?""]
 2 --> |""Yes""|3[""Create storyboard""]
-2 --> |""No""|4[""EndNode""]
-3 --> 6[""Design and develop website""]
-6 --> 7[""Prepare content""]
-7 --> 8[""Create initial draft""]
-8 --> 9[""Review Initial Draft""]
-9 --> |""Yes""|10[""Review Draft""]
+2 --> |""No""|9[""EndNode""]
+3 --> 5[""Design and develop website""]
+5 --> 6[""Prepare content""]
+6 --> 7[""Create initial draft""]
+7 --> 8[""Review Initial Draft""]
+8 --> |""Yes""|10[""Review Draft""]
 14[""Review website""] --> 15[""Review final version""]"
 287,"flowchart LR
 0[""StartNode""] --> 1[""Receive customer inquiry""]
@@ -2614,11 +2644,10 @@
 1 --> 2[""Select Edit Report""]
 2 --> 3[""Expense greater than 1000?""]
 3 --> |""Yes""|4[""Review report""]
-3 --> |""No""|16[""Need for translation?""]
+3 --> |""No""|14[""Need for translation?""]
 7[""Translate receipts""] --> 8[""Confirm receipts""]
 9[""Report approved?""] --> |""No""|11[""Edit report""]
-12[""Process expense""] --> 13[""EndNode""]
-16 --> |""Yes""|7"
+12[""Process expense""] --> 13[""EndNode""]"
 290,"flowchart LR
 0[""StartNode""] --> 1[""start_element""]
 1 --> 2[""myTaskOne""]
@@ -2712,16 +2741,17 @@
 5 --> 7
 6 --> 7"
 300,"flowchart LR
-0[""StartNode""] --> 1[""Vendor sends the invoice""]
-1 --> 2[""Vendor receives the invoice""]
-2 --> 3[""Instruction - \""send over the invoice\"" or \""contact the vendor\""""]
+0[""StartNode""] --> 11[""Vendor sends invoice""]
+2[""Vendor receives the invoice""] --> 3[""Instruction""]
 3 --> |""send over the invoice""|4[""Enter invoice information in Payment Out Module""]
+3 --> |""contact the vendor""|5[""Revise invoice on the spot""]
 4 --> 6[""Make payment""]
-5[""Revise invoice on the spot""] --> 12[""Receive the invoice again""]
+5 --> 1[""Vendor sends the invoice""]
 6 --> 7[""Process payment""]
 7 --> 8[""Forward payment to vendor""]
 8 --> 9[""Close order""]
-9 --> 10[""EndNode""]"
+9 --> 10[""EndNode""]
+11 --> 2"
 301,"flowchart LR
 0[""StartNode""] --> 1[""Receive order""]
 1 --> 2[""Send invoice""]
@@ -2751,7 +2781,8 @@
 2 --> 3[""Can the order be fulfilled?""]
 3 --> |""Yes""|4[""Confirm the order""]
 3 --> |""No""|5[""Reject the order""]
-4 --> 6[""Deliver the order""]"
+4 --> 6[""Deliver the order""]
+5 --> 8[""EndNode""]"
 305,"flowchart LR
 1[""Use newTransportEvent""] --> 2[""Send newTransportEvent""]
 2 --> 3[""Receive transport order""]
@@ -2760,7 +2791,6 @@
 4 --> 6[""Distribute shipment info""]
 4 --> 7[""Ask for shipment confirmation""]
 7 --> 11[""Distribute Shipment Info""]
-8[""StartNode""] --> 1
 9[""Send shipment confirmation""] --> 10[""EndNode""]"
 306,"flowchart LR
 0[""StartNode""] --> 1[""Reach out to 1st Level Support""]
@@ -2809,19 +2839,21 @@
 310,"flowchart LR
 0[""StartNode""] --> 1[""Place change request""]
 1 --> 2[""Delivery conflicts?""]
+2 --> |""Yes""|3[""Dismiss change request""]
 2 --> |""No""|4[""Check for cancellation""]
 4 --> 5[""Cancellation?""]
 5 --> |""Yes""|6[""Cancel order""]
 8[""Approve change request""] --> 9[""EndNode""]
-15[""Delivery conflicts?""] --> |""No""|17[""Cancellation?""]
-17 --> |""Yes""|6
 18[""Product on sale?""] --> |""Yes""|8"
 311,"flowchart LR
-0[""StartNode""] --> 18[""Computer problem encountered""]
+0[""StartNode""] --> 17[""Computer problem encountered""]
 2[""Describe problem""] --> 3[""Receive information regarding estimated time and cost""]
-9[""Time and cost acceptable?""] --> |""Yes""|5[""Authorize repair""]
-12[""Check if the computer problem has been fixed""] --> |""No""|14[""EndNode""]
-18 --> 2"
+3 --> 4[""Time and cost acceptable?""]
+4 --> |""Yes""|5[""Authorize repair""]
+4 --> |""No""|6[""Take computer back""]
+6 --> 14[""EndNode""]
+12[""Check if the computer problem has been fixed""] --> |""No""|14
+17 --> 2"
 312,"flowchart LR
 0[""StartNode""] --> 1[""Send the order""]
 1 --> 2[""Receive the items""]
@@ -2843,11 +2875,11 @@
 5 --> 6
 8[""Send email warning""] --> 4"
 315,"flowchart LR
-1[""Meet with customer and discuss web design""] --> 2[""Meeting successful?""]
+1[""Meet with customer""] --> 2[""Meeting successful?""]
 2 --> |""Yes""|3[""Second meeting with customer""]
-3 --> 4[""Meeting successful?""]
-4 --> |""Yes""|5[""Create storyboard""]
-4 --> |""No""|6[""EndNode""]"
+2 --> |""No""|6[""EndNode""]
+4[""Meeting successful?""] --> |""Yes""|5[""Create storyboard""]
+4 --> |""No""|6"
 316,"flowchart LR
 0[""StartNode""] --> 1[""Send offer manually""]
 1 --> 2[""Address available?""]
@@ -2909,7 +2941,7 @@
 0[""StartNode""] --> 1[""Left outer join between lips and it_likp, store result in it_lipsm""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Left outer join between vbfa and it_likpsm, store result in it_vbfa_completo""]
-3 --> 4[""Remove rows from it_vbfa_completo where plmin is not equal to ""+""""]
+3 --> 4[""Remove rows from it_vbfa_completo where plmin is not equal to +""]
 4 --> 5[""Copy vbeln values from it_vbfa_completo to it_unolips and remove duplicates""]
 5 --> 6[""Left outer join between lips and it_unolips, store result in it_lips""]
 6 --> 7[""Copy lifex values from it_likp to it_lifex and sort""]
@@ -2917,7 +2949,7 @@
 8 --> 9[""Execute busca_pedido_vbap and busca_factura_vbap""]
 9 --> 10[""c_si in r_valida""]
 10 --> |""Yes""|11[""Check pvstel in r_exclog""]
-14[""Transfer vbeln values from it_vbfa_completo to itransp and remove duplicates""] --> 15[""it_nofacturado empty?""]
+13[""Transfer vbeln values from it_vbfa_completo to itransp and remove duplicates""] --> 14[""it_nofacturado empty?""]
 19[""Transfer tknum values from itnum-vbeln to it_vbfa_completo and remove rows without tknum""] --> 28[""Remove rows from it_vbfa_completo where tknum is in so_tknum""]
 28 --> 22[""EndNode""]"
 325,"flowchart LR

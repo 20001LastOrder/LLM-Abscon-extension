@@ -4158,15 +4158,15 @@ graph TD
 0[""Start Node""] --> 1[""Perform left outer join between lips and it_likp (store result in it_lipsm)""]
 1 --> 2[""Sort it_lipsm and remove duplicates""]
 2 --> 3[""Perform left outer join between vbfa and it_lipsm (store result in it_vbfa_completo)""]
-3 --> 4[""Remove rows in it_vbfa_completo where plmin ≠ \""+\""""]
+3 --> 4[""Remove rows in it_vbfa_completo where plmin ≠ +""]
 4 --> 5[""Copy vbeln values from it_vbfa_completo to it_unolips and remove duplicates""]
 5 --> 6[""Perform left outer join between lips and it_unolips (store result in it_lips)""]
 6 --> 7[""Copy lifex values from it_likp to it_lifex and sort""]
 7 --> 8[""Write lifex values from it_lifex to it_vbfa_completo-secuencia""]
 8 --> 9[""Execute busca_pedido_vbap function""]
 9 --> 10[""Execute busca_factura_vbap function""]
-10 --> 11{""Is \""c_si in r_valida\"" true?""}
-11 --> |""Yes""| 12{""Is \""pvstel in r_exclog\"" true?""}
+10 --> 11{""Is c_si in r_valida true?""}
+11 --> |""Yes""| 12{""Is pvstel in r_exclog true?""}
 11 --> |""No""| 13[""Perform left outer join between vbap and it_vbfa_completo (store result in imaktl)""]
 12 --> |""Yes""| 14[""Remove non-error rows from it_nofacturado""]
 12 --> |""No""| 15[""Perform left outer join between vbap and it_vbfa_completo (store result in imaktl)""]
@@ -4175,9 +4175,9 @@ graph TD
 17 --> 18[""Remove non-error rows from it_nofacturado""]
 18 --> 19[""Enhance remaining rows with data""]
 19 --> 20[""Transfer vbeln values from it_vbfa_completo to itransp and remove duplicates""]
-20 --> 21{""Is \""it_nofacturado empty?\"" true?""}
+20 --> 21{""Is it_nofacturado empty? true?""}
 21 --> |""No""| 22[""Set and print error""]
-21 --> |""Yes""| 23{""Is \""error?\"" true?""}
+21 --> |""Yes""| 23{""Is error? true?""}
 23 --> |""No""| 24[""Perform left outer join between vbfa and itransp (store result in itnum)""]
 23 --> |""Yes""| 25[""End Node""]
 24 --> 26[""Perform left outer join between vttk and itnum (store result in ivttk_t)""]

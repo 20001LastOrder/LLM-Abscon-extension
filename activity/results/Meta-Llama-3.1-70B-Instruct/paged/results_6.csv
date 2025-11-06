@@ -1221,7 +1221,6 @@ graph LR
 1 --> 4[""Lodge the application""]
 2 --> 4
 3 --> 4
-4 [""EndNode""]
 "
 91,"
 graph LR
@@ -2057,7 +2056,7 @@ graph LR
 8 --> 9[""Receive requested material""]
 9 --> 10[""Receive incoming material supplies""]
 10 --> 11[""Monitor progress of purchase orders""]
-9 -->| ""simultaneously"" | 12[""Release invoices for payment""]
+9 -->|""simultaneously""| 12[""Release invoices for payment""]
 11 --> 13[""EndNode""]
 "
 154,"
@@ -4317,7 +4316,7 @@ graph LR
 0[""StartNode""] --> 1[""Perform left outer join between lips and it_likp, store in it_lipsm""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Perform left outer join between vbfa and it_likpsm, store in it_vbfa_completo""]
-3 --> 4[""Remove lines from it_vbfa_completo where plmin is not equal to ""+""]
+3 --> 4[""Remove lines from it_vbfa_completo where plmin is not equal to +""]
 4 --> 5{""c_si in r_valida""}
 5 --> |""Yes""|6[""Execute busca_pedido_vbap and busca_factura_vbap functions""]
 5 --> |""No""|7[""Perform left outer join between vbap and it_vbfa_completo, store in imaktl""]

@@ -1546,7 +1546,7 @@ graph LR
 3 --> 4[""Provide L&M Cost Estimates""]
 4 --> 5[""Add overhead costs""]
 5 --> 6[""Generate pricing options""]
-5 --> 7[""RFQ verified?""}
+5 --> 7{""RFQ verified?""}
 7 --> |""No""|8[""Ask for more information""]
 7 --> |""Yes""|9[""Provide clarification""]
 8 --> 6
@@ -3811,7 +3811,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""start_element""]
 1 --> 2[""myTaskOne""]
-2 --> 3{""Event ""myMessageEvent"" or ""myTimeEvent_60minutes""}
+2 --> 3{""Event myMessageEvent or myTimeEvent_60minutes""}
 3 --> |""myMessageEvent""|4[""myTaskTwo""]
 3 --> |""myTimeEvent_60minutes""|5[""myTaskThree""]
 4 --> 6[""myEndEvent""]
@@ -3980,7 +3980,6 @@ graph LR
 4 --> 5[""Deliver the order""]
 3 --> 6[""EndNode""]
 5 --> 6
-6 --- ""Order has been successfully delivered"" / ""Order has been rejected""
 "
 305,"
 graph LR

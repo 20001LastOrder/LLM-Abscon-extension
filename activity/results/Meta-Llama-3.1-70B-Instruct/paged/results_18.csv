@@ -224,12 +224,12 @@ graph LR
 3 --> 1
 2 --> |""Yes""|4[""Analyze RFQ and provide L&M cost estimates""]
 4 --> 1
-2 --> |""No"" 2nd time|3
+2 --> |""No 2nd time""|3
 3 --> 1
-2 --> |""Yes"" 2nd time|5[""Add overhead cost and generate pricing options""]
+2 --> |""Yes 2nd time""|5[""Add overhead cost and generate pricing options""]
 5 --> 1
 1 --> 2
-2 --> |""Yes"" 3rd time|5
+2 --> |""Yes 3rd time""|5
 5 --> 6[""Generate sales quote""]
 6 --> 7[""EndNode""]
 "
@@ -4312,7 +4312,7 @@ graph LR
 0[""StartNode""] --> 1[""Perform left outer join between lips and it_likp, store in it_lipsm""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Perform left outer join between vbfa and it_likpsm, store in it_vbfa_completo""]
-3 --> 4[""Remove lines from it_vbfa_completo where plmin is not equal to ""+""]
+3 --> 4[""Remove lines from it_vbfa_completo where plmin is not equal to +""]
 4 --> 5[""Copy vbeln values from it_vbfa_completo to it_unolips, remove duplicates""]
 5 --> 6[""Perform left outer join between lips and it_unolips, store in it_lips""]
 6 --> 7[""Copy lifex values from it_likp to it_lifex, sort""]

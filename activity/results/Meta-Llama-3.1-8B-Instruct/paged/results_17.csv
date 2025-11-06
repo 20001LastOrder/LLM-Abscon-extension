@@ -633,7 +633,7 @@ graph LR
 48,"
 graph LR
 0[""StartNode""] --> 1{""Is project economically beneficial?""}
-1 --> |""No""|2[""Is there any additional goals given?""}
+1 --> |""No""|2{""Is there any additional goals given?""}
 1 --> |""Yes""|3{""Does user accept?""}
 2 --> |""No""|3
 2 --> |""Yes""|3
@@ -675,7 +675,7 @@ graph LR
 0[""StartNode""] --> 1[""Receive Issue""]
 1 --> 2[""Open Ticket""]
 2 --> 3[""Edit 1st level Ticket""]
-3 --> 4{""Issue classified as \""2nd level issue\""?""}
+3 --> 4{""Issue classified as 2nd level issue?""}
 4 --> |""No""|5[""Send email to account manager""]
 4 --> |""Yes""|6[""Edit 2nd level Ticket""]
 6 --> 7{""Issue resolved?""}
@@ -705,7 +705,7 @@ graph LR
 55,"
 graph LR
 0[""StartNode""] --> 1[""Verify RFQ""]
-1 --> 2{""RFQ verified as \""ok\""?""}
+1 --> 2{""RFQ verified as ok?""}
 2 --> |""Yes""|3[""Provide LandM cost estimates""]
 2 --> |""No""|4[""Provide additional information""]
 4 --> 1
@@ -1937,15 +1937,15 @@ graph LR
 17 --> 18[""Perform busca_pedido_vbapt""]
 18 --> 19[""Perform busca_factura_vbapt""]
 19 --> 20[""Clear any errors""]
-20 --> 21{""c_si in r_valida"" is ""no""}
+20 --> 21{""c_si in r_valida is no""}
 21 --> |""Yes""|22[""Left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
-21 --> |""No""|23{""pvstel in r_exclog"" is ""yes""}
+21 --> |""No""|23{""pvstel in r_exclog is yes""}
 23 --> |""Yes""|24[""Remove rows from it_nofacturado that aren't errors""]
 23 --> |""No""|25[""Transfer maktl from imaktl to it_vbfa_completo""]
-24 --> 26{""it_nofacturado empty?"" is ""no""}
+24 --> 26{""it_nofacturado empty? is no""}
 25 --> 26
 26 --> |""Yes""|27[""Set & print error""]
-26 --> |""No""|28{""error?"" is ""no""}
+26 --> |""No""|28{""error? is no""}
 27 --> 28
 28 --> |""Yes""|29[""Left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
 28 --> |""No""|29
@@ -3124,7 +3124,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Enter invoices to validation office""]
 1 --> 2[""Proceed with invoices validation""]
-2 --> 3[""Tick box \""invoice entered correctly\"" on invoices form""]
+2 --> 3[""Tick box invoice entered correctly on invoices form""]
 3 --> 4[""Log into SAP""]
 4 --> 5[""Change data status from parked to validated""]
 5 --> 6[""Forward validated invoices to Registry officers""]

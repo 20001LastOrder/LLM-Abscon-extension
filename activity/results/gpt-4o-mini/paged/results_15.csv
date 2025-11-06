@@ -3209,7 +3209,7 @@ flowchart LR
 "
 249,"
 flowchart LR
-0[""Log and route the complaint""] --> 1{""Is the complaint \""instructor resolvable\""?""}
+0[""Log and route the complaint""] --> 1{""Is the complaint instructor resolvable?""}
 1 --> 2[""Handle the complaint""]
 2 --> 3{""Does the complaint need to be escalated?""}
 3 --> |""No""|4[""Send email to student and cc Complaint Staff""]
@@ -3513,7 +3513,7 @@ flowchart LR
 272,"
 flowchart LR
 0[""Send Mortgage Offer""] --> 1[""Wait for Answer""]
-1 --> 2{""Is the answer \""decline\""?""}
+1 --> 2{""Is the answer decline?""}
 2 --> |""Yes""|4[""Update Details""]
 2 --> |""No""|3[""Check Offer Completeness""]
 4 --> 3

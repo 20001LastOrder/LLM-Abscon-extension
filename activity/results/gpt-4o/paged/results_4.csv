@@ -3586,7 +3586,7 @@ graph LR
 "
 280,"
 graph LR
-0[""Generate payment report""] -->|uses ""Payment report""| 1[""Pay vendor""]
+0[""Generate payment report""] -->|""uses Payment report""| 1[""Pay vendor""]
 0 --> 2[""Send payment report to Accounts Receivable Department""]
 0 --> 3[""Send payment report to registry""]
 2 --> 4[""Generate monthly invoices for clients""]

@@ -3,9 +3,9 @@
 graph LR
 0[""StartNode""] --> 1[""Interview Patients""]
 0 --> 2[""File results and expertise""]
-1 -->| ""Interview results"" | 2
+1 -->|""Interview results""| 2
 2 --> 3[""Create report""]
-3 -->| ""Report"" | 4{""Expert responds in time?""}
+3 -->|""Report""| 4{""Expert responds in time?""}
 4 --> |""Yes""| 5[""Forward report to referee""]
 4 --> |""No""| 6[""Ask for external expertise""]
 5 --> 7[""Fill out check to pay for expenses""]
@@ -3588,12 +3588,12 @@ graph LR
 "
 279,"
 graph LR
-0[""Demand Planning""] -->|produces ""Gross forecast""| 3[""Forecast Netting""]
-1[""Safety Stock Calculation""] -->|produces ""Stock-related figures""| 4[""Planning Data Loading""]
-2[""Current Stock Levels Update""] -->|produces ""Stock-related figures""| 4
-3 -->|produces ""Total demand""| 4
+0[""Demand Planning""] -->|""produces Gross forecast""| 3[""Forecast Netting""]
+1[""Safety Stock Calculation""] -->|""produces Stock-related figures""| 4[""Planning Data Loading""]
+2[""Current Stock Levels Update""] -->|""produces Stock-related figures""| 4
+3 -->|""produces Total demand""| 4
 4 --> 5[""Weekly Planning Run""]
-5 -->|produces ""Optimized net requirements (ONR)""| 6[""Production Plan Loading""]
+5 -->|""produces Optimized net requirements (ONR)""| 6[""Production Plan Loading""]
 6 --> 7[""Local Production Planning""]
 7 --> 8[""EndNode""]
 "

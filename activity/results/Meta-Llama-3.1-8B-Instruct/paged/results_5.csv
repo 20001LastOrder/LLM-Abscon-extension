@@ -5,10 +5,10 @@ graph LR
 0 --> 2[""File results and expertise""]
 1 --> 2
 2 --> 3[""Create report""]
-3 --> 4{""Answer is \""Yes\"" or \""No\""""}
+3 --> 4{""Answer is Yes or No""}
 4 --> |""Yes""|5[""Forward to referee""]
 4 --> |""No""|6[""Ask for external expertise""]
-6 --> 7{""Answer is \""Yes\"" or \""No\""""}
+6 --> 7{""Answer is Yes or No""}
 7 --> |""Yes""|8[""Forward to referee""]
 7 --> |""No""|9[""Ask for external expertise""]
 9 --> 7
@@ -788,14 +788,14 @@ graph LR
 5 --> |""Yes""|7[""Record and archive the letter""]
 7 --> 8[""Transmit the letter and register it with Miranda""]
 8 --> 9[""Make a membership decision""]
-9 --> |""Yes""|10[""Stamp \""new member\"" and the date""]
+9 --> |""Yes""|10[""Stamp new member and the date""]
 9 --> |""No""|11[""Provide a negative answer""]
 10 --> 12{""Membership decision?""}
 12 --> |""No""|11
 12 --> |""Yes""|13[""Add the mail number and date""]
 13 --> 14{""Membership decision?""}
 14 --> |""No""|11
-14 --> |""Yes""|15[""Stamp \""new member\"" and the date""]
+14 --> |""Yes""|15[""Stamp new member and the date""]
 15 --> 16[""Transmit the letter to Charles""]
 16 --> 17[""Add the new member""]
 17 --> 18[""Calculate the membership fee""]
@@ -917,9 +917,7 @@ graph LR
 1 --> |""No""| 3[""Reject the order""]
 2 --> 4[""Deliver the order""]
 4 --> 5[""EndNode""]
-    label ""Order delivered successfully""
 3 --> 6[""EndNode""]
-    label ""Order rejected""
 "
 68,"
 graph LR
@@ -2018,19 +2016,19 @@ graph LR
 17 --> 18[""Perform busca_pedido_vbapt""]
 18 --> 19[""Perform busca_factura_vbapt""]
 19 --> 20[""Clear any errors""]
-20 --> 21{""c_si in r_valida"" is ""no""}
+20 --> 21{""c_si in r_valida is no""}
 21 --> |""Yes""|22[""Perform left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
-21 --> |""No""|23{""c_si in r_valida"" is ""yes""}
-23 --> 24{""pvstel in r_exclog"" is ""yes""}
+21 --> |""No""|23{""c_si in r_valida is yes""}
+23 --> 24{""pvstel in r_exclog is yes""}
 24 --> 25[""Remove rows from it_nofacturado that aren't errors""]
-24 --> 26{""pvstel in r_exclog"" is ""no""}
+24 --> 26{""pvstel in r_exclog is no""}
 26 --> |""Yes""|27[""Perform left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
 26 --> |""No""|28[""Transfer maktl from imaktl to it_vbfa_completo""]
-27 --> 29[""Check if it_nofacturado empty?"" is ""no""]
+27 --> 29[""Check if it_nofacturado empty? is no""]
 29 --> |""Yes""|30[""Set & print error""]
-30 --> |""No""|31[""Check if error?"" is ""no""]
+30 --> |""No""|31[""Check if error? is no""]
 31 --> |""Yes""|32[""Perform left outer join between vbap and it_vbfa_completo, and store the result in imatkl""]
-32 --> |""No""|33[""Check if error?"" is ""yes""]
+32 --> |""No""|33[""Check if error? is yes""]
 33 --> 34[""EndNode""]
 "
 150,"
@@ -3470,7 +3468,7 @@ graph LR
 257,"
 graph LR
 0[""StartNode""] --> 1[""Check Credit History""]
-1 --> |""Check Credit History"" -> Application & Property Title Search| 2[""Property Survey""]
+1 --> |""Check Credit History -> Application & Property Title Search""| 2[""Property Survey""]
 2 --> 3[""EndNode""]
 "
 258,"

@@ -1689,8 +1689,8 @@
 168,"graph LR
     1[""scene""] --> 2[""filter_size_large""]
     1 --> 6[""filter_size_large""]
-    2 --> 3[""filter_shape_sphere""]
     5[""relate_behind""] --> 13[""OR""]
+    6 --> 7[""filter_shape_sphere""]
     10[""relate_behind""] --> 11[""filter_color_purple""]
     11 --> 12[""filter_material_rubber""]
     12 --> 13
@@ -1972,9 +1972,9 @@
 "
 195,"graph LR
     1[""scene""] --> 2[""filter_size_small""]
-    2 --> 3[""filter_color_purple""]
-    3 --> 4[""filter_shape_sphere""]
-    4 --> 5[""OR""]
+    2 --> 5[""OR""]
+    3[""filter_color_purple""] --> 4[""filter_shape_sphere""]
+    4 --> 5
 "
 196,"graph LR
     1[""scene""] --> 2[""filter_color_blue""]

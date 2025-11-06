@@ -3969,8 +3969,6 @@ graph LR
 1 --> 3[""Search for property title""]
 2 --> 3
 3 --> 4[""EndNode""]
-note right of 1: ""Credit History File""
-note right of 2: ""Survey Document""
 "
 295,"
 graph LR
@@ -4325,7 +4323,7 @@ graph LR
 0[""StartNode""] --> 1[""Perform left outer join between tables lips and it_likp, store result in it_lipsm""]
 1 --> 2[""Sort and remove duplicates from it_lipsm""]
 2 --> 3[""Perform left outer join between tables vbfa and it_likpsm, store result in it_vbfa_completo""]
-3 --> 4[""Remove lines in it_vbfa_completo where plmin value is not equal to ""+""]
+3 --> 4[""Remove lines in it_vbfa_completo where plmin value is not equal to +""]
 "
 325,"
 graph LR

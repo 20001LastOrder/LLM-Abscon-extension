@@ -6,12 +6,12 @@
 2 --> 3
 3 --> 4[""Is answer 'No'?""]
 4 --> |""Yes""|5[""Ask for external expertise""]
-4 --> |""No""|6[""Ask for external expertise"" and ""Forward report to referee""]
-5 --> 7[""Does expert respond in time?""]
-6 --> 8[""Forward report to referee""]
-7 --> |""Yes""|8
-7 --> |""No""|5
-8 --> 9[""Fill out check to pay for expenses""]
+4 --> |""No""|8[""Ask for external expertise and Forward report to referee""]
+5 --> 6[""Does expert respond in time?""]
+6 --> |""Yes""|7[""Forward report to referee""]
+6 --> |""No""|5
+7 --> 9[""Fill out check to pay for expenses""]
+8 --> 7
 9 --> 10[""EndNode""]"
 1,"flowchart LR
 0[""StartNode""] --> 1[""Register participation""]
@@ -862,7 +862,7 @@
 1 --> 2[""All parts available?""]
 2 --> |""Yes""|3[""EndNode""]
 2 --> |""No""|2
-2 --> 4[""Part Auction""]
+2 --> |""No again""|4[""Part Auction""]
 4 --> 3"
 77,"flowchart LR
 0[""StartNode""] --> 1[""Request petty cash""]

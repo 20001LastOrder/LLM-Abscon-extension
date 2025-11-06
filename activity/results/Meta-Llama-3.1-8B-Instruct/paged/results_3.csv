@@ -2094,14 +2094,14 @@ graph LR
 2 --> 3[""Sorting the opened mail""]
 3 --> 4[""Registering the mail""]
 4 --> 5[""Checking mail compliance""]
-5 --> 6{""Rejected mailed document"",""Accepted mailed documents""}
+5 --> 6{""Rejected mailed document,Accepted mailed documents""}
 6 -->|Rejected| 7[""Compiling the mailed document requisition""]
 7 --> 8[""EndNode""]
 6 -->|Accepted| 9[""Capturing the details of the matter""]
 9 --> 10[""Capturing party details""]
 10 --> 11[""Preparing the response""]
 11 --> 12[""Receiving payment""]
-12 --> 13{""Filed document"",""Document copy & receipt""}
+12 --> 13{""Filed document,Document copy & receipt""}
 13 -->|Filed| 14[""Capturing party details""]
 14 --> 15[""Printing the file server""]
 13 -->|Document copy & receipt| 16[""Printing the file server""]
@@ -3167,16 +3167,16 @@ graph LR
 0[""StartNode""] --> 1[""Incident Identification""]
 1 --> 2[""Incident Logging""]
 2 --> 3[""Incident Categorization""]
-3 --> 4{""Is it a \""Service Request\""?""}
+3 --> 4{""Is it a Service Request?""}
 4 --> |""Yes""|5[""Request Fulfilment""]
-4 --> |""No""|6{""Is it a \""Major Incident\""?""}
+4 --> |""No""|6{""Is it a Major Incident?""}
 6 --> |""Yes""|7[""Escalate to Management""]
 6 --> |""No""|8[""Initial Diagnosis""]
-5 --> 9{""Is it a \""Major Incident\""?""}
+5 --> 9{""Is it a Major Incident?""}
 9 --> |""Yes""|7
-9 --> |""No""|10{""Was it \""Fixed in agreed time\""?""}
-10 --> |""Yes""|11{""Is \""Hierarchic escalation needed\""?""}
-10 --> |""No""|12{""Is \""Hierarchic escalation needed\""?""}
+9 --> |""No""|10{""Was it Fixed in agreed time?""}
+10 --> |""Yes""|11{""Is Hierarchic escalation needed?""}
+10 --> |""No""|12{""Is Hierarchic escalation needed?""}
 11 --> |""Yes""|7
 11 --> |""No""|13[""Investigation and Diagnosis""]
 12 --> |""Yes""|7
@@ -3339,7 +3339,7 @@ graph LR
 249,"
 graph LR
 0[""StartNode""] --> 1[""Log and route complaint""]
-1 --> 2{""Is complaint \""instructor resolvable\""?""}
+1 --> 2{""Is complaint instructor resolvable?""}
 2 --> |""Yes""|3[""Handle complaint""]
 2 --> |""No""|3
 3 --> 4[""Check if complaint should be escalated""]

@@ -728,7 +728,7 @@ graph LR
 55,"
 graph LR
 0[""StartNode""] --> 1[""Verify RFQ""]
-1 --> 2{""Is RFQ verified as \""ok\""?""}
+1 --> 2{""Is RFQ verified as ok?""}
 2 --> |""Yes""|3[""Provide LandM cost estimates""]
 2 --> |""No""|4[""Ask for more information""]
 3 --> 5[""Add overhead cost""]
@@ -769,7 +769,7 @@ graph LR
 4 --> 5[""Record and archive letter""]
 5 --> 6[""Transmit letter and register with Miranda""]
 6 --> 7[""Make membership decision""]
-7 --> |""Yes""|8[""Stamp \""new member\"" and date""]
+7 --> |""Yes""|8[""Stamp new member and date""]
 7 --> |""No""|9[""Provide negative answer""]
 8 --> 10[""Add new member""]
 10 --> 11[""Calculate membership fee""]
@@ -1949,14 +1949,14 @@ graph LR
 17 --> 18[""Perform busca_pedido_vbapt""]
 18 --> 19[""Perform busca_factura_vbapt""]
 19 --> 20[""Clear errors""]
-20 --> 21{""c_si in r_valida"" is ""no""}
+20 --> 21{""c_si in r_valida is no""}
 21 --> |""yes""|22[""Left outer join between vbap and it_vbfa_completo""]
 21 --> |""no""|23[""Remove rows from it_nofacturado that aren't errors""]
 22 --> 24[""Transfer maktl from imaktl to it_vbfa_completo""]
 23 --> 24
-24 --> 25{""it_nofacturado empty?"" is ""no""}
+24 --> 25{""it_nofacturado empty? is no""}
 25 --> |""yes""|26[""Set & print error""]
-25 --> |""no""|27{""error?"" is ""no""}
+25 --> |""no""|27{""error? is no""}
 26 --> 28[""Left outer join between vbap and it_vbfa_completo""]
 27 --> |""yes""|28
 28 --> 29[""EndNode""]
@@ -3135,7 +3135,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""Enter invoices to validation office""]
 1 --> 2[""Proceed with invoices validation""]
-2 --> 3[""Tick box \""invoice entered correctly\"" on invoices form""]
+2 --> 3[""Tick box invoice entered correctly on invoices form""]
 3 --> 4[""Log into SAP""]
 4 --> 5[""Change data status to validated""]
 5 --> 6[""Forward validated invoices to Registry officers""]
@@ -3793,7 +3793,7 @@ graph LR
 graph LR
 0[""StartNode""] --> 1[""start_element""]
 1 --> 2[""myTaskOne""]
-2 --> 3{""myMessageEvent?"" or ""myTimeEvent_60minutes?""}
+2 --> 3{""myMessageEvent? or myTimeEvent_60minutes?""}
 3 --> |""myMessageEvent""|4[""myTaskTwo""]
 3 --> |""myTimeEvent_60minutes""|5[""myTaskThree""]
 4 --> 6[""myEndEvent""]

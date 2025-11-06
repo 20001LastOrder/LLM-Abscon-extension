@@ -2400,7 +2400,7 @@ graph LR
     2 --> 3[""filter_shape_cylinder""]
     3 --> 4[""query_color""]
     1 --> 5[""filter_size_large""]
-    5 --> 6[""filter_color_"" + ""4""]
+    5 --> 6[""filter_color_ + 4""]
     6 --> 7[""filter_material_metal""]
     7 --> 8[""query_shape""]
 "
@@ -3774,7 +3774,7 @@ graph LR
     2 --> 3[""filter_material_metal""]
     3 --> 4[""unique""]
     4 --> 5[""query_color""]
-    1 --> 6[""filter_color_"" + ""red""]
+    1 --> 6[""filter_color_red""]
     6 --> 7[""filter_material_rubber""]
     7 --> 8[""count""]
 "

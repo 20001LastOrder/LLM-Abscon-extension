@@ -48,6 +48,7 @@
 "
 4,"graph LR
     1[""scene""] --> 7[""filter_color_brown""]
+    3[""filter_shape_cylinder""] --> 2[""filter_size_large""]
     5[""unique""] --> 6[""relate_right""]
     6 --> 14[""filter_size_large""]
     7 --> 8[""filter_shape_cylinder""]
@@ -56,7 +57,7 @@
     10 --> 11[""filter_shape_cylinder""]
     11 --> 12[""unique""]
     12 --> 13[""relate_in_front""]
-    13 --> 3[""filter_shape_cylinder""]
+    13 --> 3
     14 --> 17[""count""]
 "
 5,"graph LR
@@ -615,8 +616,9 @@
     4 --> 5[""relate_behind""]
 "
 55,"graph LR
-    1[""scene""] --> 22[""filter_size_large""]
-    3[""filter_color_red""] --> 4[""filter_material_metal""]
+    1[""scene""] --> 2[""filter_size_big""]
+    2 --> 3[""filter_color_red""]
+    3 --> 4[""filter_material_metal""]
     4 --> 5[""unique""]
     5 --> 6[""relate_in_front""]
     7[""filter_size_small""] --> 8[""filter_material_rubber""]
@@ -628,7 +630,6 @@
     17 --> 18[""unique""]
     18 --> 19[""query_size""]
     20 --> 13[""filter_material_rubber""]
-    22 --> 3
 "
 56,"graph LR
     1[""scene""] --> 2[""filter_color_yellow""]
@@ -838,7 +839,6 @@
     11[""filter_size_small""] --> 12[""filter_color_blue""]
     12 --> 10
     13 --> 14[""query_material""]
-    15 --> 8
 "
 74,"graph LR
     1[""scene""] --> 2[""filter_size_small""]
@@ -1803,9 +1803,9 @@
     3 --> 4[""unique""]
     4 --> 8[""relate_behind""]
     5[""filter_material_metal""] --> 6[""filter_shape_sphere""]
-    6 --> 7[""unique""]
-    7 --> 11[""relate_in_front""]
+    6 --> 10[""unique""]
     8 --> 5
+    10 --> 11[""relate_in_front""]
     11 --> 12[""filter_color_blue""]
     12 --> 13[""filter_shape_sphere""]
     13 --> 14[""exist""]
@@ -2700,7 +2700,9 @@
 237,"graph LR
     1[""scene""] --> 2[""filter_color_red""]
     2 --> 3[""filter_material_rubber""]
-    5[""relate_behind""] --> 6[""filter_color_cyan""]
+    3 --> 4[""unique""]
+    4 --> 5[""relate_behind""]
+    5 --> 6[""filter_color_cyan""]
     6 --> 7[""filter_size_small""]
     7 --> 9[""unique""]
     9 --> 10[""relate_in_front""]
@@ -3187,11 +3189,11 @@
 "
 282,"graph LR
     1[""scene""] --> 3[""filter_size_large""]
-    2[""filter_shape_sphere""] --> 8[""unique""]
-    3 --> 2
-    5[""same_material""] --> 6[""filter_shape_sphere""]
-    8 --> 5
-    10[""unique""] --> 11[""query_color""]
+    3 --> 12[""filter_shape_sphere""]
+    4[""unique""] --> 5[""same_material""]
+    5 --> 6[""filter_shape_sphere""]
+    8[""unique""] --> 11[""query_color""]
+    12 --> 4
 "
 283,"graph LR
     1[""scene""] --> 2[""filter_color_purple""]
