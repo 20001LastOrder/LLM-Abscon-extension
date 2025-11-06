@@ -255,5 +255,5 @@ class TaxonomyEvaluator:
             "recall": recall,
             "precision": precision,
             "f1": f1,
-            "consistency": consistency["consistency"],
+            "consistency": consistency  # ["consistency"]
         }
