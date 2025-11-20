@@ -546,17 +546,19 @@
 0[""StartNode""] --> 1[""Create order and specify quantity""]
 1 --> 2[""Send to storage manager""]
 2 --> 3[""Product available?""]
+3 --> |""Yes""|4[""Check availability""]
 3 --> |""No""|6[""Forward to external vendor""]
-3 --> |""Yes""|9[""Prepare product for shipping""]
-5[""Prepare product for shipping""] --> 7[""Add delivery confirmation""]
+4 --> 5[""Prepare product for shipping""]
+5 --> 7[""Add delivery confirmation""]
 6 --> 16[""Check product availability""]
-9 --> 14[""Send product back to requesting employee""]
+9[""Prepare product for shipping""] --> 14[""Send product back to requesting employee""]
 10[""Add delivery confirmation to product""] --> 11[""Send delivery confirmation to storage manager""]
 11 --> 12[""Send invoice to accountant""]
 12 --> 13[""EndNode""]
 14 --> 15[""Send delivery confirmation to storage manager""]
 15 --> 10
-16 --> 5"
+16 --> |""Yes""|9
+16 --> |""No""|17[""Reordered product shipped""]"
 48,"flowchart LR
 0[""StartNode""] --> 1[""Is project economically beneficial?""]
 1 --> |""No""|2[""Check additional goals""]
@@ -1879,11 +1881,15 @@
 13 --> 15[""Enter mission data in budget management tool""]
 15 --> 16[""Send dossier to direction""]
 16 --> 18[""Documents approved?""]
-18 --> 20[""Classify all documents""]
-20 --> 29[""EndNode""]
+18 --> |""Yes""|27[""Approve by signing""]
+18 --> |""No""|28[""EndNode""]
+20[""Classify documents""] --> 47[""Classify all the documents""]
+21[""Give copy of MO and/or MOWE to employee""] --> 20
 23 --> |""Yes""|6
 23 --> |""No""|8
-24 --> 10"
+24 --> 10
+27 --> 21
+47 --> 48[""EndNode""]"
 170,"flowchart LR
 0[""StartNode""] --> 1[""Assess weak points in development""]
 1 --> 2[""Choose employees for training""]

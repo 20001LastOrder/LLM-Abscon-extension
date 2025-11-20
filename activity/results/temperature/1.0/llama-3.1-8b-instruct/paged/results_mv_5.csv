@@ -327,7 +327,8 @@
 39,"flowchart LR
 1[""Execution begins""] --> 2[""First execution?""]
 2 --> |""No""|3[""Allocate actors""]
-4[""Check if application is still executing""] --> |""Yes""|5[""Application profiling""]"
+4[""Check if application is still executing""] --> |""Yes""|5[""Application profiling""]
+4 --> |""No""|6[""EndNode""]"
 40,"flowchart LR
 0[""StartNode""] --> 1[""Check number of panellists""]
 1 --> 2[""Photocopy applications""]
@@ -921,11 +922,11 @@
 117,"flowchart LR
 0[""StartNode""] --> 1[""Check raw material availability""]
 1 --> 2[""Raw material available?""]
+2 --> |""No""|3[""Create alarm for raw material shortage""]
 2 --> |""Yes""|4[""Check if raw material is in production line""]
 4 --> 5[""Raw material in production line?""]
 5 --> |""No""|6[""Request transfer of raw material to production line""]
-5 --> |""No""|3[""Create alarm for raw material shortage""]
-6 --> 7[""Allocate raw material to production line""]
+5 --> |""Yes""|7[""Allocate raw material to production line""]
 8[""Allocate raw material to production line""] --> 9[""EndNode""]"
 118,"flowchart LR
 0[""Go to the supermarket""] --> 1[""Select chocolate""]
@@ -1122,6 +1123,8 @@
 2 --> 3[""Search for property title""]
 3 --> 6[""EndNode""]"
 143,"flowchart LR
+0[""StartNode""] --> 1[""Receive Repair Request""]
+1 --> 2[""Check the device""]
 3[""Device Broken?""] --> |""Yes""|4[""External Repairer needed?""]
 12[""Ratify device repairing""] --> 13[""Add repair record""]
 13 --> 14[""Plan for Next Revision""]
@@ -1346,7 +1349,8 @@
 10 --> 11[""Write fee in membership register""]
 11 --> 12[""Write invoice for payment of first fee""]
 12 --> 13[""Send invoice to member""]
-13 --> 14[""Print membership card""]"
+13 --> 14[""Print membership card""]
+17 --> |""Yes""|2"
 167,"flowchart LR
 0[""StartNode""] --> 1[""Notify director""]
 1 --> 2[""Receive patient interview""]
@@ -1513,11 +1517,14 @@
 2 --> 6[""Pricing and Terms satisfactory?""]
 6 --> |""Yes""|4[""Purchase Order Created""]
 6 --> |""No""|16[""Quotation""]
-13[""Check Payment""] --> |""Yes""|14[""Record Payment""]
-13 --> |""No""|15[""Send Reminder""]
-14 --> 7[""EndNode""]
+11[""Update Sales Order""] --> 12[""Generate Invoice/Bill""]
+13[""Verify Payment""] --> |""No""|15[""Send Reminder""]
+14[""Record Payment""] --> 7[""EndNode""]
 17[""Create Sales Order""] --> 18[""Send out Shipment""]
-18 --> 11[""Update Sales Order""]"
+18 --> 11
+19[""Send Invoice/Bill""] --> 20[""Payment is received?""]
+20 --> |""Yes""|14
+20 --> |""No""|15"
 190,"flowchart LR
 0[""Post a job vacancy""] --> 1[""Enter Job Profile""]
 1 --> 2[""Check if job profile has been forwarded.""]
@@ -1608,11 +1615,13 @@
 5 --> 6"
 201,"flowchart LR
 0[""StartNode""] --> 1[""Verify RFQ""]
-1 --> 2[""RFQ verified?""]
-2 --> |""No""|3[""Ask for more information""]
-2 --> |""Yes""|4[""Analyze RFQ""]
-4 --> 10[""Provide L&M cost estimates""]
-11[""Is RFQ verified?""] --> |""Yes""|12[""Add overhead costs""]
+1 --> 5[""Is RFQ verified?""]
+5 --> |""No""|6[""Ask for more information""]
+5 --> |""Yes""|7[""Analyze RFQ""]
+7 --> 10[""Provide L&M cost estimates""]
+10 --> 11[""Is RFQ verified?""]
+11 --> |""No""|9[""Ask for clarification""]
+11 --> |""Yes""|12[""Add overhead costs""]
 12 --> 13[""Generate Pricing options""]
 13 --> 14[""Generate sales quote""]
 14 --> 15[""EndNode""]"
@@ -1749,10 +1758,10 @@
 2 --> 3
 3 --> 4[""EndNode""]"
 218,"flowchart LR
-7[""Request feedback""] --> 9[""Wait for feedback receipt""]
-9 --> 11[""Reply to feedback""]
-11 --> 12[""Collect all feedback""]
-12 --> 14[""Send collected feedback""]"
+7[""Request feedback""] --> 21[""Wait for feedback receipt""]
+11[""Reply to feedback""] --> 12[""Collect all feedback""]
+12 --> 14[""Send collected feedback""]
+21 --> 11"
 219,"flowchart LR
 0[""StartNode""] --> 1[""Starting and entering metadata""]
 1 --> 2[""IN-Patient step""]

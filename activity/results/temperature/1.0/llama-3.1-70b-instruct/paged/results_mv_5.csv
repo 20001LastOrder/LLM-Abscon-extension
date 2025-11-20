@@ -477,10 +477,9 @@
 0[""StartNode""] --> 18[""Create order""]
 2[""Send to storage manager""] --> 3[""Product available?""]
 3 --> |""Yes""|4[""Prepare for shipping""]
-3 --> |""No""|5[""Request forwarded to external vendor""]
+3 --> |""No""|5[""Forward to external vendor""]
 4 --> 6[""Add delivery confirmation""]
-7[""Product available?""] --> |""Yes""|4
-7 --> |""No""|8[""Request forwarded to external vendor""]
+5 --> 3
 9[""Ship reordered product""] --> 10[""Product sent to requesting employee""]
 10 --> 11[""Send Delivery Confirmation to Storage Manager""]
 11 --> 12[""Add Delivery Confirmation to Product""]
@@ -1275,6 +1274,7 @@
 1 --> |""Yes""|3[""Fill medical certificate""]
 2 --> 4[""Fill out documents""]
 3 --> 17[""Sign medical certificate""]
+6[""Check completeness of documents""] --> |""No""|8[""Fix issues with documents""]
 9[""Save process""] --> 10[""Fill in documents one day before departure""]
 10 --> 11[""Sign non-infectivity confirmation""]
 11 --> 12[""Proceed with departure""]

@@ -515,14 +515,11 @@
 47,"flowchart LR
 0[""StartNode""] --> 18[""Create order""]
 2[""Send to storage manager""] --> 3[""Product available?""]
-2 --> 7[""Product available?""]
 3 --> |""Yes""|4[""Prepare for shipping""]
-3 --> |""No""|5[""Request forwarded to external vendor""]
+3 --> |""No""|5[""Forward to external vendor""]
 4 --> 6[""Add delivery confirmation""]
 5 --> 3
-7 --> |""Yes""|4
-7 --> |""No""|8[""Request forwarded to external vendor""]
-8 --> 9[""Ship reordered product""]
+5 --> 9[""Ship reordered product""]
 9 --> 10[""Product sent to requesting employee""]
 10 --> 11[""Send Delivery Confirmation to Storage Manager""]
 11 --> 12[""Add Delivery Confirmation to Product""]

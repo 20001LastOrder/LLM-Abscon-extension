@@ -470,6 +470,7 @@
 3 --> |""No""|6[""Forward to external vendor""]
 3 --> |""Yes""|9[""Prepare product for shipping""]
 5[""Prepare product for shipping""] --> 7[""Add delivery confirmation""]
+9 --> 14[""Send product back to requesting employee""]
 10[""Add delivery confirmation to product""] --> 11[""Send delivery confirmation to storage manager""]
 11 --> 12[""Send invoice to accountant""]
 12 --> 13[""EndNode""]

@@ -3656,12 +3656,14 @@
 5[""c_si in r_valida""] --> |""No""|7[""Perform left outer join between vbap and it_vbfa_completo""]
 5 --> |""Yes""|41[""Check condition 'pvstel in r_exclog'""]
 6[""pvstel in r_exclog""] --> |""Yes""|8[""Remove rows that are not errors from it_nofacturado""]
-6 --> |""No""|17[""Perform left outer join between vbap and it_vbfa_completo""]
+6 --> |""No""|9[""Transfer maktl values from imaktl to it_vbfa_completo""]
 7 --> 12[""it_nofacturado empty?""]
+9 --> 11[""Remove duplicates from itransp""]
+11 --> 16[""Perform left outer join between vbfa and itransp""]
 12 --> |""No""|14[""Error""]
 12 --> |""Yes""|7
 14 --> 19[""Perform right outer join between ivttk_t and itnum""]
-17 --> 18[""Perform left outer join between vttk and itnum""]
+16 --> 18[""Perform left outer join between vttk and itnum""]
 18 --> 19
 19 --> 20[""Transfer tknum values from itnum-vbeln to it_vbfa_completo""]
 20 --> 21[""Remove rows without tknum from it_vbfa_completo""]

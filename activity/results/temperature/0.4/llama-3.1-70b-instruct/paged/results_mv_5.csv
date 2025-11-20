@@ -3574,7 +3574,21 @@
 1 --> 3[""Property Survey""]
 2 --> 3
 3 --> 4[""EndNode""]"
-324,flowchart LR
+324,"flowchart LR
+0[""StartNode""] --> 1[""Perform left outer join between lips and it_likp""]
+1 --> 2[""Sort and remove duplicates from it_lipsm""]
+2 --> 3[""Perform left outer join between vbfa and it_likpsm""]
+3 --> 4[""Remove lines from it_vbfa_completo where plmin is not '+'""]
+4 --> 5[""Copy vbeln values from it_vbfa_completo to it_unolips""]
+5 --> 6[""Remove duplicates from it_unolips""]
+6 --> 7[""Perform left outer join between lips and it_unolips""]
+7 --> 8[""Copy lifex values from it_likp to it_lifex""]
+8 --> 9[""Sort it_lifex""]
+9 --> 10[""Write lifex values to it_vbfa_completo-secuencia""]
+10 --> 11[""Execute busca_pedido_vbap and busca_factura_vbap""]
+11 --> 12[""c_si in r_valida""]
+12 --> |""Yes""|13[""Check 'pvstel in r_exclog' condition""]
+12 --> |""No""|14[""Perform left outer join between vbap and it_vbfa_completo""]"
 325,"flowchart LR
 0[""StartNode""] --> 1[""Allocate bank package""]
 1 --> 2[""Verify data""]
