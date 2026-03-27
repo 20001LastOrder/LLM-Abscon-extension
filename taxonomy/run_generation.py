@@ -30,8 +30,8 @@ def run_single_input_openai(data):
     while result is None:
         try:
             result_raw = chain.invoke(input={"user_input": text_input})
-        except json.JSONDecodeError as e:
-            logger.error(f"JSON decode error for group {group}: {e}")
+        except Exception as e:
+            logger.error(f"Error for group {group}: {e}")
             continue
         result = output_parser.parse(result_raw.content, group)
         if result is None or len(result) == 0:

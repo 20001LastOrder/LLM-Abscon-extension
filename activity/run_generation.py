@@ -29,6 +29,9 @@ def run_single_result(data):
         except json.JSONDecodeError as e:
             logger.error(f"JSON decode error: {e}")
             continue
+        except Exception as e:
+            logger.error(f"Error during LLM invocation: {e}")
+            continue
 
         result = extract_mermaid(result_raw.content)
         if result is None or len(result) == 0:

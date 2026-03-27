@@ -1,5 +1,5 @@
 cd ..
 
-python -m scripts.generate_abscon --folder_path results/temperature/1.0/llama-3.1-70b-instruct --num_candidates_start 5 --num_candidates_end 5
+python -m scripts.generate_abscon --folder_path results/Meta-Llama-3.1-70B-Instruct --num_candidates_start 1 --num_candidates_end 20
 
 #--save_partial_models
