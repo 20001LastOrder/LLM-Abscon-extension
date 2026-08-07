@@ -243,7 +243,7 @@ class TaxonomyEvaluator:
         else:
             consistency = evaluate_group_consistency(
                 final_df, num_groups, one_parent_constraint, return_value, df_actual
-            )
+            )["consistency"]
 
         final_df = dataframe_to_ancestor_graph(final_df)
 

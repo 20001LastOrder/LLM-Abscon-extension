@@ -17,18 +17,14 @@ def get_result(
     num_generation: int,
     approaches: list[str],
     folder: str,
-    ground_truth_folder: str,
+    evaluators: dict[str, ClevrEvaluator],
 ) -> dict:
     result = {}
     for approach in approaches:
         result[approach] = {}
         for llm in llms:
             folder_path = f"{folder}/{llm}"
-            evaluator = ClevrEvaluator(
-                folder_path=folder_path,
-                dataset_name=dataset,
-                data_folder=ground_truth_folder,
-            )
+            evaluator = evaluators[llm]
 
             if approach == "greedy":
                 metrics = evaluator.evaluate_greedy_result()
@@ -55,6 +51,15 @@ def main(args):
     results = []
     num_generations = range(args.num_generations[0], args.num_generations[1] + 1)
 
+    evaluators = {
+        llm: ClevrEvaluator(
+            folder_path=f"{args.folder}/{llm}",
+            dataset_name=args.dataset,
+            data_folder=args.ground_truth_folder,
+        )
+        for llm in args.llms
+    }
+
     for num_generation in tqdm(num_generations):
         print(f"Process results of {num_generation} candidates")
         result = get_result(
@@ -63,7 +68,7 @@ def main(args):
             num_generation,
             args.approaches,
             args.folder,
-            args.ground_truth_folder,
+            evaluators,
         )
         results.append(result)
 

@@ -14,51 +14,55 @@ logger.add(sys.stderr, level="INFO")
 
 def get_result(
     dataset: str,
-    llms: list[str],
+    llm: str,
     num_generation: int,
     approaches: list[str],
     folder: str,
     ground_truth_folder: str,
 ) -> dict:
     result = {}
+    folder_path = f"{folder}/{llm}"
     for approach in approaches:
-        result[approach] = {}
-        for llm in llms:
-            folder_path = f"{folder}/{llm}"
-            if approach == "greedy":
-                evaluator = ActivityEvaluator(
-                    folder_path,
-                    dataset,
-                    data_folder=ground_truth_folder,
-                )
-                metrics = evaluator.evaluate_greedy_result()
-            else:
-                evaluator = ActivityEvaluator(
-                    folder_path, dataset, data_folder=ground_truth_folder
-                )
-                df = pd.read_csv(
-                    f"{folder_path}/{dataset}/results_{approach}_{num_generation}.csv"
-                )["0"].tolist()
-                metrics = evaluator.evaluate_solutions(df)
-            result[approach][llm] = metrics
+        if approach == "greedy":
+            evaluator = ActivityEvaluator(
+                folder_path,
+                dataset,
+                data_folder=ground_truth_folder,
+            )
+            metrics = evaluator.evaluate_greedy_result()
+        else:
+            evaluator = ActivityEvaluator(
+                folder_path, dataset, data_folder=ground_truth_folder
+            )
+            df = pd.read_csv(
+                f"{folder_path}/{dataset}/results_{approach}_{num_generation}.csv"
+            )["0"].tolist()
+            metrics = evaluator.evaluate_solutions(df)
+        result[approach] = metrics
 
     return result
 
 
 def main(args):
-    results = []
-    num_generations = range(args.num_generations[0], args.num_generations[1] + 1)
-    for num_generation in tqdm(num_generations):
-        logger.info(f"Process {num_generation} candidates")
-        result = get_result(
-            args.dataset,
-            args.llms,
-            num_generation,
-            args.approaches,
-            args.folder,
-            args.ground_truth_folder,
-        )
-        results.append(result)
+    num_generations = list(range(args.num_generations[0], args.num_generations[1] + 1))
+    results = [{} for _ in num_generations]
+
+    for llm in args.llms:
+        logger.info(f"Process {llm}")
+        for i, num_generation in enumerate(tqdm(num_generations)):
+            logger.info(f"Process {num_generation} candidates")
+            result = get_result(
+                args.dataset,
+                llm,
+                num_generation,
+                args.approaches,
+                args.folder,
+                args.ground_truth_folder,
+            )
+            for approach, metrics in result.items():
+                if approach not in results[i]:
+                    results[i][approach] = {}
+                results[i][approach][llm] = metrics
 
     # Initialize the approach dictionary
     for llm in args.llms:

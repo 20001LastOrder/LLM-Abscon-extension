@@ -85,6 +85,7 @@ class ClevrEvaluator:
 
         self.num_abstracted_candidates = 0
         self.abstractors = []
+        self.evaluation_cache = {}
         self.seed = seed
 
         self.runtime_statistics = RuntimeStatistics()
@@ -199,32 +200,32 @@ class ClevrEvaluator:
         return_answer=False,
         best_answer=False,
     ):
-        # read candidates for self-consistency
+        # execute each run once and reuse the cached answers across calls
         results = []
         for run in range(num_candidates):
-            results.append(
-                pd.read_csv(os.path.join(self.result_dir, f"results_{run + 1}.csv"))[
+            filename = f"results_{run + 1}.csv"
+            if filename not in self.evaluation_cache:
+                candidates = pd.read_csv(os.path.join(self.result_dir, filename))[
                     "0"
                 ].tolist()
-            )
+                answers = []
+                for i, mermaid_text in enumerate(candidates):
+                    scene = self.scenes[self.questions[i]["image_index"]]
+                    result = evaluate_graph_with_scene(mermaid_text, scene)
 
-        # transpose the results
-        result_candidates = [[] for _ in range(len(results[0]))]
-        for run in range(num_candidates):
-            for idx in range(len(result_candidates)):
-                result_candidates[idx].append(results[run][idx])
+                    if type(result) is list:
+                        result = str(result)
+
+                    answers.append(result)
+                self.evaluation_cache[filename] = answers
+            results.append(self.evaluation_cache[filename])
 
         individual_results = []
         gt_answers = [question["answer"] for question in self.questions]
-        for i, candidates in enumerate(result_candidates):
+        for i in range(len(results[0])):
             individual_result = []
-            for mermaid_text in candidates:
-                scene = self.scenes[self.questions[i]["image_index"]]
-                result = evaluate_graph_with_scene(mermaid_text, scene)
-
-                if type(result) is list:
-                    result = str(result)
-
+            for run in range(num_candidates):
+                result = results[run][i]
                 if not exclude_error or (exclude_error and result != "error"):
                     individual_result.append(result)
             individual_results.append(individual_result)

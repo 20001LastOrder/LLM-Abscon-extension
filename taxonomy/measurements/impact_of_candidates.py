@@ -110,7 +110,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--num_generations", type=delimited_list_int, default="1,20")
     parser.add_argument(
-        "--dataset", type=str, default="ccs", choices=["ccs", "wordnet"]
+        "--dataset", type=str, default="wordnet", choices=["ccs", "wordnet"]
     )
     parser.add_argument(
         "--output_path",
