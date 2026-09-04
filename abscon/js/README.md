@@ -1,24 +1,34 @@
-## Bridging Native Mermaid Parser with Python
-The repository contains a bundled CommonJS file that exposes a function `parse_mermaid` to parse mermaid. This function can be used bridged to Python with [PythonMonkey](http://pythonmonkey.io/).
+# Using Mermaid's Parser from Python
 
-## Create Bundle from scratch
-```
+This directory contains `native_parser.bundle.js`, a CommonJS bundle that exposes `parse_mermaid`. The Python code loads that function through [PythonMonkey](https://pythonmonkey.io/), allowing AbsCon to use Mermaid's own parser.
+
+## Rebuild the bundle
+
+From this directory, install the JavaScript dependencies and run Rollup:
+
+```bash
 npm install
 npx rollup -c
 ```
 
-## Know issues
-It seems that for now Mermaid does not work with server side node applications [link](https://github.com/mermaid-js/mermaid/issues/5204). Calling Mermaid parsing from server side will result in a DOM error. The solution is to hot patching the sanity check (since hopefully we are not receiving arbitrary test inputs 😄).
-* After bundle the code, comment out this piece of code from `navie_parser.bundle` (typically at line 4787):
+## Apply the server-side workaround
+
+Mermaid's parser currently expects browser DOM APIs, which causes an error when it runs in a server-side JavaScript environment. The background is tracked in [Mermaid issue #5204](https://github.com/mermaid-js/mermaid/issues/5204).
+
+After rebuilding the bundle, open `native_parser.bundle.js` and remove or comment out the following sanitization block (usually near line 4787):
+
 ```js
-  if (config2.dompurifyConfig) {
-    text = purify.sanitize(sanitizeMore(text, config2), config2.dompurifyConfig).toString();
-  } else {
-    text = purify.sanitize(sanitizeMore(text, config2), {
-      FORBID_TAGS: ["style"]
-    }).toString();
-  }
+if (config2.dompurifyConfig) {
+  text = purify.sanitize(sanitizeMore(text, config2), config2.dompurifyConfig).toString();
+} else {
+  text = purify.sanitize(sanitizeMore(text, config2), {
+    FORBID_TAGS: ["style"]
+  }).toString();
+}
 ```
 
-## Limitation
-It seems only works with typical flowcharts (starting with the `graph` keywords). I think other graph types are probably hidden somewhere but I haven't explored them thoroughly. 
+This patch assumes that the parser only receives trusted input.
+
+## Current limitation
+
+The integration has only been tested with standard flowcharts whose source begins with the `graph` keyword. Other Mermaid diagram types may require more work.
